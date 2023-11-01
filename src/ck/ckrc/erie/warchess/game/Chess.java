@@ -5,7 +5,7 @@ public abstract class Chess{
     public Integer hp=0;
     public Integer x=0,y=0;
     public Integer teamFlag=-1;
-    public String clazzName="null";
+    public static final String clazzName="null";
     public boolean allowPlayerBuild=false;
 
     /**
@@ -42,5 +42,12 @@ public abstract class Chess{
     public void roundEnd(){
 
     }
+
+    /**
+     * 检查放置条件
+     */
+    public static boolean checkPlaceRequirements(Player player){return true;}
+
+    public static void playerInit(Player player){}
 
 }

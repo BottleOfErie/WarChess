@@ -17,6 +17,7 @@ public class Player {
     public Object getStatus(String key){
         return status.get(key);
     }
+    public void setStatus(String key,Object value){status.put(key,value);}
 
     public int getTeamFlag(){return teamFlag;}
 

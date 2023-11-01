@@ -1,10 +1,17 @@
 package ck.ckrc.erie.warchess.game;
 
+import ck.ckrc.erie.warchess.Main;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class Engine {
 
     public static final int playerNum=2;
+
+    public Integer getCurrentTeam() {
+        return currentTeam;
+    }
 
     private static class ListenerNode {
         public Chess parent;
@@ -19,7 +26,7 @@ public class Engine {
 
     }
 
-    private static Comparator<ListenerNode> listenerComparator=new Comparator<ListenerNode>() {
+    private static final Comparator<ListenerNode> listenerComparator=new Comparator<ListenerNode>() {
         @Override
         public int compare(ListenerNode o1, ListenerNode o2) {
             return o2.priority-o1.priority;
@@ -40,6 +47,25 @@ public class Engine {
                 damageListeners[i][j]=new ArrayList<>();
         damageQueue=new LinkedList<>();
         players=new Vector<>();
+    }
+
+    public Player getNewPlayer(int teamFlag){
+        Player ret=new Player(teamFlag);
+        for (Class<?> clazz:
+                Main.chessClassLoader.getClazzs()) {
+            try {
+                var mtd=clazz.getDeclaredMethod("playerInit",Player.class);
+                mtd.setAccessible(true);
+                mtd.invoke(null,ret);
+            } catch (NoSuchMethodException ignored) {
+
+            } catch (InvocationTargetException e) {
+                Main.log.addLog(clazz.getName()+"->playerInit() cannot be invoked properly","Engine-InitPlayer");
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return ret;
     }
 
     public void nextRound(Integer nextTeam){//开始回合结算
@@ -90,6 +116,15 @@ public class Engine {
 
     public void commitDamageEvent(DamageEvent evt){
         damageQueue.add(evt);
+    }
+
+    public Player getPlayer(int teamFlag){
+        for (Player p:
+             players) {
+            if(p.getTeamFlag()==teamFlag)
+                return p;
+        }
+        return null;
     }
 
 }

@@ -2,21 +2,22 @@ package ck.ckrc.erie.warchess.example;
 
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.game.*;
+import ck.ckrc.erie.warchess.utils.Math;
 
 import java.util.Objects;
 
 public class GunTower extends Chess {
 
-    public static final int attRadius=5,attDamage=10;
+    public static final int attRadius=5,attDamage=10, build_cost =5,shot_cost=1;
     private DamageEvent myDmgEvt;
     private DamageListener myDmgListener;
     private int target_x,target_y;
+    public static final String clazzName="example.GunTower";
 
-    public GunTower(int x,int y,int teamFlag){
+    public GunTower(int x,int y,Player player){
         this.x=x;
         this.y=y;
-        this.teamFlag=teamFlag;
-        this.clazzName="example.GunTower";
+        this.teamFlag=player.getTeamFlag();
         myDmgListener=new DamageListener() {
 
             @Override
@@ -31,6 +32,9 @@ public class GunTower extends Chess {
                 }
             }
         };
+
+        Main.currentGameEngine.getPlayer(teamFlag).setStatus(Miner.energyKey,(int)Main.currentGameEngine.getPlayer(teamFlag).getStatus(Miner.energyKey)-build_cost);
+
     }
 
     @Override
@@ -53,14 +57,17 @@ public class GunTower extends Chess {
     @Override
     public void roundBegin() {
         //generate auto target
+
+        if((int)Main.currentGameEngine.getPlayer(teamFlag).getStatus(Miner.energyKey)<shot_cost)return;
+        Main.currentGameEngine.getPlayer(teamFlag).setStatus(Miner.energyKey,(int)Main.currentGameEngine.getPlayer(teamFlag).getStatus(Miner.energyKey)-shot_cost);
         var engine= Main.currentGameEngine;
         int tx=0,ty=0,flg=0;
         for(int i=0;i<Map.MapSize;i++)
             for(int j=0;j<Map.MapSize;j++)
-                if(Utils.distanceOfEuclid(x,y,i,j)<attRadius&& !Objects.equals(engine.getChess(i, j).teamFlag, this.teamFlag)){
+                if(Math.distanceOfEuclid(x,y,i,j)<attRadius&& !Objects.equals(engine.getChess(i, j).teamFlag, this.teamFlag)){
                     if(flg==0) {
                         tx = i; ty = j; flg = 1;
-                    }else if(Utils.distanceOfEuclid(x,y,tx,ty)>Utils.distanceOfEuclid(x,y,i,j)){
+                    }else if(Math.distanceOfEuclid(x,y,tx,ty)> Math.distanceOfEuclid(x,y,i,j)){
                         tx = i; ty = j;
                     }
                 }
@@ -71,5 +78,9 @@ public class GunTower extends Chess {
     public void roundEnd() {
         myDmgEvt=new DamageEvent(target_x,target_y,attDamage,this);
         Main.currentGameEngine.commitDamageEvent(myDmgEvt);
+    }
+
+    public static boolean checkPlaceRequirements(Player player) {
+        return (int)player.getStatus(Miner.energyKey)>= build_cost;
     }
 }
