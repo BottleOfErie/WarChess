@@ -19,8 +19,8 @@ public class Map {
                 heightmap[i][j]=r.nextInt(100);
     }
 
-    public void overDamaged(int x,int y,int damage){
-        if(damage>0)heightmap[x][y]-=damage/10;
+    public void overDamaged(int x,int y,double damage){
+        if(damage>0)heightmap[x][y]-= (int) (damage/10);
         if(heightmap[x][y]<0)heightmap[x][y]=0;
     }
 

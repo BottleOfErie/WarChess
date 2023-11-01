@@ -1,6 +1,6 @@
 package ck.ckrc.erie.warchess.game;
 
-public interface Chess{
+public abstract class Chess{
 
     public Integer hp=0;
     public Integer x=0,y=0;
@@ -12,14 +12,14 @@ public interface Chess{
      * 显示该Chess对应侧边栏
      * @return
      */
-    public Object showPanel();
+    public abstract Object showPanel();
 
     /**
      *检查伤害事件是否仍然有效
      * @param evt 伤害事件
      * @return 伤害事件有效
      */
-    public boolean checkEvent(DamageEvent evt);
+    public abstract boolean checkEvent(DamageEvent evt);
 
     /**
      * 检查伤害监听器是否仍然有效
@@ -27,16 +27,20 @@ public interface Chess{
      * @param listener 监听器
      * @return 监听器有效
      */
-    public boolean checkListener(DamageListener listener);
+    public abstract boolean checkListener(DamageListener listener);
 
     /**
      * 回合开始初始化
      */
-    public void roundBegin();
+    public void roundBegin(){
+
+    }
 
     /**
      * 回合结束
      */
-    public void roundEnd();
+    public void roundEnd(){
+
+    }
 
 }

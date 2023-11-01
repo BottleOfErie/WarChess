@@ -1,7 +1,12 @@
 package ck.ckrc.erie.warchess;
 
-public class Main {
-    public static void main(String... args){
+import ck.ckrc.erie.warchess.game.Engine;
 
+public class Main {
+
+    public static Engine currentGameEngine;
+
+    public static void main(String... args){
+        currentGameEngine=new Engine();
     }
 }

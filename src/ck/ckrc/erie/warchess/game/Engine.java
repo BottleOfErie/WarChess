@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Engine {
 
+    public static final int playerNum=2;
 
     private static class ListenerNode {
         public Chess parent;
@@ -29,6 +30,7 @@ public class Engine {
     private Integer currentTeam=0;
     private ArrayList<ListenerNode>[][] damageListeners;
     private Queue<DamageEvent> damageQueue;
+    private Vector<Player> players;
 
     public Engine(){
         currentMap=new Map();
@@ -37,6 +39,7 @@ public class Engine {
             for(int j=0;j<Map.MapSize;j++)
                 damageListeners[i][j]=new ArrayList<>();
         damageQueue=new LinkedList<>();
+        players=new Vector<>();
     }
 
     public void nextRound(Integer nextTeam){//开始回合结算
@@ -58,7 +61,7 @@ public class Engine {
         //damage count
         while(!damageQueue.isEmpty()){
             var currentEvt=damageQueue.remove();
-            int damage=currentEvt.getDamage();
+            var damage=currentEvt.getDamage();
             if(!currentEvt.check())continue;
             var iter=damageListeners[currentEvt.getX()][currentEvt.getY()].iterator();
             while(iter.hasNext()&&damage>0){
@@ -70,10 +73,23 @@ public class Engine {
 
         currentTeam=nextTeam;
 
-        //execute Chess roundEnd method
+        //execute Chess roundBegin method
         for(int i=0;i<Map.MapSize;i++)
             for(int j=0;j<Map.MapSize;j++)
                 currentMap.getChessMap()[i][j].roundBegin();
+    }
+
+    public Map getMap(){
+        return currentMap;
+    }
+
+    public Chess getChess(int x,int y){
+        if(x<0||x>Map.MapSize||y<0||y> Map.MapSize)return null;
+        return currentMap.getChessMap()[x][y];
+    }
+
+    public void commitDamageEvent(DamageEvent evt){
+        damageQueue.add(evt);
     }
 
 }

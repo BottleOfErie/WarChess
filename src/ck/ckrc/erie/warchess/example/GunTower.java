@@ -1,16 +1,36 @@
 package ck.ckrc.erie.warchess.example;
 
-import ck.ckrc.erie.warchess.game.Chess;
-import ck.ckrc.erie.warchess.game.DamageEvent;
-import ck.ckrc.erie.warchess.game.DamageListener;
+import ck.ckrc.erie.warchess.Main;
+import ck.ckrc.erie.warchess.game.*;
 
-public class GunTower implements Chess {
+import java.util.Objects;
 
+public class GunTower extends Chess {
+
+    public static final int attRadius=5,attDamage=10;
     private DamageEvent myDmgEvt;
     private DamageListener myDmgListener;
+    private int target_x,target_y;
 
-    public GunTower(int x,int y){
+    public GunTower(int x,int y,int teamFlag){
+        this.x=x;
+        this.y=y;
+        this.teamFlag=teamFlag;
+        this.clazzName="example.GunTower";
+        myDmgListener=new DamageListener() {
 
+            @Override
+            public double takeDamage(double damage) {
+                if(hp>damage){
+                    hp-=(int)damage;
+                    return 0;
+                }else{
+                    double tmp=damage-hp;
+                    hp=0;
+                    return tmp;
+                }
+            }
+        };
     }
 
     @Override
@@ -26,16 +46,30 @@ public class GunTower implements Chess {
 
     @Override
     public boolean checkListener(DamageListener listener) {
-        return false;
+        if(hp<=0)return false;
+        return myDmgListener==listener;
     }
 
     @Override
     public void roundBegin() {
-
+        //generate auto target
+        var engine= Main.currentGameEngine;
+        int tx=0,ty=0,flg=0;
+        for(int i=0;i<Map.MapSize;i++)
+            for(int j=0;j<Map.MapSize;j++)
+                if(Utils.distanceOfEuclid(x,y,i,j)<attRadius&& !Objects.equals(engine.getChess(i, j).teamFlag, this.teamFlag)){
+                    if(flg==0) {
+                        tx = i; ty = j; flg = 1;
+                    }else if(Utils.distanceOfEuclid(x,y,tx,ty)>Utils.distanceOfEuclid(x,y,i,j)){
+                        tx = i; ty = j;
+                    }
+                }
+        target_x=tx;target_y=ty;
     }
 
     @Override
     public void roundEnd() {
-
+        myDmgEvt=new DamageEvent(target_x,target_y,attDamage,this);
+        Main.currentGameEngine.commitDamageEvent(myDmgEvt);
     }
 }

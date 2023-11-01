@@ -2,11 +2,12 @@ package ck.ckrc.erie.warchess.game;
 
 public class DamageEvent {
 
-    private final int x,y,damage;
+    private final int x,y;
+    private final double damage;
     private final Chess parent;
     private Object flag;
 
-    public DamageEvent(int x, int y, int damage, Chess parent){
+    public DamageEvent(int x, int y, double damage, Chess parent){
         this.x = x;
         this.y = y;
 
@@ -23,7 +24,7 @@ public class DamageEvent {
         return y;
     }
 
-    public int getDamage() {
+    public double getDamage() {
         return damage;
     }
 
