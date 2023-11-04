@@ -40,13 +40,15 @@ public class Engine {
     private Vector<Player> players;
 
     public Engine(){
+        Main.log.addLog("Creating Engine",this.getClass());
         currentMap=new Map();
-        damageListeners= (ArrayList<ListenerNode>[][]) new Object[Map.MapSize][Map.MapSize];
+        damageListeners= new ArrayList[Map.MapSize][Map.MapSize];
         for(int i=0;i<Map.MapSize;i++)
             for(int j=0;j<Map.MapSize;j++)
                 damageListeners[i][j]=new ArrayList<>();
         damageQueue=new LinkedList<>();
         players=new Vector<>();
+        Main.log.addLog("Engine initialized",this.getClass());
     }
 
     public Player getNewPlayer(int teamFlag){
@@ -58,10 +60,11 @@ public class Engine {
                 mtd.setAccessible(true);
                 mtd.invoke(null,ret);
             } catch (NoSuchMethodException ignored) {
-
             } catch (InvocationTargetException e) {
                 Main.log.addLog(clazz.getName()+"->playerInit() cannot be invoked properly","Engine-InitPlayer");
+                Main.log.addLog(e,this.getClass());
             } catch (IllegalAccessException e) {
+                Main.log.addLog(e,this.getClass());
                 throw new RuntimeException(e);
             }
         }
@@ -70,10 +73,13 @@ public class Engine {
 
     public void nextRound(Integer nextTeam){//开始回合结算
 
+        Main.log.addLog("Concluding Round",this.getClass());
+        Main.log.addLog("Executing roundEnd function",this.getClass());
         //execute Chess roundEnd method
         for(int i=0;i<Map.MapSize;i++)
             for(int j=0;j<Map.MapSize;j++)
                 currentMap.getChessMap()[i][j].roundEnd();
+        Main.log.addLog("Solving listeners",this.getClass());
         //sort and listener validate
         for(int i=0;i<Map.MapSize;i++)
             for(int j=0;j<Map.MapSize;j++){
@@ -85,6 +91,7 @@ public class Engine {
                 }
             }
         //damage count
+        Main.log.addLog("Solving damage events",this.getClass());
         while(!damageQueue.isEmpty()){
             var currentEvt=damageQueue.remove();
             var damage=currentEvt.getDamage();
@@ -99,6 +106,7 @@ public class Engine {
 
         currentTeam=nextTeam;
 
+        Main.log.addLog("Executing roundBegin function",this.getClass());
         //execute Chess roundBegin method
         for(int i=0;i<Map.MapSize;i++)
             for(int j=0;j<Map.MapSize;j++)
@@ -116,6 +124,10 @@ public class Engine {
 
     public void commitDamageEvent(DamageEvent evt){
         damageQueue.add(evt);
+    }
+
+    public void registerDamageListener(Chess parent,int priority,DamageListener listener,int x,int y){
+        damageListeners[x][y].add(new ListenerNode(parent,priority,listener));
     }
 
     public Player getPlayer(int teamFlag){

@@ -1,6 +1,8 @@
 package ck.ckrc.erie.warchess.game;
 
-public abstract class Chess{
+import java.io.Serializable;
+
+public abstract class Chess implements Serializable {
 
     public Integer hp=0;
     public Integer x=0,y=0;

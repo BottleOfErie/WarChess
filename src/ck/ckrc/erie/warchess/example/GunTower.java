@@ -33,7 +33,9 @@ public class GunTower extends Chess {
             }
         };
 
-        Main.currentGameEngine.getPlayer(teamFlag).setStatus(Miner.energyKey,(int)Main.currentGameEngine.getPlayer(teamFlag).getStatus(Miner.energyKey)-build_cost);
+        Main.currentGameEngine.registerDamageListener(this,1,myDmgListener,x,y);
+
+        player.setStatus(Miner.energyKey,(int)player.getStatus(Miner.energyKey)-build_cost);
 
     }
 

@@ -29,7 +29,8 @@ public class Miner extends Chess {
             }
         };
 
-        Main.currentGameEngine.getPlayer(teamFlag).setStatus(energyKey,(int)Main.currentGameEngine.getPlayer(teamFlag).getStatus(energyKey)-build_cost);
+        Main.currentGameEngine.registerDamageListener(this,1,myDmgListener,x,y);
+        p.setStatus(energyKey,(int)p.getStatus(energyKey)-build_cost);
 
     }
 
