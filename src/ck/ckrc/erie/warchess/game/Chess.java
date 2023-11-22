@@ -16,6 +16,10 @@ public abstract class Chess implements Serializable {
      */
     public abstract Object showPanel();
 
+    public char paint(){
+        return ' ';
+    }
+
     /**
      *检查伤害事件是否仍然有效
      * @param evt 伤害事件
@@ -49,6 +53,11 @@ public abstract class Chess implements Serializable {
      * 检查放置条件
      */
     public static boolean checkPlaceRequirements(Player player){return true;}
+
+    /**
+     * 放置后事件
+     */
+    public static void afterPlacement(Player player){}
 
     public static void playerInit(Player player){}
 

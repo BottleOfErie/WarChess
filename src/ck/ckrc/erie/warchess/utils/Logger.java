@@ -7,6 +7,8 @@ import java.util.Date;
 
 public class Logger {
 
+    public boolean debug=false;
+
     private File target=null;
     private FileWriter writer=null;
 
@@ -23,6 +25,10 @@ public class Logger {
     }
 
     public void addLog(String message,String source){
+        if(debug){
+            System.out.printf("[%s]<%s>:%s%n",source,format.format(new Date()),message);
+            return;
+        }
         try {
             writer.write(String.format("[%s]<%s>:%s\n",source,format.format(new Date()),message));
             writer.flush();

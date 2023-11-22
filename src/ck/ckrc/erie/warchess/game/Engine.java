@@ -37,7 +37,7 @@ public class Engine {
     private Integer currentTeam=0;
     private ArrayList<ListenerNode>[][] damageListeners;
     private Queue<DamageEvent> damageQueue;
-    private Vector<Player> players;
+    private HashMap<Integer,Player> players;
 
     public Engine(){
         Main.log.addLog("Creating Engine",this.getClass());
@@ -47,28 +47,8 @@ public class Engine {
             for(int j=0;j<Map.MapSize;j++)
                 damageListeners[i][j]=new ArrayList<>();
         damageQueue=new LinkedList<>();
-        players=new Vector<>();
+        players=new HashMap<>();
         Main.log.addLog("Engine initialized",this.getClass());
-    }
-
-    public Player getNewPlayer(int teamFlag){
-        Player ret=new Player(teamFlag);
-        for (Class<?> clazz:
-                Main.chessClassLoader.getClazzs()) {
-            try {
-                var mtd=clazz.getDeclaredMethod("playerInit",Player.class);
-                mtd.setAccessible(true);
-                mtd.invoke(null,ret);
-            } catch (NoSuchMethodException ignored) {
-            } catch (InvocationTargetException e) {
-                Main.log.addLog(clazz.getName()+"->playerInit() cannot be invoked properly","Engine-InitPlayer");
-                Main.log.addLog(e,this.getClass());
-            } catch (IllegalAccessException e) {
-                Main.log.addLog(e,this.getClass());
-                throw new RuntimeException(e);
-            }
-        }
-        return ret;
     }
 
     public void nextRound(Integer nextTeam){//开始回合结算
@@ -78,7 +58,8 @@ public class Engine {
         //execute Chess roundEnd method
         for(int i=0;i<Map.MapSize;i++)
             for(int j=0;j<Map.MapSize;j++)
-                currentMap.getChessMap()[i][j].roundEnd();
+                if(currentMap.getChessMap()[i][j]!=null)
+                    currentMap.getChessMap()[i][j].roundEnd();
         Main.log.addLog("Solving listeners",this.getClass());
         //sort and listener validate
         for(int i=0;i<Map.MapSize;i++)
@@ -110,11 +91,16 @@ public class Engine {
         //execute Chess roundBegin method
         for(int i=0;i<Map.MapSize;i++)
             for(int j=0;j<Map.MapSize;j++)
-                currentMap.getChessMap()[i][j].roundBegin();
+                if(currentMap.getChessMap()[i][j]!=null)
+                    currentMap.getChessMap()[i][j].roundBegin();
     }
 
     public Map getMap(){
         return currentMap;
+    }
+
+    public void setChess(int x,int y,Chess chess){
+        currentMap.setChess(x,y,chess);
     }
 
     public Chess getChess(int x,int y){
@@ -131,12 +117,11 @@ public class Engine {
     }
 
     public Player getPlayer(int teamFlag){
-        for (Player p:
-             players) {
-            if(p.getTeamFlag()==teamFlag)
-                return p;
-        }
-        return null;
+        return players.get(teamFlag);
+    }
+
+    public void setPlayer(int teamFlag,Player player){
+        players.put(teamFlag,player);
     }
 
 }

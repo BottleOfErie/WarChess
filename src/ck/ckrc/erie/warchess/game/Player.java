@@ -1,5 +1,8 @@
 package ck.ckrc.erie.warchess.game;
 
+import ck.ckrc.erie.warchess.Main;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,5 +23,25 @@ public class Player {
     public void setStatus(String key,Object value){status.put(key,value);}
 
     public int getTeamFlag(){return teamFlag;}
+
+    public static Player getNewPlayer(int teamFlag){
+        Player ret=new Player(teamFlag);
+        for (Class<?> clazz:
+                Main.chessClassLoader.getClazzs()) {
+            try {
+                var mtd=clazz.getDeclaredMethod("playerInit",Player.class);
+                mtd.setAccessible(true);
+                mtd.invoke(null,ret);
+            } catch (NoSuchMethodException ignored) {
+            } catch (InvocationTargetException e) {
+                Main.log.addLog(clazz.getName()+"->playerInit() cannot be invoked properly","InitPlayer");
+                Main.log.addLog(e,Player.class);
+            } catch (IllegalAccessException e) {
+                Main.log.addLog(e,Player.class);
+                throw new RuntimeException(e);
+            }
+        }
+        return ret;
+    }
 
 }

@@ -85,4 +85,13 @@ public class GunTower extends Chess {
     public static boolean checkPlaceRequirements(Player player) {
         return (int)player.getStatus(Miner.energyKey)>= build_cost;
     }
+
+    public static void afterPlacement(Player player){
+        player.setStatus(Miner.energyKey,(int)player.getStatus(Miner.energyKey)- build_cost);
+    }
+
+    @Override
+    public char paint() {
+        return 'G';
+    }
 }

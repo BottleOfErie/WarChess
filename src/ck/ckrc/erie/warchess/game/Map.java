@@ -24,6 +24,10 @@ public class Map {
         if(heightmap[x][y]<0)heightmap[x][y]=0;
     }
 
+    protected void setChess(int x,int y,Chess chess){
+        chessmap[x][y]=chess;
+    }
+
     public Chess[][] getChessMap() {
         return chessmap;
     }
