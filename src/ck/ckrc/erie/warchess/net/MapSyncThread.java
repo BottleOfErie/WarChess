@@ -1,6 +1,7 @@
 package ck.ckrc.erie.warchess.net;
 
 import ck.ckrc.erie.warchess.Main;
+import ck.ckrc.erie.warchess.PreMain;
 import ck.ckrc.erie.warchess.game.Chess;
 
 import java.io.*;
@@ -24,6 +25,7 @@ public class MapSyncThread extends Thread{
         this.socket=socket;
         input=new DataInputStream(socket.getInputStream());
         output=new DataOutputStream(socket.getOutputStream());
+        Main.log.addLog("SyncThread ready",this.getClass());
     }
 
     public Object fromByteArray(byte[] arr) throws IOException, ClassNotFoundException {
@@ -101,6 +103,12 @@ public class MapSyncThread extends Thread{
 
     public void sendRound(int roundFlag) throws IOException {
         output.writeUTF("round "+roundFlag);
+    }
+
+    public void sendLoad(String name) throws IOException {
+        var arr= PreMain.transformer.map.get(name);
+        output.writeUTF("load "+name+" "+arr.length);
+        output.write(arr);
     }
 
 }

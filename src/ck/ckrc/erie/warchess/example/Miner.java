@@ -9,7 +9,7 @@ public class Miner extends Chess {
     public static final int productions=10, build_cost =10;
     public static final String energyKey="example.red-stoneFlux";
     private DamageListener myDmgListener;
-    public static final String clazzName="example.Miner";
+    public static final String className="ck.ckrc.erie.warchess.example.Miner";
 
     public Miner(int x,int y,Player p){
         this.x=x;

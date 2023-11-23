@@ -12,7 +12,7 @@ public class GunTower extends Chess {
     private DamageEvent myDmgEvt;
     private DamageListener myDmgListener;
     private int target_x,target_y;
-    public static final String clazzName="example.GunTower";
+    public static final String className="ck.ckrc.erie.warchess.example.GunTower";
 
     public GunTower(int x,int y,Player player){
         this.x=x;

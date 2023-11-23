@@ -7,7 +7,7 @@ public abstract class Chess implements Serializable {
     public Integer hp=0;
     public Integer x=0,y=0;
     public Integer teamFlag=-1;
-    public static final String clazzName="null";
+    public static final String className="null";
     public boolean allowPlayerBuild=false;
 
     /**

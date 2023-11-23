@@ -9,17 +9,17 @@ import java.util.Map;
 
 public class ChessClassLoader extends ClassLoader{
 
-    private Map<String,Class<?>> clazzs=null;
+    private Map<String,Class<?>> chessClass =null;
 
     public ChessClassLoader(){
         super();
-        clazzs=new HashMap<>();
+        chessClass =new HashMap<>();
         Main.log.addLog("Initialized",this.getClass());
     }
 
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
-        if(clazzs.containsKey(name))return clazzs.get(name);
+        if(chessClass.containsKey(name))return chessClass.get(name);
         else {
             Main.log.addLog("NoSuchClass:"+name,this.getClass());
             throw new ClassNotFoundException(name);
@@ -28,19 +28,18 @@ public class ChessClassLoader extends ClassLoader{
 
     public Class<?> loadChessClassFromByteArray(byte[] byteArr,String name){
         var clazz=this.defineClass(name,byteArr,0,byteArr.length);
-        clazzs.put(name,clazz);
+        chessClass.put(name,clazz);
         Main.log.addLog("Loaded Class:"+name,this.getClass());
         return clazz;
     }
 
     public Class<?> loadChessClassFromFile(File f,String name){
         Main.log.addLog("Loading class from file:"+f.toString(),this.getClass());
-        try {
-            FileInputStream fis=new FileInputStream(f);
-            ByteArrayOutputStream baos=new ByteArrayOutputStream();
+        try(FileInputStream fis=new FileInputStream(f)) {
+            ByteArrayOutputStream bas=new ByteArrayOutputStream();
             int t=0;
-            while(-1!=(t=fis.read()))baos.write(t);
-            var byteArr=baos.toByteArray();
+            while(-1!=(t=fis.read()))bas.write(t);
+            var byteArr=bas.toByteArray();
             return loadChessClassFromByteArray(byteArr,name);
         } catch (FileNotFoundException e) {//24
             Main.log.addLog(e,this.getClass());
@@ -51,13 +50,13 @@ public class ChessClassLoader extends ClassLoader{
         }
     }
 
-    public void addClazz(Class<?> clazz){
+    public void addChessClass(Class<?> clazz){
         Main.log.addLog("Loaded Class:"+clazz.getName(),this.getClass());
-        clazzs.put(clazz.getName(),clazz);
+        chessClass.put(clazz.getName(),clazz);
     }
 
-    public Collection<Class<?>> getClazzs(){
-        return clazzs.values();
+    public Collection<Class<?>> getChessClass(){
+        return chessClass.values();
     }
 
 }

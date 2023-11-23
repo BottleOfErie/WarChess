@@ -27,7 +27,7 @@ public class Player {
     public static Player getNewPlayer(int teamFlag){
         Player ret=new Player(teamFlag);
         for (Class<?> clazz:
-                Main.chessClassLoader.getClazzs()) {
+                Main.chessClassLoader.getChessClass()) {
             try {
                 var mtd=clazz.getDeclaredMethod("playerInit",Player.class);
                 mtd.setAccessible(true);
