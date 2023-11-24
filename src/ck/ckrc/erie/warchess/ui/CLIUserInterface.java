@@ -57,12 +57,10 @@ public class CLIUserInterface {
                                 System.out.println("2:Miner");
                             if(input.nextInt()==1){
                                 if(GunTower.checkPlaceRequirements(Main.currentGameEngine.getPlayer(0))) {
-                                    GunTower.afterPlacement(Main.currentGameEngine.getPlayer(0));
                                     Main.currentGameEngine.setChess(x,y,new GunTower(x,y,Main.currentGameEngine.getPlayer(0)));
                                 }
                             }else{
                                 if(Miner.checkPlaceRequirements(Main.currentGameEngine.getPlayer(0))) {
-                                    Miner.afterPlacement(Main.currentGameEngine.getPlayer(0));
                                     Main.currentGameEngine.setChess(x,y,new Miner(x,y,Main.currentGameEngine.getPlayer(0)));
                                 }
                             }
@@ -117,12 +115,10 @@ public class CLIUserInterface {
                                 System.out.println("2:Miner");
                             if(input.nextInt()==1){
                                 if(GunTower.checkPlaceRequirements(Main.currentGameEngine.getPlayer(1))) {
-                                    GunTower.afterPlacement(Main.currentGameEngine.getPlayer(1));
                                     Main.currentGameEngine.setChess(x,y,new GunTower(x,y,Main.currentGameEngine.getPlayer(1)));
                                 }
                             }else{
                                 if(Miner.checkPlaceRequirements(Main.currentGameEngine.getPlayer(1))) {
-                                    Miner.afterPlacement(Main.currentGameEngine.getPlayer(1));
                                     Main.currentGameEngine.setChess(x,y,new Miner(x,y,Main.currentGameEngine.getPlayer(1)));
                                 }
                             }

@@ -54,10 +54,6 @@ public abstract class Chess implements Serializable {
      */
     public static boolean checkPlaceRequirements(Player player){return true;}
 
-    /**
-     * 放置后事件
-     */
-    public static void afterPlacement(Player player){}
 
     public static void playerInit(Player player){}
 

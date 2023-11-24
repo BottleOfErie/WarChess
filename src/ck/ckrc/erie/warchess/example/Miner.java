@@ -61,9 +61,6 @@ public class Miner extends Chess {
         return (int)player.getStatus(energyKey)>= build_cost;
     }
 
-    public static void afterPlacement(Player player){
-        player.setStatus(energyKey,(int)player.getStatus(energyKey)- build_cost);
-    }
 
     public static void playerInit(Player player){
         player.setStatus(energyKey,10);
