@@ -52,7 +52,7 @@ public abstract class Chess implements Serializable {
     /**
      * 检查放置条件
      */
-    public static boolean checkPlaceRequirements(Player player){return true;}
+    public static boolean checkPlaceRequirements(Player player,int x,int y){return true;}
 
 
     public static void playerInit(Player player){}
