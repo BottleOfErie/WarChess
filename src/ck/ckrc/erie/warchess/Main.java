@@ -3,10 +3,14 @@ package ck.ckrc.erie.warchess;
 import ck.ckrc.erie.warchess.example.GunTower;
 import ck.ckrc.erie.warchess.example.Miner;
 import ck.ckrc.erie.warchess.game.ChessClassLoader;
+import ck.ckrc.erie.warchess.game.ClassDecompilerWrapper;
 import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.net.MapSyncThread;
 import ck.ckrc.erie.warchess.ui.CLIUserInterface;
 import ck.ckrc.erie.warchess.utils.Logger;
+import org.jd.core.v1.ClassFileToJavaSourceDecompiler;
+import org.jd.gui.util.decompiler.ClassPathLoader;
+import org.jd.gui.util.decompiler.StringBuilderPrinter;
 
 import java.io.IOException;
 
@@ -29,8 +33,11 @@ public class Main {
 
         currentGameEngine=new Engine();
         chessClassLoader=new ChessClassLoader();
+        chessClassLoader.addChessClass(GunTower.class);
 
-        CLIUserInterface.cli_main();
+
+
+        //CLIUserInterface.cli_main();
 
     }
 }

@@ -44,6 +44,8 @@ public class Logger {
     public void addLog(Exception e,Class<?> clazz){
         addLog("===EXCEPTION HAPPENED===",clazz);
         e.printStackTrace(new PrintWriter(writer));
+        if(debug)
+            e.printStackTrace();
     }
 
     public void addLog(Exception e,String source){
