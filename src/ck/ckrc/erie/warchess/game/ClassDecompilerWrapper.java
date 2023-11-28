@@ -26,25 +26,16 @@ public class ClassDecompilerWrapper implements Loader {
 
     @Override
     public byte[] load(String s) throws LoaderException {
-        if(Objects.equals(s, className)) {
-            System.out.println("111");
+        if(Objects.equals(s, className))
             return data;
-        }
         return PreMain.transformer.load(s);
     }
 
     public String decompile(){
-        ClassDecompilerWrapper wrapper= null;
-        try {
-            wrapper = new ClassDecompilerWrapper(PreMain.transformer.load("ck.ckrc.erie.warchess.example.GunTower"),"ck.ckrc.erie.warchess.example.GunTower");
-        } catch (LoaderException e) {
-            Main.log.addLog(e,this.getClass());
-            return null;
-        }
         ClassFileToJavaSourceDecompiler decompiler=new ClassFileToJavaSourceDecompiler();
         StringBuilderPrinter printer=new StringBuilderPrinter();
         try {
-            decompiler.decompile(wrapper,printer,"ck.ckrc.erie.warchess.example.GunTower");
+            decompiler.decompile(this,printer,this.className);
         } catch (Exception e) {
             Main.log.addLog(e,this.getClass());
             return null;

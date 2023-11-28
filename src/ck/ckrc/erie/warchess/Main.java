@@ -12,7 +12,7 @@ import org.jd.core.v1.ClassFileToJavaSourceDecompiler;
 import org.jd.gui.util.decompiler.ClassPathLoader;
 import org.jd.gui.util.decompiler.StringBuilderPrinter;
 
-import java.io.IOException;
+import java.io.*;
 
 public class Main {
 
@@ -28,13 +28,22 @@ public class Main {
             log.debug=true;
         } catch (IOException e) {
             e.printStackTrace();
-            return;
         }
 
         currentGameEngine=new Engine();
         chessClassLoader=new ChessClassLoader();
-        chessClassLoader.addChessClass(GunTower.class);
 
+        try {
+            File f=new File("WarChess\\ck\\ckrc\\erie\\warchess\\example\\GunTower.class");
+            FileInputStream fis=new FileInputStream(f);
+            var arr=fis.readAllBytes();
+            ClassDecompilerWrapper wrapper=new ClassDecompilerWrapper(arr,"ck.ckrc.erie.warchess.example.GunTower");
+            System.out.println(wrapper.decompile());
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
 
         //CLIUserInterface.cli_main();
