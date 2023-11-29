@@ -2,7 +2,6 @@ package ck.ckrc.erie.warchess.game;
 
 import ck.ckrc.erie.warchess.Main;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class Engine {

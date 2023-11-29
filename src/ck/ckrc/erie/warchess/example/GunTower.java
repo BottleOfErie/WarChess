@@ -5,11 +5,10 @@ import ck.ckrc.erie.warchess.game.*;
 import ck.ckrc.erie.warchess.utils.Math;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 
 import java.util.Objects;
 
@@ -135,7 +134,7 @@ public class GunTower extends Chess {
     }
 
     @Override
-    public char paint() {
-        return 'G';
+    public Node paint() {
+        return null;
     }
 }

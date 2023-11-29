@@ -1,11 +1,13 @@
 package ck.ckrc.erie.warchess.game;
 
 import ck.ckrc.erie.warchess.Main;
+import ck.ckrc.erie.warchess.PreMain;
 
 import java.io.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ChessClassLoader extends ClassLoader{
 
@@ -26,27 +28,38 @@ public class ChessClassLoader extends ClassLoader{
         }
     }
 
-    public Class<?> loadChessClassFromByteArray(byte[] byteArr,String name){
-        var clazz=this.defineClass(name,byteArr,0,byteArr.length);
+    public Class<?> loadChessClassFromByteArray(byte[] byteArr){
+        var clazz=this.defineClass(null,byteArr,0,byteArr.length);
+        var name=getChessClassName(clazz);
         chessClass.put(name,clazz);
+        PreMain.transformer.map.put(name,byteArr);
         Main.log.addLog("Loaded Class:"+name,this.getClass());
         return clazz;
     }
 
-    public Class<?> loadChessClassFromFile(File f,String name){
-        Main.log.addLog("Loading class from file:"+f.toString(),this.getClass());
-        try(FileInputStream fis=new FileInputStream(f)) {
-            ByteArrayOutputStream bas=new ByteArrayOutputStream();
-            int t=0;
-            while(-1!=(t=fis.read()))bas.write(t);
-            var byteArr=bas.toByteArray();
-            return loadChessClassFromByteArray(byteArr,name);
+    public Class<?> loadChessClassFromFile(File f) {
+        Class<?> result = null;
+        Main.log.addLog("Loading class from file:" + f.toString(), this.getClass());
+        try (FileInputStream fis = new FileInputStream(f)) {
+            ByteArrayOutputStream bas = new ByteArrayOutputStream();
+            int t = 0;
+            while (-1 != (t = fis.read())) bas.write(t);
+            var byteArr = bas.toByteArray();
+            result = loadChessClassFromByteArray(byteArr);
         } catch (FileNotFoundException e) {//24
-            Main.log.addLog(e,this.getClass());
-            throw new RuntimeException(e);
+            Main.log.addLog(e, this.getClass());
         } catch (IOException e) {
-            Main.log.addLog(e,this.getClass());
-            throw new RuntimeException(e);//27
+            Main.log.addLog(e, this.getClass());
+        }
+        return result;
+    }
+
+    public String getChessClassName(Class<?> clazz){
+        try {
+            var field=clazz.getField("className");
+            return (String)field.get(null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            return null;
         }
     }
 

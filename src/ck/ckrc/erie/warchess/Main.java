@@ -1,25 +1,22 @@
 package ck.ckrc.erie.warchess;
 
-import ck.ckrc.erie.warchess.example.GunTower;
-import ck.ckrc.erie.warchess.example.Miner;
 import ck.ckrc.erie.warchess.game.ChessClassLoader;
 import ck.ckrc.erie.warchess.game.ClassDecompilerWrapper;
 import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.net.MapSyncThread;
-import ck.ckrc.erie.warchess.ui.CLIUserInterface;
 import ck.ckrc.erie.warchess.utils.Logger;
-import org.jd.core.v1.ClassFileToJavaSourceDecompiler;
-import org.jd.gui.util.decompiler.ClassPathLoader;
-import org.jd.gui.util.decompiler.StringBuilderPrinter;
+import javafx.scene.control.Alert;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 public class Main {
 
     public static Engine currentGameEngine;
     public static ChessClassLoader chessClassLoader;
 
-    public static Logger log;
+    public static Logger log=null;
     public static MapSyncThread syncThread=null;
 
     public static void main(String... args){
@@ -27,23 +24,20 @@ public class Main {
             log=new Logger();
             log.debug=true;
         } catch (IOException e) {
-            e.printStackTrace();
+            Alert alert=new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Failed to initialize the logger");
+            alert.show();
         }
 
         currentGameEngine=new Engine();
         chessClassLoader=new ChessClassLoader();
 
-        try {
-            File f=new File("WarChess\\ck\\ckrc\\erie\\warchess\\example\\GunTower.class");
-            FileInputStream fis=new FileInputStream(f);
-            var arr=fis.readAllBytes();
-            ClassDecompilerWrapper wrapper=new ClassDecompilerWrapper(arr,"ck.ckrc.erie.warchess.example.GunTower");
-            System.out.println(wrapper.decompile());
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        System.out.println(PreMain.transformer.canLoad("ck.ckrc.erie.warchess.example.GunTower"));
+        File f=new File("D:\\javaproj\\warchess\\WarChess\\out\\production\\WarChess\\ck\\ckrc\\erie\\warchess\\example\\GunTower.class");
+        chessClassLoader.loadChessClassFromFile(f);
+        System.out.println(PreMain.transformer.canLoad("ck.ckrc.erie.warchess.example.GunTower"));
+//            File f=new File("C:\\Users\\Bottl\\Desktop\\qqq.png");
+//            System.out.println(ResourceSerialization.loadFromFile(f));
 
 
         //CLIUserInterface.cli_main();

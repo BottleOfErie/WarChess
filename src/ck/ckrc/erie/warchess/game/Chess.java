@@ -1,5 +1,7 @@
 package ck.ckrc.erie.warchess.game;
 
+import javafx.scene.Node;
+
 import java.io.Serializable;
 
 public abstract class Chess implements Serializable {
@@ -16,8 +18,8 @@ public abstract class Chess implements Serializable {
      */
     public abstract Object showPanel();
 
-    public char paint(){
-        return ' ';
+    public Node paint(){
+        return null;
     }
 
     /**
