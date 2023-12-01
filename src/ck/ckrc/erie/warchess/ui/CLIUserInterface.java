@@ -51,16 +51,16 @@ public class CLIUserInterface {
                     do{
                         if(Main.currentGameEngine.getChess(x,y)==null){
                             System.out.println("following options");
-                            if(GunTower.checkPlaceRequirements(Main.currentGameEngine.getPlayer(0)))
+                            if(GunTower.checkPlaceRequirements(Main.currentGameEngine.getPlayer(0),x,y))
                                 System.out.println("1:GunTower");
-                            if(Miner.checkPlaceRequirements(Main.currentGameEngine.getPlayer(0)))
+                            if(Miner.checkPlaceRequirements(Main.currentGameEngine.getPlayer(0),x,y))
                                 System.out.println("2:Miner");
                             if(input.nextInt()==1){
-                                if(GunTower.checkPlaceRequirements(Main.currentGameEngine.getPlayer(0))) {
+                                if(GunTower.checkPlaceRequirements(Main.currentGameEngine.getPlayer(0),x,y)) {
                                     Main.currentGameEngine.setChess(x,y,new GunTower(x,y,Main.currentGameEngine.getPlayer(0)));
                                 }
                             }else{
-                                if(Miner.checkPlaceRequirements(Main.currentGameEngine.getPlayer(0))) {
+                                if(Miner.checkPlaceRequirements(Main.currentGameEngine.getPlayer(0),x,y)) {
                                     Main.currentGameEngine.setChess(x,y,new Miner(x,y,Main.currentGameEngine.getPlayer(0)));
                                 }
                             }
@@ -109,16 +109,16 @@ public class CLIUserInterface {
                     do{
                         if(Main.currentGameEngine.getChess(x,y)==null){
                             System.out.println("following options");
-                            if(GunTower.checkPlaceRequirements(Main.currentGameEngine.getPlayer(1)))
+                            if(GunTower.checkPlaceRequirements(Main.currentGameEngine.getPlayer(1),x,y))
                                 System.out.println("1:GunTower");
-                            if(Miner.checkPlaceRequirements(Main.currentGameEngine.getPlayer(1)))
+                            if(Miner.checkPlaceRequirements(Main.currentGameEngine.getPlayer(1),x,y))
                                 System.out.println("2:Miner");
                             if(input.nextInt()==1){
-                                if(GunTower.checkPlaceRequirements(Main.currentGameEngine.getPlayer(1))) {
+                                if(GunTower.checkPlaceRequirements(Main.currentGameEngine.getPlayer(1),x,y)) {
                                     Main.currentGameEngine.setChess(x,y,new GunTower(x,y,Main.currentGameEngine.getPlayer(1)));
                                 }
                             }else{
-                                if(Miner.checkPlaceRequirements(Main.currentGameEngine.getPlayer(1))) {
+                                if(Miner.checkPlaceRequirements(Main.currentGameEngine.getPlayer(1),x,y)) {
                                     Main.currentGameEngine.setChess(x,y,new Miner(x,y,Main.currentGameEngine.getPlayer(1)));
                                 }
                             }

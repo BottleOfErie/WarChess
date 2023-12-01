@@ -3,21 +3,28 @@ package ck.ckrc.erie.warchess.example;
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.game.*;
 import ck.ckrc.erie.warchess.utils.Math;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 
 import java.util.Objects;
 
 public class GunTower extends Chess {
 
-    public static final int attRadius=5,attDamage=10, build_cost =5,shot_cost=1;
+    public static final int attRadius=5,attDamage=10, build_cost =5,shot_cost=1,max_hp=50;
     private DamageEvent myDmgEvt;
     private DamageListener myDmgListener;
-    private int target_x,target_y;
+    private int target_x=0,target_y=0;
     public static final String className="ck.ckrc.erie.warchess.example.GunTower";
 
     public GunTower(int x,int y,Player player){
         this.x=x;
         this.y=y;
         this.teamFlag=player.getTeamFlag();
+        this.hp=max_hp;
         myDmgListener=new DamageListener() {
 
             @Override
@@ -41,7 +48,47 @@ public class GunTower extends Chess {
 
     @Override
     public Object showPanel() {
-        return null;
+        GridPane pane=new GridPane();
+        Label title=new Label("火枪塔");
+        pane.addRow(0,title);
+        Label status1=new Label("HP:"+hp+'('+max_hp+')');
+        Label status2=new Label("能量:"+Main.currentGameEngine.getPlayer(teamFlag).getStatus(Miner.energyKey));
+        pane.addRow(1,status1,status2);
+        Label x_label=new Label("目标x:");
+        TextField x_input=new TextField(String.valueOf(target_x+1));
+        x_input.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                try{
+                    int i=Integer.parseInt(s);
+                    if(i<=0||i>=Map.MapSize)
+                        x_input.setText(t1);
+                    else
+                        target_x=i-1;
+                }catch(NumberFormatException e){
+                    x_input.setText(t1);
+                }
+            }
+        });
+        pane.addRow(2,x_label,x_input);
+        Label y_label=new Label("目标y:");
+        TextField y_input=new TextField(String.valueOf(target_y+1));
+        y_input.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                try{
+                    int i=Integer.parseInt(s);
+                    if(i<=0||i>=Map.MapSize)
+                        y_input.setText(t1);
+                    else
+                        target_y=i-1;
+                }catch(NumberFormatException e){
+                    y_input.setText(t1);
+                }
+            }
+        });
+        pane.addRow(3,y_label,y_input);
+        return pane;
     }
 
     @Override
@@ -82,12 +129,12 @@ public class GunTower extends Chess {
         Main.currentGameEngine.commitDamageEvent(myDmgEvt);
     }
 
-    public static boolean checkPlaceRequirements(Player player) {
+    public static boolean checkPlaceRequirements(Player player,int x,int y) {
         return (int)player.getStatus(Miner.energyKey)>= build_cost;
     }
 
     @Override
-    public char paint() {
-        return 'G';
+    public Node paint() {
+        return null;
     }
 }

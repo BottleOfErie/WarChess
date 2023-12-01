@@ -2,7 +2,6 @@ package ck.ckrc.erie.warchess.game;
 
 import ck.ckrc.erie.warchess.Main;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class Engine {
@@ -84,6 +83,12 @@ public class Engine {
             }
             if(damage>0)currentMap.overDamaged(currentEvt.getX(),currentEvt.getY(),damage);
         }
+
+        //remove died chess
+        for(int i=0;i<Map.MapSize;i++)
+            for(int j=0;j<Map.MapSize;j++)
+                if(currentMap.getChessMap()[i][j]!=null&&currentMap.getChessMap()[i][j].hp<=0)
+                    currentMap.setChess(i,j,null);
 
         currentTeam=nextTeam;
 

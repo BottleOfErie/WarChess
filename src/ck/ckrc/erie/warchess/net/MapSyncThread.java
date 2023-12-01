@@ -11,7 +11,7 @@ public class MapSyncThread extends Thread{
 
     /**
      * disconnected
-     * load {name} {length}|<byte[] of Class>
+     * load {length}|<byte[] of Class>
      * sync {x} {y} {length}|<Chess Object>
      * chat {str}
      * round {number}
@@ -64,10 +64,9 @@ public class MapSyncThread extends Thread{
                         System.out.println(strings[1]);
                         break;
                     case "load":
-                        var name=strings[1];
-                        var len=Integer.parseInt(strings[2]);
+                        var len=Integer.parseInt(strings[1]);
                         byte[] a=input.readNBytes(len);
-                        Main.chessClassLoader.loadChessClassFromByteArray(a,name);
+                        Main.chessClassLoader.loadChessClassFromByteArray(a);
                         break;
                     case "round":
                         var flg=Integer.parseInt(strings[1]);
@@ -107,7 +106,7 @@ public class MapSyncThread extends Thread{
 
     public void sendLoad(String name) throws IOException {
         var arr= PreMain.transformer.map.get(name);
-        output.writeUTF("load "+name+" "+arr.length);
+        output.writeUTF("load "+arr.length);
         output.write(arr);
     }
 

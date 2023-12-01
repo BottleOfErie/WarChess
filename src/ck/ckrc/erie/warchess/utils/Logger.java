@@ -1,8 +1,10 @@
 package ck.ckrc.erie.warchess.utils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 public class Logger {
@@ -44,6 +46,8 @@ public class Logger {
     public void addLog(Exception e,Class<?> clazz){
         addLog("===EXCEPTION HAPPENED===",clazz);
         e.printStackTrace(new PrintWriter(writer));
+        if(debug)
+            e.printStackTrace();
     }
 
     public void addLog(Exception e,String source){
