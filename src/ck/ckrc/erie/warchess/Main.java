@@ -4,6 +4,7 @@ import ck.ckrc.erie.warchess.game.ChessClassLoader;
 import ck.ckrc.erie.warchess.game.ClassDecompilerWrapper;
 import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.net.MapSyncThread;
+import ck.ckrc.erie.warchess.ui.CLIUserInterface;
 import ck.ckrc.erie.warchess.utils.Logger;
 import javafx.application.Application;
 import javafx.stage.Stage;

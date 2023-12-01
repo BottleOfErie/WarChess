@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ck.ckrc.erie.warchess.Controller.ChooseOneSideController">
+   <children>
+      <Button fx:id="ClientButton" layoutX="231.0" layoutY="73.0" mnemonicParsing="false" onMouseClicked="#StartGameAsClient" prefHeight="45.0" prefWidth="138.0" text="客户端" />
+      <Button fx:id="ServerButton" layoutX="231.0" layoutY="166.0" mnemonicParsing="false" onMouseClicked="#StartGameAsServer" prefHeight="46.0" prefWidth="138.0" text="服务端" />
+      <Button fx:id="BackToStartButton" layoutX="231.0" layoutY="258.0" mnemonicParsing="false" onMouseClicked="#BackToStartFrame" prefHeight="46.0" prefWidth="138.0" text="返回" />
+   </children>
+</AnchorPane>
