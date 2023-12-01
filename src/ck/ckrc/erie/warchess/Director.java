@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.Optional;
 
 public class Director {
-    public static final double width=900,height=700;
+    public static final int width=900,height=700;
     private Stage stage;
     private GameScene gameScene=new GameScene();
     private GameOver overScene=new GameOver();
