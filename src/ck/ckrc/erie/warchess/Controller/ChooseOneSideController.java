@@ -1,6 +1,7 @@
 package ck.ckrc.erie.warchess.Controller;
 
 import ck.ckrc.erie.warchess.Director;
+import ck.ckrc.erie.warchess.ui.CLIUserInterface;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

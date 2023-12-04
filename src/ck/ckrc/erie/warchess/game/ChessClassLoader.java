@@ -4,10 +4,8 @@ import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.PreMain;
 
 import java.io.*;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 import java.util.Map;
-import java.util.Objects;
 
 public class ChessClassLoader extends ClassLoader{
 
@@ -71,5 +69,11 @@ public class ChessClassLoader extends ClassLoader{
     public Collection<Class<?>> getChessClass(){
         return chessClass.values();
     }
+
+    public Set<String> getChessClassNames(){
+        return chessClass.keySet();
+    }
+
+    public Class<?> getClassByName(String name){return chessClass.get(name);}
 
 }

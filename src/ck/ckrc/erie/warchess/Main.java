@@ -1,5 +1,7 @@
 package ck.ckrc.erie.warchess;
 
+import ck.ckrc.erie.warchess.example.GunTower;
+import ck.ckrc.erie.warchess.example.Miner;
 import ck.ckrc.erie.warchess.game.ChessClassLoader;
 import ck.ckrc.erie.warchess.game.ClassDecompilerWrapper;
 import ck.ckrc.erie.warchess.game.Engine;
@@ -34,18 +36,13 @@ public class Main {
 
         currentGameEngine=new Engine();
         chessClassLoader=new ChessClassLoader();
-        FXMain.FXMain(args);
-        CLIUserInterface.cli_main();
+        chessClassLoader.addChessClass(Miner.class);
+        //FXMain.FXMain(args);
 
-        System.out.println(PreMain.transformer.canLoad("ck.ckrc.erie.warchess.example.GunTower"));
-        File f=new File("D:\\javaproj\\warchess\\WarChess\\out\\production\\WarChess\\ck\\ckrc\\erie\\warchess\\example\\GunTower.class");
-        chessClassLoader.loadChessClassFromFile(f);
-        System.out.println(PreMain.transformer.canLoad("ck.ckrc.erie.warchess.example.GunTower"));
-//            File f=new File("C:\\Users\\Bottl\\Desktop\\qqq.png");
-//            System.out.println(ResourceSerialization.loadFromFile(f));
+        byte[] arr=PreMain.transformer.map.get(Miner.className);
+        ClassDecompilerWrapper wrapper=new ClassDecompilerWrapper(arr,Miner.className);
 
-
-        //CLIUserInterface.cli_main();
+        System.out.println(wrapper.decompile());
 
     }
 }

@@ -88,6 +88,7 @@ public class GunTower extends Chess {
             }
         });
         pane.addRow(3,y_label,y_input);
+        pane.setPrefSize(200, 200);
         return pane;
     }
 
