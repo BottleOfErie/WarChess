@@ -37,12 +37,12 @@ public class Main {
         currentGameEngine=new Engine();
         chessClassLoader=new ChessClassLoader();
         chessClassLoader.addChessClass(Miner.class);
-        //FXMain.FXMain(args);
-
+        chessClassLoader.addChessClass(GunTower.class);
+        FXMain.FXMain(args);
+        /*System.out.println(Miner.className);
         byte[] arr=PreMain.transformer.map.get(Miner.className);
         ClassDecompilerWrapper wrapper=new ClassDecompilerWrapper(arr,Miner.className);
-
-        System.out.println(wrapper.decompile());
+        System.out.println(wrapper.decompile());*/
 
     }
 }
