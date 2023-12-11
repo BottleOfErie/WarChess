@@ -44,4 +44,11 @@ public class Player {
         return ret;
     }
 
+    @Override
+    public String toString() {
+        return "Player{" +
+                "teamFlag=" + teamFlag +
+                ", status=" + status +
+                '}';
+    }
 }

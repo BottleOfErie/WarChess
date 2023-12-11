@@ -94,4 +94,6 @@ public class Life extends Chess {
     public Node paint() {
         return new ImageView(hp==liveHP?image0:image1);
     }
+
+    public static boolean checkPlaceRequirements(Player player,int x,int y){return true;}
 }
