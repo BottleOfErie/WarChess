@@ -7,7 +7,7 @@ import java.lang.instrument.ClassFileTransformer;
 import java.security.ProtectionDomain;
 import java.util.HashMap;
 
-public class ChessClassExtractor implements ClassFileTransformer, Loader {
+public class ChessClassExtractor implements ClassFileTransformer{
 
     public HashMap<String,byte[]> map=new HashMap<>();
 
@@ -15,15 +15,5 @@ public class ChessClassExtractor implements ClassFileTransformer, Loader {
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) {
         map.put(className.replace("/","."),classfileBuffer);
         return classfileBuffer;
-    }
-
-    @Override
-    public boolean canLoad(String s) {
-        return map.get(s)!=null;
-    }
-
-    @Override
-    public byte[] load(String s) throws LoaderException {
-        return map.get(s);
     }
 }

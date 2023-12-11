@@ -21,14 +21,14 @@ public class ClassDecompilerWrapper implements Loader {
 
     @Override
     public boolean canLoad(String s) {
-        return Objects.equals(s, className) || PreMain.transformer.canLoad(s);
+        return Objects.equals(s, className) || PreMain.transformer.map.get(s)!=null;
     }
 
     @Override
     public byte[] load(String s) throws LoaderException {
         if(Objects.equals(s, className))
             return data;
-        return PreMain.transformer.load(s);
+        return PreMain.transformer.map.get(s);
     }
 
     public String decompile(){

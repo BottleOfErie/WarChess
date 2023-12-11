@@ -2,6 +2,7 @@ package ck.ckrc.erie.warchess.game;
 
 import ck.ckrc.erie.warchess.Main;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -32,9 +33,21 @@ public class ChessClassInvoker {
         return false;
     }
 
+    public static Chess getNewInstance(Class<?> clazz,Player player,int x,int y){
+        try{
+            Constructor<?> f=clazz.getConstructor(int.class,int.class,Player.class);
+            f.setAccessible(true);
+            return (Chess) f.newInstance(x,y,player);
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException e) {
+            Main.log.addLog("this class doesn't have right constructor:"+clazz, ChessClassInvoker.class);
+        } catch (IllegalAccessException ignored) {}
+        return null;
+    }
+
     private Class<?> clazz=null;
     private String className=null;
     private Method checkPlaceRequirements=null;
+    private Constructor<?> constructor=null;
 
     public ChessClassInvoker(Class<?> clazz) throws NoSuchFieldException, NoSuchMethodException {
         this.clazz=clazz;
@@ -54,6 +67,14 @@ public class ChessClassInvoker {
             Main.log.addLog("this class doesn't have right checkPlaceRequirements method:"+clazz, ChessClassInvoker.class);
             throw new NoSuchMethodException("No checkPlaceRequirements method");
         } catch (IllegalAccessException ignored) {}
+        try{
+            constructor=clazz.getConstructor(int.class,int.class,Player.class);
+            constructor.setAccessible(true);
+            constructor.newInstance(1,1,Player.getNewPlayer(1));
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException e) {
+            Main.log.addLog("this class doesn't have right constructor:"+clazz, ChessClassInvoker.class);
+            throw new NoSuchMethodException("No constructor");
+        } catch (IllegalAccessException ignored) {}
     }
 
     public String getClassName(){
@@ -62,13 +83,22 @@ public class ChessClassInvoker {
 
     public boolean invokeCheckPlaceRequirements(Player player,int x,int y){
         try {
-            return (boolean) checkPlaceRequirements.invoke(null,player,x,y);
+            return (boolean) checkPlaceRequirements.invoke(null,x,y,player);
         } catch (InvocationTargetException e) {
             Main.log.addLog("Exception in this class's checkPlaceRequirements method:"+clazz+",args:"+player+","+x+","+y, ChessClassInvoker.class);
             return false;
         } catch (IllegalAccessException e) {
             return false;
         }
+    }
+
+    public Chess getNewInstance(Player player,int x,int y){
+        try{
+            return (Chess) constructor.newInstance(player,x,y);
+        } catch (InvocationTargetException | InstantiationException e) {
+            Main.log.addLog("this class doesn't have right constructor:"+clazz, ChessClassInvoker.class);
+        } catch (IllegalAccessException ignored) {}
+        return null;
     }
 
 }
