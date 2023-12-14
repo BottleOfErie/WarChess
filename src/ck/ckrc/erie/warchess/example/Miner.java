@@ -26,7 +26,6 @@ public class Miner extends Chess {
         this.y=y;
         this.teamFlag=p.getTeamFlag();
         this.hp=max_hp;
-        this.imageView=new ImageView(image);
         myDmgListener=new DamageListener() {
             @Override
             public double takeDamage(double damage) {
@@ -47,7 +46,7 @@ public class Miner extends Chess {
     }
 
     @Override
-    public Object showPanel() {
+    public Node showPanel() {
         GridPane pane=new GridPane();
         Label title=new Label("能量塔");
         pane.addRow(0,title);
@@ -56,24 +55,17 @@ public class Miner extends Chess {
         pane.addRow(1,status1,status2);
         return pane;
     }
-    @Override
-    public Object showData(Player player){
+
+    public static Node showData(){
         GridPane pane=new GridPane();
         Label title=new Label("能量塔");
         title.setPrefWidth(100);
-        Button button=new Button("choose");
-        button.setOnAction(actionEvent -> {
-            Image image=new Image("/Images/Miner.jpg");
-            Play.drawchess(image,x,y);
-            Main.currentGameEngine.setChess(x, y, new Miner(x, y, player));
-        });
-        pane.addRow(0,title,button);
         Label status=new Label("maxHP:"+max_hp);
         pane.addRow(1, status);
         Label cost=new Label("build cost:"+build_cost);
         pane.addRow(2, cost);
         Label product=new Label("production:"+productions);
-        pane.setPrefSize(200, 200);
+        pane.setPrefSize(200, 25);
         return pane;
     }
 
@@ -105,7 +97,7 @@ public class Miner extends Chess {
     }
 
     @Override
-    public Node paint() {
-        return imageView;
+    public Image paint() {
+        return image;
     }
 }

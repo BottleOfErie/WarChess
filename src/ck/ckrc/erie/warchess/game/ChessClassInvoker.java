@@ -1,6 +1,8 @@
 package ck.ckrc.erie.warchess.game;
 
 import ck.ckrc.erie.warchess.Main;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -42,6 +44,17 @@ public class ChessClassInvoker {
             Main.log.addLog("this class doesn't have right constructor:"+clazz, ChessClassInvoker.class);
         } catch (IllegalAccessException ignored) {}
         return null;
+    }
+
+    public static Node invokeShowData(Class<?> clazz){
+        try{
+            Method f=clazz.getDeclaredMethod("showData");
+            f.setAccessible(true);
+            return (Node) f.invoke(null);
+        } catch (NoSuchMethodException | InvocationTargetException e) {
+            Main.log.addLog("this class doesn't have right showData method:"+clazz, ChessClassInvoker.class);
+        } catch (IllegalAccessException ignored) {}
+        return new Label("No Data");
     }
 
     private Class<?> clazz=null;
@@ -97,6 +110,17 @@ public class ChessClassInvoker {
             return (Chess) constructor.newInstance(player,x,y);
         } catch (InvocationTargetException | InstantiationException e) {
             Main.log.addLog("this class doesn't have right constructor:"+clazz, ChessClassInvoker.class);
+        } catch (IllegalAccessException ignored) {}
+        return null;
+    }
+
+    public Node invokeShowData(){
+        try{
+            Method f=clazz.getDeclaredMethod("ShowData",Player.class);
+            f.setAccessible(true);
+            return (Node) f.invoke(null);
+        } catch (NoSuchMethodException | InvocationTargetException e) {
+            Main.log.addLog("this class doesn't have right checkPlaceRequirements method:"+clazz, ChessClassInvoker.class);
         } catch (IllegalAccessException ignored) {}
         return null;
     }

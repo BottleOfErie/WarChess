@@ -57,7 +57,7 @@ public class Life extends Chess {
     }
 
     @Override
-    public Object showPanel() {
+    public Node showPanel() {
         GridPane pane=new GridPane();
         Label title=new Label("细胞");
         Button liveButton=new Button("设为存活");
@@ -78,20 +78,11 @@ public class Life extends Chess {
         pane.addRow(1, liveButton);pane.addRow(2, diedButton);
         return pane;
     }
-    @Override
-    public Object showData(Player player){
-        GridPane pane=new GridPane();
+
+    public static Node showData(){
         Label title=new Label("细胞");
         title.setPrefWidth(100);
-        Button button=new Button("choose");
-        button.setOnAction(actionEvent -> {
-            Image image=new Image("/Images/Life.jpg");
-            Play.drawchess(image,x,y);
-            Main.currentGameEngine.setChess(x, y, new Life(x, y, player));
-        });
-        pane.addRow(0,title,button);
-        pane.setPrefSize(200, 200);
-        return pane;
+        return title;
     }
 
     @Override
@@ -105,8 +96,8 @@ public class Life extends Chess {
     }
 
     @Override
-    public Node paint() {
-        return new ImageView(hp==liveHP?image0:image1);
+    public Image paint() {
+        return hp==liveHP?image0:image1;
     }
 
     public static boolean checkPlaceRequirements(Player player,int x,int y){return true;}

@@ -1,6 +1,7 @@
 package ck.ckrc.erie.warchess.game;
 
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 
 import java.io.Serializable;
 
@@ -16,10 +17,10 @@ public abstract class Chess implements Serializable {
      * 显示该Chess对应侧边栏
      * @return
      */
-    public abstract Object showPanel();
-    public abstract Object showData(Player player);
+    public abstract Node showPanel();
+    public static Node showData(){return null;};
 
-    public Node paint(){
+    public Image paint(){
         return null;
     }
 

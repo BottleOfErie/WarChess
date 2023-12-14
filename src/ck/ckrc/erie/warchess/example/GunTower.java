@@ -49,7 +49,7 @@ public class GunTower extends Chess {
     }
 
     @Override
-    public Object showPanel() {
+    public Node showPanel() {
         GridPane pane=new GridPane();
         Label title=new Label("火枪塔");
         pane.addRow(0,title);
@@ -97,18 +97,11 @@ public class GunTower extends Chess {
         return pane;
     }
 
-    @Override
-    public Object showData(Player player){
+
+    public static Node showData(){
         GridPane pane=new GridPane();
         Label title=new Label("火枪塔");
         title.setPrefWidth(100);
-        Button button=new Button("choose");
-        pane.addRow(0,title,button);
-        button.setOnAction(actionEvent -> {
-            Image image=new Image("/Images/Guntower.jpg");
-            Play.drawchess(image,x,y);
-            Main.currentGameEngine.setChess(x, y, new GunTower(x, y, player));
-        });
         Label status=new Label("maxHP:"+max_hp);
         pane.addRow(1, status);
         Label cost1=new Label("build cost:"+build_cost);
@@ -117,7 +110,7 @@ public class GunTower extends Chess {
         Label attdg=new Label("attack damage:"+attDamage);
         Label attrd=new Label("attack radius"+attRadius);
         pane.addRow(3, attdg,attrd);
-        pane.setPrefSize(200, 200);
+        pane.setPrefSize(200, 40);
         return pane;
     }
 
@@ -164,7 +157,7 @@ public class GunTower extends Chess {
     }
 
     @Override
-    public Node paint() {
+    public Image paint() {
         return null;
     }
 }

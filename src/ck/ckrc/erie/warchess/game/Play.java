@@ -3,6 +3,7 @@ package ck.ckrc.erie.warchess.game;
 import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.example.GunTower;
+import ck.ckrc.erie.warchess.example.Life;
 import ck.ckrc.erie.warchess.example.Miner;
 import ck.ckrc.erie.warchess.ui.GameScene;
 import javafx.event.ActionEvent;
@@ -90,9 +91,17 @@ public class Play {
         VBox root=new VBox();
         root.setPrefSize(200, 600);
         for(Class<?> clazz : classlist){
-            Player player=Main.currentGameEngine.getPlayer(teamflag);
-            Chess instance=ChessClassInvoker.getNewInstance(clazz, player, x, y);
-            GridPane pane=(GridPane) instance.showData(player);
+            //TODO 调整位置，避免不显示最上面的Node
+            GridPane pane=new GridPane();
+            Button button=new Button("choose");
+            button.setOnAction(actionEvent -> {
+                Chess chess=ChessClassInvoker.getNewInstance(clazz,Main.currentGameEngine.getPlayer(teamflag),x,y);
+                Play.drawchess(chess.paint(),x,y);
+                Main.currentGameEngine.setChess(x, y, chess);
+                removechoosechess();
+            });
+            pane.addRow(0,ChessClassInvoker.invokeShowData(clazz));
+            pane.addRow(1,button);
             root.getChildren().add(pane);
         }
         root.setId("choosechessroot");
@@ -106,7 +115,7 @@ public class Play {
         }catch (IndexOutOfBoundsException e){}
     }
     public static void drawchess(Image image,int x, int y){
-        removechoosechess();
+        if(image==null)return;
         Main.currentGameEngine.getMap().setChess(x, y, new GunTower(x, y, Main.currentGameEngine.getPlayer(teamflag)));
         graphicsContext.drawImage(image,x*60+10,y*60+10,40,40);
         haschess[x][y]=true;
@@ -130,15 +139,7 @@ public class Play {
 
 
     private void showchessdetails(int x, int y){
-        Class<?> clazz= Main.currentGameEngine.getMap().getChessMap()[x][y].getClass();
-        Player player=Main.currentGameEngine.getPlayer(teamflag);
-        Chess instance=ChessClassInvoker.getNewInstance(clazz, player, x, y);
-        try {
-            Field field = instance.getClass().getField("build_cost");
-            Main.currentGameEngine.getPlayer(teamflag).setStatus(Miner.energyKey, (int) player.getStatus(Miner.energyKey) + (int)field.get(null));
-        }catch (IllegalAccessException e){}
-        catch (NoSuchFieldException e){}
-        GridPane root=(GridPane) instance.showPanel();
+        GridPane root=(GridPane) Main.currentGameEngine.getMap().getChessMap()[x][y].showPanel();
         root.setPrefSize(200, nodeboxheight);
         Button button=new Button("隐藏");
         root.getChildren().add(button);

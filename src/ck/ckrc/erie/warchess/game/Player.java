@@ -46,6 +46,7 @@ public class Player {
 
     @Override
     public String toString() {
+        //TODO rewrite
         return "Player{" +
                 "teamFlag=" + teamFlag +
                 ", status=" + status +
