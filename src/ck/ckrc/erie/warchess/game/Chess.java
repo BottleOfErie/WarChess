@@ -17,6 +17,7 @@ public abstract class Chess implements Serializable {
      * @return
      */
     public abstract Object showPanel();
+    public abstract Object showData(Player player);
 
     public Node paint(){
         return null;

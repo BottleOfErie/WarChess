@@ -87,8 +87,10 @@ public class Engine {
         //remove died chess
         for(int i=0;i<Map.MapSize;i++)
             for(int j=0;j<Map.MapSize;j++)
-                if(currentMap.getChessMap()[i][j]!=null&&currentMap.getChessMap()[i][j].hp<=0)
-                    currentMap.setChess(i,j,null);
+                if(currentMap.getChessMap()[i][j]!=null&&currentMap.getChessMap()[i][j].hp<=0) {
+                    currentMap.setChess(i, j, null);
+                    Play.removechess(i, j);
+                }
 
         currentTeam=nextTeam;
 

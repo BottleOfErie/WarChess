@@ -1,12 +1,10 @@
 package ck.ckrc.erie.warchess.example;
 
 import ck.ckrc.erie.warchess.Main;
-import ck.ckrc.erie.warchess.game.Chess;
-import ck.ckrc.erie.warchess.game.DamageEvent;
-import ck.ckrc.erie.warchess.game.DamageListener;
-import ck.ckrc.erie.warchess.game.Player;
+import ck.ckrc.erie.warchess.game.*;
 import ck.ckrc.erie.warchess.utils.ResourceSerialization;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -56,7 +54,26 @@ public class Miner extends Chess {
         Label status1=new Label("HP:"+hp+'('+max_hp+')');
         Label status2=new Label("能量:"+Main.currentGameEngine.getPlayer(teamFlag).getStatus(Miner.energyKey));
         pane.addRow(1,status1,status2);
-
+        return pane;
+    }
+    @Override
+    public Object showData(Player player){
+        GridPane pane=new GridPane();
+        Label title=new Label("能量塔");
+        title.setPrefWidth(100);
+        Button button=new Button("choose");
+        button.setOnAction(actionEvent -> {
+            Image image=new Image("/Images/Miner.jpg");
+            Play.drawchess(image,x,y);
+            Main.currentGameEngine.setChess(x, y, new Miner(x, y, player));
+        });
+        pane.addRow(0,title,button);
+        Label status=new Label("maxHP:"+max_hp);
+        pane.addRow(1, status);
+        Label cost=new Label("build cost:"+build_cost);
+        pane.addRow(2, cost);
+        Label product=new Label("production:"+productions);
+        pane.setPrefSize(200, 200);
         return pane;
     }
 

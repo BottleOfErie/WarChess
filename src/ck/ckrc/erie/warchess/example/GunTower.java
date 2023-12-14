@@ -6,8 +6,10 @@ import ck.ckrc.erie.warchess.utils.Math;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 
 import java.util.Objects;
@@ -52,10 +54,12 @@ public class GunTower extends Chess {
         Label title=new Label("火枪塔");
         pane.addRow(0,title);
         Label status1=new Label("HP:"+hp+'('+max_hp+')');
+        status1.setPrefWidth(80);
         Label status2=new Label("能量:"+Main.currentGameEngine.getPlayer(teamFlag).getStatus(Miner.energyKey));
         pane.addRow(1,status1,status2);
         Label x_label=new Label("目标x:");
         TextField x_input=new TextField(String.valueOf(target_x+1));
+        x_input.setPrefWidth(100);
         x_input.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
@@ -73,6 +77,7 @@ public class GunTower extends Chess {
         pane.addRow(2,x_label,x_input);
         Label y_label=new Label("目标y:");
         TextField y_input=new TextField(String.valueOf(target_y+1));
+        y_input.setPrefWidth(100);
         y_input.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
@@ -88,6 +93,30 @@ public class GunTower extends Chess {
             }
         });
         pane.addRow(3,y_label,y_input);
+        pane.setPrefSize(200, 200);
+        return pane;
+    }
+
+    @Override
+    public Object showData(Player player){
+        GridPane pane=new GridPane();
+        Label title=new Label("火枪塔");
+        title.setPrefWidth(100);
+        Button button=new Button("choose");
+        pane.addRow(0,title,button);
+        button.setOnAction(actionEvent -> {
+            Image image=new Image("/Images/Guntower.jpg");
+            Play.drawchess(image,x,y);
+            Main.currentGameEngine.setChess(x, y, new GunTower(x, y, player));
+        });
+        Label status=new Label("maxHP:"+max_hp);
+        pane.addRow(1, status);
+        Label cost1=new Label("build cost:"+build_cost);
+        Label cost2=new Label("shot cost:"+shot_cost);
+        pane.addRow(2, cost1,cost2);
+        Label attdg=new Label("attack damage:"+attDamage);
+        Label attrd=new Label("attack radius"+attRadius);
+        pane.addRow(3, attdg,attrd);
         pane.setPrefSize(200, 200);
         return pane;
     }
