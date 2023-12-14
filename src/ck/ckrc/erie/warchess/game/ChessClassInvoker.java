@@ -116,11 +116,11 @@ public class ChessClassInvoker {
 
     public Node invokeShowData(){
         try{
-            Method f=clazz.getDeclaredMethod("ShowData",Player.class);
+            Method f=clazz.getDeclaredMethod("showData",Player.class);
             f.setAccessible(true);
             return (Node) f.invoke(null);
         } catch (NoSuchMethodException | InvocationTargetException e) {
-            Main.log.addLog("this class doesn't have right checkPlaceRequirements method:"+clazz, ChessClassInvoker.class);
+            Main.log.addLog("this class doesn't have right showData method:"+clazz, ChessClassInvoker.class);
         } catch (IllegalAccessException ignored) {}
         return null;
     }
