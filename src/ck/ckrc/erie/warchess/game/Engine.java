@@ -25,12 +25,7 @@ public class Engine {
 
     }
 
-    private static final Comparator<ListenerNode> listenerComparator=new Comparator<ListenerNode>() {
-        @Override
-        public int compare(ListenerNode o1, ListenerNode o2) {
-            return o2.priority-o1.priority;
-        }
-    };
+    private static final Comparator<ListenerNode> listenerComparator= (o1, o2) -> o2.priority-o1.priority;
 
     private Map currentMap=null;
     private Integer currentTeam=0;
