@@ -21,7 +21,7 @@ public class Life extends Chess {
     public static final Image image1= ResourceSerialization.getImageFromByteArray(ResourceSerialization.toByteArray(imageData1));
     public static final String className="ck.ckrc.erie.warchess.example.Life";
     public static final int[] deltaX={1,1,1,0,0,-1,-1,-1};
-    public static final int[] deltaY={1,1,1,0,0,-1,-1,-1};
+    public static final int[] deltaY={1,0,-1,1,-1,1,0,-1};
     public static final int liveHP=2,diedHP=1;
     private int nextHp=0,determinedHP=-1;
 
@@ -39,6 +39,7 @@ public class Life extends Chess {
             if(cs!=null&&cs.getClass()==this.getClass()&&cs.hp==liveHP)
                 cnt=cnt+1;
         }
+        nextHp=hp;
         if(hp==liveHP){
             if(cnt<2||cnt>3)nextHp=diedHP;
         } else if (hp==diedHP) {
