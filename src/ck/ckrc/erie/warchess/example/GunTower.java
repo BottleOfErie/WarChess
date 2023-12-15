@@ -49,7 +49,7 @@ public class GunTower extends Chess {
     }
 
     @Override
-    public Node showPanel(int x,int y) {
+    public Node showPanel() {
         GridPane pane=new GridPane();
         Label title=new Label("火枪塔");
         Label position=new Label("position:"+'('+x+','+y+')');

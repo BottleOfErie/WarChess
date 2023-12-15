@@ -46,7 +46,7 @@ public class Miner extends Chess {
     }
 
     @Override
-    public Node showPanel(int x,int y) {
+    public Node showPanel() {
         GridPane pane=new GridPane();
         Label title=new Label("能量塔");
         Label position=new Label("position:"+'('+x+','+y+')');

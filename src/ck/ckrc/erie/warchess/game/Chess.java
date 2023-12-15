@@ -17,7 +17,7 @@ public abstract class Chess implements Serializable {
      * 显示该Chess对应侧边栏
      * @return
      */
-    public abstract Node showPanel(int x,int y);
+    public abstract Node showPanel();
     public static Node showData(){return null;};
 
     public Image paint(){

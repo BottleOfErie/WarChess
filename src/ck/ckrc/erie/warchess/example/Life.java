@@ -57,7 +57,7 @@ public class Life extends Chess {
     }
 
     @Override
-    public Node showPanel(int x,int y) {
+    public Node showPanel() {
         GridPane pane=new GridPane();
         Label title=new Label("细胞");
         Label position=new Label("position:"+'('+x+','+y+')');

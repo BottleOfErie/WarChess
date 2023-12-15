@@ -131,7 +131,7 @@ public class Play {
 
 
     private void showchessdetails(int x, int y){
-        GridPane root=(GridPane) Main.currentGameEngine.getMap().getChessMap()[x][y].showPanel(x,y);
+        GridPane root=(GridPane) Main.currentGameEngine.getMap().getChessMap()[x][y].showPanel();
         root.setPrefSize(200, nodeboxheight);
         Button button=new Button("隐藏");
         root.getChildren().add(button);
