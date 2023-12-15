@@ -1,5 +1,7 @@
 package ck.ckrc.erie.warchess.utils;
 
+import ck.ckrc.erie.warchess.Main;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,7 +20,7 @@ public class Logger {
 
     public Logger() throws IOException {
 
-        File source=new File("D:\\erie\\");
+        File source=new File(Main.rootFile, "log");
         if(!source.exists())source.mkdirs();
 
         var time=new Date();
@@ -45,13 +47,19 @@ public class Logger {
 
     public void addLog(Exception e,Class<?> clazz){
         addLog("===EXCEPTION HAPPENED===",clazz);
-        e.printStackTrace(new PrintWriter(writer));
-        if(debug)
+        if(debug) {
             e.printStackTrace();
+            return;
+        }
+        e.printStackTrace(new PrintWriter(writer));
     }
 
     public void addLog(Exception e,String source){
         addLog("===EXCEPTION HAPPENED===",source);
+        if(debug) {
+            e.printStackTrace();
+            return;
+        }
         e.printStackTrace(new PrintWriter(writer));
     }
 }

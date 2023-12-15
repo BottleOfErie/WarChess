@@ -12,10 +12,12 @@ public class MapSyncThread extends Thread{
     /**
      * disconnected
      * load {length}|<byte[] of Class>
-     * sync {x} {y} {length}|<Chess Object>
+     * sync {x} {y} {length}|<byte[] of Chess Object>
      * chat {str}
      * round {number}
+     * res {require|send} name|<byte[] of Resource>
      */
+    //TODO realize res commands
 
     private Socket socket=null;
     private DataInputStream input=null;
