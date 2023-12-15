@@ -49,14 +49,17 @@ public class GunTower extends Chess {
     }
 
     @Override
-    public Node showPanel() {
+    public Node showPanel(int x,int y) {
         GridPane pane=new GridPane();
         Label title=new Label("火枪塔");
+        Label position=new Label("position:"+'('+x+','+y+')');
+        Label team=new Label("team:"+teamFlag);
         pane.addRow(0,title);
         Label status1=new Label("HP:"+hp+'('+max_hp+')');
         status1.setPrefWidth(80);
         Label status2=new Label("能量:"+Main.currentGameEngine.getPlayer(teamFlag).getStatus(Miner.energyKey));
         pane.addRow(1,status1,status2);
+        pane.addRow(2, position,team);
         Label x_label=new Label("目标x:");
         TextField x_input=new TextField(String.valueOf(target_x+1));
         x_input.setPrefWidth(100);
@@ -74,7 +77,7 @@ public class GunTower extends Chess {
                 }
             }
         });
-        pane.addRow(2,x_label,x_input);
+        pane.addRow(3,x_label,x_input);
         Label y_label=new Label("目标y:");
         TextField y_input=new TextField(String.valueOf(target_y+1));
         y_input.setPrefWidth(100);
@@ -92,7 +95,7 @@ public class GunTower extends Chess {
                 }
             }
         });
-        pane.addRow(3,y_label,y_input);
+        pane.addRow(4,y_label,y_input);
         pane.setPrefSize(200, 200);
         return pane;
     }
@@ -102,6 +105,7 @@ public class GunTower extends Chess {
         GridPane pane=new GridPane();
         Label title=new Label("火枪塔");
         title.setPrefWidth(100);
+        pane.addRow(0, title);
         Label status=new Label("maxHP:"+max_hp);
         pane.addRow(1, status);
         Label cost1=new Label("build cost:"+build_cost);
@@ -135,14 +139,19 @@ public class GunTower extends Chess {
         var engine= Main.currentGameEngine;
         int tx=0,ty=0,flg=0;
         for(int i=0;i<Map.MapSize;i++)
-            for(int j=0;j<Map.MapSize;j++)
-                if(Math.distanceOfEuclid(x,y,i,j)<attRadius&& !Objects.equals(engine.getChess(i, j).teamFlag, this.teamFlag)){
-                    if(flg==0) {
-                        tx = i; ty = j; flg = 1;
-                    }else if(Math.distanceOfEuclid(x,y,tx,ty)> Math.distanceOfEuclid(x,y,i,j)){
-                        tx = i; ty = j;
+            for(int j=0;j<Map.MapSize;j++) {
+                if(engine.getChess(i, j)==null)continue;
+                if (Math.distanceOfEuclid(x, y, i, j) < attRadius && !Objects.equals(engine.getChess(i, j).teamFlag, this.teamFlag)) {
+                    if (flg == 0) {
+                        tx = i;
+                        ty = j;
+                        flg = 1;
+                    } else if (Math.distanceOfEuclid(x, y, tx, ty) > Math.distanceOfEuclid(x, y, i, j)) {
+                        tx = i;
+                        ty = j;
                     }
                 }
+            }
         target_x=tx;target_y=ty;
     }
 

@@ -46,13 +46,16 @@ public class Miner extends Chess {
     }
 
     @Override
-    public Node showPanel() {
+    public Node showPanel(int x,int y) {
         GridPane pane=new GridPane();
         Label title=new Label("能量塔");
+        Label position=new Label("position:"+'('+x+','+y+')');
+        Label team=new Label("team:"+teamFlag);
         pane.addRow(0,title);
         Label status1=new Label("HP:"+hp+'('+max_hp+')');
         Label status2=new Label("能量:"+Main.currentGameEngine.getPlayer(teamFlag).getStatus(Miner.energyKey));
         pane.addRow(1,status1,status2);
+        pane.addRow(2, position,team);
         return pane;
     }
 
@@ -60,6 +63,7 @@ public class Miner extends Chess {
         GridPane pane=new GridPane();
         Label title=new Label("能量塔");
         title.setPrefWidth(100);
+        pane.addRow(0, title);
         Label status=new Label("maxHP:"+max_hp);
         pane.addRow(1, status);
         Label cost=new Label("build cost:"+build_cost);

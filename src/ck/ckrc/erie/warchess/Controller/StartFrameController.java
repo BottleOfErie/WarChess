@@ -2,6 +2,7 @@ package ck.ckrc.erie.warchess.Controller;
 import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.example.Miner;
+import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.game.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,9 +30,9 @@ public class StartFrameController {
 
     @FXML
     void SingalPlayerStart(MouseEvent event) {
-        Player player=new Player(1);
-        player.setStatus(Miner.energyKey, 50);
-        Main.currentGameEngine.setPlayer(player.getTeamFlag(), player);
+        for(int i=0;i< Engine.playerNum;i++){
+            Main.currentGameEngine.setPlayer(i, Player.getNewPlayer(i));
+        }
         Director.GetDirector().gameStart();
     }
 

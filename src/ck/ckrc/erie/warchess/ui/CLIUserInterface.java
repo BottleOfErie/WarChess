@@ -12,6 +12,12 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class CLIUserInterface {
+    public static void clientconnect(){
+
+    }
+    public static void serviceconnect(){
+
+    }
 
     public static void cli_main(){
 

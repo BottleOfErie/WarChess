@@ -1,43 +1,36 @@
-package ck.ckrc.erie.warchess.game;
+package ck.ckrc.erie.warchess.ui;
 
 import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
-import ck.ckrc.erie.warchess.example.GunTower;
-import ck.ckrc.erie.warchess.example.Life;
-import ck.ckrc.erie.warchess.example.Miner;
-import ck.ckrc.erie.warchess.ui.GameScene;
+import ck.ckrc.erie.warchess.game.Chess;
+import ck.ckrc.erie.warchess.game.ChessClassInvoker;
+import ck.ckrc.erie.warchess.game.Map;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.control.Label;
 import javafx.scene.control.Button;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
-import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class Play {
     private static GraphicsContext graphicsContext;
 
     private static int edgelength=GameScene.edgelength;
-    private static int nodeboxheight= Director.height/Map.MapSize;
+    private static int nodeboxheight= Director.height/ Map.MapSize;
 
-    static boolean[][] haschess = new boolean[10][10];
-    boolean[][] isshoweddetail=new boolean[10][10];
+    boolean[][] isshoweddetail=new boolean[Map.MapSize][Map.MapSize];
 
     static boolean isshowedchoosechess=false;
 
-    private static int teamflag=1;
-
     private static AnchorPane anchorPane=GameScene.anchorPane;
-    private Collection<Class<?>> classlist=Main.chessClassLoader.getChessClass();
+    public static Collection<Class<?>> classlist=new ArrayList<>();
 
     private int showeddetailchesscount=0;
     public Play(GraphicsContext graphicsContext){ this.graphicsContext=graphicsContext; }
@@ -49,7 +42,7 @@ public class Play {
             int x=(int)(event.getX() / edgelength);
             int y=(int)(event.getY() / edgelength);
             if(event.getButton().name().equals(MouseButton.PRIMARY.name())){
-                if(!haschess[x][y]){
+                if(Main.currentGameEngine.getChess(x,y)==null){
                     for(int i = 1;i<=showeddetailchesscount;i++){
                         anchorPane.getChildren().remove(anchorPane.lookup("#root"+String.valueOf(i)));
                         anchorPane.getChildren().remove(anchorPane.lookup("#button"+String.valueOf(i)));
@@ -72,13 +65,10 @@ public class Play {
                 }
             }
             if(event.getButton().name().equals(MouseButton.SECONDARY.name())){
-                removechess(x, y);
+                Main.currentGameEngine.setChess(x,y,null);
+                drawAllChess();
             }
         }
-    }
-    public static void removechess(int x,int y){
-        graphicsContext.clearRect(x*edgelength+10, y*edgelength+10, 40, 40);
-        haschess[x][y]=false;
     }
     private void initshowchess(){
         for(int i=0; i<10;i++){
@@ -95,10 +85,11 @@ public class Play {
             GridPane pane=new GridPane();
             Button button=new Button("choose");
             button.setOnAction(actionEvent -> {
-                Chess chess=ChessClassInvoker.getNewInstance(clazz,Main.currentGameEngine.getPlayer(teamflag),x,y);
-                Play.drawchess(chess.paint(),x,y);
+                Chess chess= ChessClassInvoker.getNewInstance(clazz,Main.currentGameEngine.getPlayer(Main.currentGameEngine.getCurrentTeam()),x,y);
                 Main.currentGameEngine.setChess(x, y, chess);
                 removechoosechess();
+                Play.drawAllChess();
+                isshowedchoosechess=false;
             });
             pane.addRow(0,ChessClassInvoker.invokeShowData(clazz));
             pane.addRow(1,button);
@@ -114,12 +105,13 @@ public class Play {
             anchorPane.getChildren().remove(node);
         }catch (IndexOutOfBoundsException e){}
     }
-    public static void drawchess(Image image,int x, int y){
-        if(image==null)return;
-        Main.currentGameEngine.getMap().setChess(x, y, new GunTower(x, y, Main.currentGameEngine.getPlayer(teamflag)));
-        graphicsContext.drawImage(image,x*60+10,y*60+10,40,40);
-        haschess[x][y]=true;
-        isshowedchoosechess=false;
+    public static void drawAllChess(){
+        for(int i=0;i<Map.MapSize;i++)
+            for(int j=0;j<Map.MapSize;j++){
+                var chess=Main.currentGameEngine.getChess(i,j);
+                if(chess==null)graphicsContext.clearRect(i*edgelength+10, j*edgelength+10, 40, 40);
+                else graphicsContext.drawImage(chess.paint(),i*60+10,j*60+10,40,40);
+            }
     }
 
     private void removechessdetails(int x,int y, int number){
@@ -139,7 +131,7 @@ public class Play {
 
 
     private void showchessdetails(int x, int y){
-        GridPane root=(GridPane) Main.currentGameEngine.getMap().getChessMap()[x][y].showPanel();
+        GridPane root=(GridPane) Main.currentGameEngine.getMap().getChessMap()[x][y].showPanel(x,y);
         root.setPrefSize(200, nodeboxheight);
         Button button=new Button("隐藏");
         root.getChildren().add(button);

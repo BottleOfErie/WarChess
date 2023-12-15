@@ -8,10 +8,6 @@ public class Engine {
 
     public static final int playerNum=2;
 
-    public Integer getCurrentTeam() {
-        return currentTeam;
-    }
-
     private static class ListenerNode {
         public Chess parent;
         public int priority;
@@ -89,7 +85,6 @@ public class Engine {
             for(int j=0;j<Map.MapSize;j++)
                 if(currentMap.getChessMap()[i][j]!=null&&currentMap.getChessMap()[i][j].hp<=0) {
                     currentMap.setChess(i, j, null);
-                    Play.removechess(i, j);
                 }
 
         currentTeam=nextTeam;
@@ -129,6 +124,10 @@ public class Engine {
 
     public void setPlayer(int teamFlag,Player player){
         players.put(teamFlag,player);
+    }
+
+    public Integer getCurrentTeam() {
+        return currentTeam;
     }
 
 }
