@@ -46,10 +46,12 @@ public class Player {
 
     @Override
     public String toString() {
-        //TODO rewrite
-        return "Player{" +
-                "teamFlag=" + teamFlag +
-                ", status=" + status +
-                '}';
+        StringBuilder builder=new StringBuilder("Player("+teamFlag+"):\n");
+        for(var item:status.keySet()){
+            builder.append(item);
+            builder.append(':');
+            builder.append(status.get(item).toString());
+        }
+        return builder.toString();
     }
 }
