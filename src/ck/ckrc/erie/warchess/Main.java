@@ -2,17 +2,14 @@ package ck.ckrc.erie.warchess;
 
 import ck.ckrc.erie.warchess.example.GunTower;
 import ck.ckrc.erie.warchess.example.Miner;
-import ck.ckrc.erie.warchess.example.Life;
+import ck.ckrc.erie.warchess.example1.Life;
 import ck.ckrc.erie.warchess.game.*;
 import ck.ckrc.erie.warchess.net.MapSyncThread;
 import ck.ckrc.erie.warchess.utils.Logger;
 import javafx.scene.control.Alert;
-import javafx.scene.media.AudioClip;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class Main {
 

@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -33,7 +34,7 @@ public class Play {
     public static Collection<Class<?>> classlist=new ArrayList<>();
 
     public static int gamemodel;
-
+    public static long lastRepaintTime= System.currentTimeMillis();
     public static int teamflag;
 
     private static int showeddetailchesscount=0;
@@ -86,7 +87,6 @@ public class Play {
         VBox root=new VBox();
         root.setPrefSize(200, 600);
         for(Class<?> clazz : classlist){
-            //TODO 调整位置，避免不显示最上面的Node
             GridPane pane=new GridPane();
             Button button=new Button("choose");
             button.setOnAction(actionEvent -> {
@@ -111,12 +111,17 @@ public class Play {
         }catch (IndexOutOfBoundsException e){}
     }
     public static void drawAllChess(){
-        for(int i=0;i<Map.MapSize;i++)
-            for(int j=0;j<Map.MapSize;j++){
-                var chess=Main.currentGameEngine.getChess(i,j);
-                if(chess==null)graphicsContext.clearRect(i*edgelength+10, j*edgelength+10, 40, 40);
-                else graphicsContext.drawImage(chess.paint(),i*60+10,j*60+10,40,40);
-            }
+        synchronized (graphicsContext){
+            //TODO 特效层画布
+            var now=System.currentTimeMillis();
+            for(int i=0;i<Map.MapSize;i++)
+                for(int j=0;j<Map.MapSize;j++){
+                    var chess=Main.currentGameEngine.getChess(i,j);
+                    if(chess==null)graphicsContext.clearRect(i*edgelength+10, j*edgelength+10, 40, 40);
+                    else graphicsContext.drawImage(chess.paint(),i*60+10,j*60+10,40,40);
+                }
+            lastRepaintTime=now;
+        }
     }
 
     private static void removechessdetails(int x,int y, int number){

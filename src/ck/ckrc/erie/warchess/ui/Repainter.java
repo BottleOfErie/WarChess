@@ -9,7 +9,7 @@ public class Repainter extends Thread{
         try{
             while (repainting) {
                 Play.drawAllChess();
-                Thread.sleep(100);
+                Thread.sleep(20);//50fps
             }
         } catch (InterruptedException ignored) {
 

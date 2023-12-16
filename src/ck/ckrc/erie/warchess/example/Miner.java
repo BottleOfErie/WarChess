@@ -102,6 +102,7 @@ public class Miner extends Chess {
 
     @Override
     public Image paint() {
+        //TODO add Image
         return image;
     }
 }

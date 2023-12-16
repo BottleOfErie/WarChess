@@ -23,20 +23,21 @@ public class CLIUserInterface {
 
         Scanner input=new Scanner(System.in);
         System.out.println("1 as host,2 as client");
-        if(input.nextInt()==1){
-            Main.chessClassLoader.addChessClass(GunTower.class);
+        if(input.nextInt()==1){//主机
+            Main.chessClassLoader.addChessClass(GunTower.class);//加载类
             Main.chessClassLoader.addChessClass(Miner.class);
             try {
-                Client client=new Client();
-                client.start();
+                Client client=new Client();//初始化等待
+                client.start();//等待连接
                 System.out.println("waiting");
                 input.nextInt();
-                Main.syncThread.start();
+                //连接到之后
+                Main.syncThread.start();//连接上之后启动
                 Main.syncThread.sendLoad(GunTower.className);
-                Main.syncThread.sendLoad(Miner.className);
+                Main.syncThread.sendLoad(Miner.className);//主机向客户端同步类
                 Main.currentGameEngine.setPlayer(0, Player.getNewPlayer(0));
-                Main.currentGameEngine.setPlayer(1,Player.getNewPlayer(1));
-                Main.currentGameEngine.nextRound(0);
+                Main.currentGameEngine.setPlayer(1,Player.getNewPlayer(1));//初始化玩家
+                Main.currentGameEngine.nextRound(0);//开始回合
                 while(true){
 
                     while(Main.currentGameEngine.getCurrentTeam()!=0) {

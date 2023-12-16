@@ -167,6 +167,7 @@ public class GunTower extends Chess {
 
     @Override
     public Image paint() {
+        //TODO add Image
         return null;
     }
 }

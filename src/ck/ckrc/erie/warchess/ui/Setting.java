@@ -64,9 +64,7 @@ public class Setting {
         VBox notloadlist=(VBox) stage.getScene().lookup("#NotLoadClassList");
         VBox loadedlist=(VBox) stage.getScene().lookup("#LoadedClassList");
         for(var clazz:loadornot.keySet()){
-            String item=Main.chessClassLoader.getChessClassName(clazz);
-            String[] it=item.split("[.]");
-            Label label=new Label("classname:"+it[it.length-1]);
+            LabelWithChessClass label=new LabelWithChessClass(clazz.getName(),clazz.getSimpleName());
             label.setPrefSize(200, 50);
             label.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));
             setdecompile(label);
@@ -80,12 +78,12 @@ public class Setting {
             }
         }
     }
-    private static void setupDragAndDrop(Label label, VBox targetVBox) {
+    private static void setupDragAndDrop(LabelWithChessClass label, VBox targetVBox) {
         label.setOnDragDetected(event -> {
             if(canloadclass){
                 Dragboard db = label.startDragAndDrop(TransferMode.ANY);
                 ClipboardContent content = new ClipboardContent();
-                content.putString(label.getText());
+                content.putString(label.getClazzSimple()+"<split>"+label.getClazz());
                 db.setContent(content);
                 event.consume();
             }
@@ -104,13 +102,12 @@ public class Setting {
             if (db.hasString()) {
                 VBox notloadlist=(VBox) stage.getScene().lookup("#NotLoadClassList");
                 VBox loadedlist=(VBox) stage.getScene().lookup("#LoadedClassList");
-                Label newlabel=new Label(db.getString());
+                var splitStrs=db.getString().split("<split>");
+                LabelWithChessClass newlabel=new LabelWithChessClass(splitStrs[1],splitStrs[0]);
                 newlabel.setPrefSize(200, 50);
                 newlabel.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));
                 targetVBox.getChildren().add(newlabel);
-                String text = newlabel.getText();
-                String[] te = text.split("[:]");
-                Class clazz=Main.chessClassLoader.getClassByName("ck.ckrc.erie.warchess.example."+te[1]);
+                Class clazz=Main.chessClassLoader.getClassByName(label.getClazz());
                 if(targetVBox==notloadlist){
                     setupDragAndDrop(newlabel, loadedlist);
                     loadornot.put(clazz,false);
@@ -134,12 +131,10 @@ public class Setting {
             event.consume();
         });
     }
-    private static void setdecompile(Label label){
+    private static void setdecompile(LabelWithChessClass label){
         label.setOnMouseClicked(event -> {
             if(candecompile) {
-                String text = label.getText();
-                String[] te = text.split("[:]");
-                String name = Main.chessClassLoader.getChessClassName(Main.chessClassLoader.getClassByName("ck.ckrc.erie.warchess.example."+te[1]));
+                String name = label.getClazz();
                 byte[] arr = PreMain.transformer.map.get(name);
                 ClassDecompilerWrapper wrapper = new ClassDecompilerWrapper(arr, name);
                 Stage childStage = new Stage();
