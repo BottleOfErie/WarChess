@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.*;
 
+//TODO 挪到GameScene外面
 public class Setting {
     private static Stage stage=GameScene.stage;
     private static AnchorPane anchorPane=GameScene.anchorPane;
@@ -103,11 +104,13 @@ public class Setting {
                 VBox notloadlist=(VBox) stage.getScene().lookup("#NotLoadClassList");
                 VBox loadedlist=(VBox) stage.getScene().lookup("#LoadedClassList");
                 var splitStrs=db.getString().split("<split>");
+                Main.log.addLog("Selected Label:"+db.getString(),Setting.class);
                 LabelWithChessClass newlabel=new LabelWithChessClass(splitStrs[1],splitStrs[0]);
                 newlabel.setPrefSize(200, 50);
                 newlabel.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));
                 targetVBox.getChildren().add(newlabel);
-                Class clazz=Main.chessClassLoader.getClassByName(label.getClazz());
+                //TODO 搞明白点
+                Class clazz=Main.chessClassLoader.getClassByName(newlabel.getClazz());
                 if(targetVBox==notloadlist){
                     setupDragAndDrop(newlabel, loadedlist);
                     loadornot.put(clazz,false);

@@ -12,12 +12,6 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class CLIUserInterface {
-    public static void clientconnect(){
-
-    }
-    public static void serviceconnect(){
-
-    }
 
     public static void cli_main(){
 
@@ -38,51 +32,6 @@ public class CLIUserInterface {
                 Main.currentGameEngine.setPlayer(0, Player.getNewPlayer(0));
                 Main.currentGameEngine.setPlayer(1,Player.getNewPlayer(1));//初始化玩家
                 Main.currentGameEngine.nextRound(0);//开始回合
-                while(true){
-
-                    while(Main.currentGameEngine.getCurrentTeam()!=0) {
-                        System.out.println("waiting");
-                        input.nextInt();
-                    }
-
-                    for(int i = 0; i< Map.MapSize; i++) {
-                        for (int j = 0; j < Map.MapSize; j++)
-                            if(Main.currentGameEngine.getChess(i, j)!=null)
-                                System.out.print(Main.currentGameEngine.getChess(i, j).paint());
-                            else
-                                System.out.print('_');
-                        System.out.println();
-                    }
-
-                    int x=input.nextInt(),y=input.nextInt();
-                    do{
-                        if(Main.currentGameEngine.getChess(x,y)==null){
-                            System.out.println("following options");
-                            if(GunTower.checkPlaceRequirements(Main.currentGameEngine.getPlayer(0),x,y))
-                                System.out.println("1:GunTower");
-                            if(Miner.checkPlaceRequirements(Main.currentGameEngine.getPlayer(0),x,y))
-                                System.out.println("2:Miner");
-                            if(input.nextInt()==1){
-                                if(GunTower.checkPlaceRequirements(Main.currentGameEngine.getPlayer(0),x,y)) {
-                                    Main.currentGameEngine.setChess(x,y,new GunTower(x,y,Main.currentGameEngine.getPlayer(0)));
-                                }
-                            }else{
-                                if(Miner.checkPlaceRequirements(Main.currentGameEngine.getPlayer(0),x,y)) {
-                                    Main.currentGameEngine.setChess(x,y,new Miner(x,y,Main.currentGameEngine.getPlayer(0)));
-                                }
-                            }
-                        }else
-                            System.out.println(x+","+y+":"+Main.currentGameEngine.getChess(x,y));
-
-                        Main.syncThread.sendSync(x,y,Main.currentGameEngine.getChess(x,y));
-                        x=input.nextInt();
-                        y=input.nextInt();
-
-                    }while (x!=-1);
-
-                    Main.syncThread.sendRound(1);
-                    Main.currentGameEngine.nextRound(1);
-                }
 
             } catch (IOException e) {
                 throw new RuntimeException(e);

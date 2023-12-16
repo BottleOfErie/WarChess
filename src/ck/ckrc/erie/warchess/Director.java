@@ -18,7 +18,7 @@ import java.util.Optional;
 
 public class Director {
     public static final int width=900,height=700;
-    private Stage stage;
+    public Stage stage;
     private GameScene gameScene=new GameScene();
     private GameOver overScene=new GameOver();
     private static Director director=new Director();
@@ -43,6 +43,7 @@ public class Director {
     public void gameOver(){
         overScene.Init(stage);
     }
+
     public void ChooseOneSide() throws Exception{
         StartFrame.loadChooseOneSide(stage);
     }
