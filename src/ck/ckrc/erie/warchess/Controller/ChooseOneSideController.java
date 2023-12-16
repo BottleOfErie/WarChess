@@ -5,6 +5,7 @@ import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.game.Player;
 import ck.ckrc.erie.warchess.ui.CLIUserInterface;
+import ck.ckrc.erie.warchess.ui.Play;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,6 +32,7 @@ public class ChooseOneSideController {
 
     @FXML
     void StartGameAsClient(MouseEvent event) {
+        Play.gamemodel=1;
         for(int i = 0; i< Engine.playerNum; i++){
             Main.currentGameEngine.setPlayer(i, Player.getNewPlayer(i));
         }
@@ -39,6 +41,7 @@ public class ChooseOneSideController {
 
     @FXML
     void StartGameAsServer(MouseEvent event) {
+        Play.gamemodel=1;
         for(int i=0;i< Engine.playerNum;i++){
             Main.currentGameEngine.setPlayer(i, Player.getNewPlayer(i));
         }

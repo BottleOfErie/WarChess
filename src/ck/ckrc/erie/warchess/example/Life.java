@@ -27,6 +27,7 @@ public class Life extends Chess {
 
     public Life(int x, int y, Player player){
         this.x=x;this.y=y;
+        this.teamFlag=Main.currentGameEngine.getCurrentTeam();
         this.hp=diedHP;
         this.nextHp=diedHP;
     }

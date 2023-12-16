@@ -44,6 +44,7 @@ public class GameScene {
         this.stage=stage;
         AnchorPane anchorPane=new AnchorPane(canvas);
         this.anchorPane=anchorPane;
+        Play.anchorPane=anchorPane;
         anchorPane.setPrefWidth(Director.width);
         anchorPane.setPrefHeight(Director.height);
         canvas.setLayoutX(100);
@@ -78,6 +79,7 @@ public class GameScene {
             if(currentTeam== Engine.playerNum-1){nextteam=0;}
             else{nextteam=currentTeam+1;}
             Main.currentGameEngine.nextRound(nextteam);
+            Play.updatechessdetails();
         });
     }
 }

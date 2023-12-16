@@ -4,6 +4,7 @@ import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.example.Miner;
 import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.game.Player;
+import ck.ckrc.erie.warchess.ui.Play;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +31,7 @@ public class StartFrameController {
 
     @FXML
     void SingalPlayerStart(MouseEvent event) {
+        Play.gamemodel=0;
         for(int i=0;i< Engine.playerNum;i++){
             Main.currentGameEngine.setPlayer(i, Player.getNewPlayer(i));
         }
