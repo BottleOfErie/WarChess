@@ -58,8 +58,8 @@ public class CLIUserInterface {
 //                                System.out.print(Main.currentGameEngine.getChess(i, j).paint());
 //                            else
 //                                System.out.print('_');
-                        System.out.println();
-                    }
+//                        System.out.println();
+//                    }
 
                     int x=input.nextInt(),y=input.nextInt();
                     do{
