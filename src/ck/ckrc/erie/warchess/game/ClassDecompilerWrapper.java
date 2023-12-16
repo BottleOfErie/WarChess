@@ -17,16 +17,18 @@ public class ClassDecompilerWrapper implements Loader {
     public ClassDecompilerWrapper(byte[] data,String className){
         this.data=data;
         this.className=className;
+        if(className==null)
+            this.className="";
     }
 
     @Override
     public boolean canLoad(String s) {
-        return Objects.equals(s, className) || PreMain.transformer.map.get(s)!=null;
+        return className.equals(s) || PreMain.transformer.map.get(s)!=null;
     }
 
     @Override
     public byte[] load(String s) throws LoaderException {
-        if(Objects.equals(s, className))
+        if(className.equals(s))
             return data;
         return PreMain.transformer.map.get(s);
     }

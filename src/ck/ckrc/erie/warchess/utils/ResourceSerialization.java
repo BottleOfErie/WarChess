@@ -13,7 +13,7 @@ import java.util.Map;
 public class ResourceSerialization {
 
     public static File resourceFile=new File(Main.rootFile,"resource");
-    protected static Map<String,byte[]> resourceMap=new HashMap<>();
+    public static Map<String,byte[]> resourceMap=new HashMap<>();
 
     static {
         if(!resourceFile.exists())resourceFile.mkdirs();
@@ -56,19 +56,36 @@ public class ResourceSerialization {
         resourceMap.put(clazz.getName()+'-'+id,data);
     }
 
-    public static byte[] getResourceByName(String name){
+    public static byte[] getResourceByNameWithoutNetwork(String name){
         if(resourceMap.containsKey(name))
             return resourceMap.get(name);
         File f=new File(resourceFile, name);
-        if(!f.exists())return null;
-        try {
-            FileInputStream fis=new FileInputStream(f);
-            var arr=fis.readAllBytes();
-            resourceMap.put(name,arr);
-            return arr;
-        } catch (IOException e) {
-            return null;
+        if(f.exists()) {
+            try {
+                FileInputStream fis = new FileInputStream(f);
+                var arr = fis.readAllBytes();
+                resourceMap.put(name, arr);
+                fis.close();
+                return arr;
+            } catch (IOException e) {
+                return null;
+            }
         }
+        return null;
+    }
+
+    public static byte[] getResourceByName(String name){
+        var x=getResourceByNameWithoutNetwork(name);
+        if(x!=null) return x;
+        else if(Main.syncThread!=null){
+            try{
+                Main.syncThread.sendResRequire(name);
+            } catch (IOException e) {
+                Main.log.addLog("Failed to get Resource from connected client:"+name,ResourceSerialization.class);
+                Main.log.addLog(e, ResourceSerialization.class);
+            }
+        }
+        return null;
     }
 
     public static byte[] getResourceById(String id,Class<?> clazz){
@@ -76,12 +93,34 @@ public class ResourceSerialization {
         return getResourceByName(name);
     }
 
+    /**
+     *
+     * @param id file name
+     * @param clazz authority class
+     * @return an url cannot use as string!!!
+     */
     public static URL getURLFromResourceID(String id,Class<?> clazz){
         String name=clazz.getName()+'-'+id;
         try {
             return new URL(null,"bytes:///"+name,new BytesURLHandler());
         } catch (MalformedURLException e) {
             Main.log.addLog("Failed to convert byte array to URL",ResourceSerialization.class);
+        }
+        return null;
+    }
+
+    public static URL putResourceToDisk(String id,Class<?> clazz){
+        var data=getResourceById(id,clazz);
+        if(data==null)return null;
+        try{
+            File f=new File(resourceFile,clazz.getName()+'-'+id);
+            var fos=new FileOutputStream(f);
+            fos.write(data);
+            fos.close();
+            return f.toURI().toURL();
+        } catch (IOException e) {
+            Main.log.addLog("Failed to save Resource:"+clazz.getName()+'-'+id, ResourceSerialization.class);
+            Main.log.addLog(e, ResourceSerialization.class);
         }
         return null;
     }

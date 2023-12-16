@@ -3,7 +3,9 @@ package ck.ckrc.erie.warchess;
 import ck.ckrc.erie.warchess.example.GunTower;
 import ck.ckrc.erie.warchess.example.Miner;
 import ck.ckrc.erie.warchess.example1.Life;
-import ck.ckrc.erie.warchess.game.*;
+import ck.ckrc.erie.warchess.example1.Test;
+import ck.ckrc.erie.warchess.game.ChessClassLoader;
+import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.net.MapSyncThread;
 import ck.ckrc.erie.warchess.utils.Logger;
 import javafx.scene.control.Alert;
@@ -32,21 +34,12 @@ public class Main {
             alert.show();
         }
 
-//        try {
-//            File f=new File("E:\\CloudMusic\\ARForest - Farewell.mp3");
-//            URL url=f.toURI().toURL();
-//            AudioClip ac=new AudioClip(url.toExternalForm());
-//            ac.play();
-//            Thread.sleep(10*1000);
-//        } catch (MalformedURLException | InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-
         currentGameEngine=new Engine();
         chessClassLoader=new ChessClassLoader();
         chessClassLoader.addChessClass(Miner.class);
         chessClassLoader.addChessClass(GunTower.class);
         chessClassLoader.addChessClass(Life.class);
+        chessClassLoader.addChessClass(Test.class);
         FXMain.FXMain(args);
 
     }

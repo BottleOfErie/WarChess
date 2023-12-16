@@ -3,6 +3,7 @@ package ck.ckrc.erie.warchess.net;
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.PreMain;
 import ck.ckrc.erie.warchess.game.Chess;
+import ck.ckrc.erie.warchess.utils.ResourceSerialization;
 
 import java.io.*;
 import java.net.Socket;
@@ -15,9 +16,8 @@ public class MapSyncThread extends Thread{
      * sync {x} {y} {length}|<byte[] of Chess Object>
      * chat {str}
      * round {number}
-     * res {require|send} name|<byte[] of Resource>
+     * res {require|send} name length|<byte[] of Resource>
      */
-    //TODO realize res commands
 
     private Socket socket=null;
     private DataInputStream input=null;
@@ -74,6 +74,23 @@ public class MapSyncThread extends Thread{
                         var flg=Integer.parseInt(strings[1]);
                         Main.currentGameEngine.nextRound(flg);
                         break;
+                    case "res":
+                        var option=strings[1];
+                        var name=strings[2];
+                        if("send".equals(option)){
+                            var leng=Integer.parseInt(strings[3]);
+                            byte[] ba=input.readNBytes(leng);
+                            ResourceSerialization.addResourceWithName(name,ba);
+                        }else{
+                            try{
+
+                                sendResSend(name, ResourceSerialization.getResourceByNameWithoutNetwork(name));
+                            } catch (IOException e) {
+                                Main.log.addLog("Failed to Send Resource:"+name,this.getClass());
+                                Main.log.addLog(e,this.getClass());
+                            }
+                        }
+                        break;
                     default:
                         Main.log.addLog("Unknown command:"+command,this.getClass());
                 }
@@ -110,6 +127,16 @@ public class MapSyncThread extends Thread{
         var arr= PreMain.transformer.map.get(name);
         output.writeUTF("load "+arr.length);
         output.write(arr);
+    }
+
+    public void sendResRequire(String name) throws IOException {
+        output.writeUTF("res require "+name);
+    }
+
+    public void sendResSend(String name,byte[] res) throws IOException {
+        if(res==null)return;
+        output.writeUTF("res send "+name+" "+res.length);
+        output.write(res);
     }
 
 }
