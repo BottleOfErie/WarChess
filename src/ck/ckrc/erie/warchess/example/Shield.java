@@ -104,7 +104,7 @@ public class Shield extends Chess {
     }
 
     @Override
-    public Image paint() {
+    public Image paint(long delta) {
         //TODO add Image
         return null;
     }

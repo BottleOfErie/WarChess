@@ -101,7 +101,7 @@ public class Life extends Chess {
     }
 
     @Override
-    public Image paint() {
+    public Image paint(long delta) {
         return hp==liveHP?image0:image1;
     }
 

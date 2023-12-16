@@ -118,7 +118,7 @@ public class Play {
                 for(int j=0;j<Map.MapSize;j++){
                     var chess=Main.currentGameEngine.getChess(i,j);
                     if(chess==null)graphicsContext.clearRect(i*edgelength+10, j*edgelength+10, 40, 40);
-                    else graphicsContext.drawImage(chess.paint(),i*60+10,j*60+10,40,40);
+                    else graphicsContext.drawImage(chess.paint(now-lastRepaintTime),i*60+10,j*60+10,40,40);
                 }
             lastRepaintTime=now;
         }

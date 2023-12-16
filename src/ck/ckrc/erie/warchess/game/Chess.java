@@ -20,7 +20,7 @@ public abstract class Chess implements Serializable {
     public abstract Node showPanel();
     public static Node showData(){return null;};
 
-    public abstract Image paint();
+    public abstract Image paint(long delta);
 
     /**
      *检查伤害事件是否仍然有效

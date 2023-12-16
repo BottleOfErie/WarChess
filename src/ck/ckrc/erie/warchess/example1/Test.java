@@ -62,7 +62,7 @@ public class Test extends Chess {
     }
 
     @Override
-    public Image paint() {
+    public Image paint(long delta) {
         return image0;
     }
 

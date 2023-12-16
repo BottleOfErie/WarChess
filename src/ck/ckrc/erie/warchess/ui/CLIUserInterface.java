@@ -52,12 +52,12 @@ public class CLIUserInterface {
                         input.nextInt();
                     }
 
-                    for(int i=0;i< Map.MapSize;i++) {
-                        for (int j = 0; j < Map.MapSize; j++)
-                            if(Main.currentGameEngine.getChess(i, j)!=null)
-                                System.out.print(Main.currentGameEngine.getChess(i, j).paint());
-                            else
-                                System.out.print('_');
+//                    for(int i=0;i< Map.MapSize;i++) {
+//                        for (int j = 0; j < Map.MapSize; j++)
+//                            if(Main.currentGameEngine.getChess(i, j)!=null)
+//                                System.out.print(Main.currentGameEngine.getChess(i, j).paint());
+//                            else
+//                                System.out.print('_');
                         System.out.println();
                     }
 
