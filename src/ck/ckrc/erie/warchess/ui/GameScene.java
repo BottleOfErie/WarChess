@@ -1,5 +1,6 @@
 package ck.ckrc.erie.warchess.ui;
 
+import ck.ckrc.erie.warchess.Controller.ChooseOneSideController;
 import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.PreMain;

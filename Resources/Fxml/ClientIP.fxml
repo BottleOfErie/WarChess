@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ck.ckrc.erie.warchess.Controller.ClientIP">
+<AnchorPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ck.ckrc.erie.warchess.Controller.ClientIPController">
    <children>
       <Label layoutX="289.0" layoutY="248.0" prefHeight="50.0" prefWidth="50.0" text="IP:" />
       <TextField id="IPtext" layoutX="349.0" layoutY="262.0" />
