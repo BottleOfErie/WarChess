@@ -1,5 +1,6 @@
 package ck.ckrc.erie.warchess.ui;
 
+import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.PreMain;
 import ck.ckrc.erie.warchess.game.ClassDecompilerWrapper;
@@ -23,29 +24,23 @@ import java.util.*;
 
 //TODO 挪到GameScene外面
 public class Setting {
-    private static Stage stage=GameScene.stage;
+    private static Stage stage= Director.GetDirector().stage;
     private static AnchorPane anchorPane=GameScene.anchorPane;
     public static boolean candecompile=false;
 
     public static Map<Class<?>, Boolean> loadornot=new HashMap<>();
     public static boolean canloadclass =false;
 
-    public static void makesettingbutton(){
-        Button button=new Button("setting");
-        button.setPrefSize(75, 30);
-        anchorPane.getChildren().add(button);
-        button.setLayoutX(10);button.setLayoutY(50);
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                try {
-                    Parent root= FXMLLoader.load(this.getClass().getResource("/Fxml/Setting.fxml"));
-                    root.setId("setting");
-                    stage.getScene().setRoot(root);
-                    initClass();
-                }catch (IOException e){e.printStackTrace();}
-            }
-        });
+    public static void makesetting() {
+        try {
+            Parent root = FXMLLoader.load(Setting.class.getResource("/Fxml/Setting.fxml"));
+            root.setId("setting");
+            stage.getScene().setRoot(root);
+            initclassmap();
+            initClass();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void checkloadedclass(){
@@ -109,7 +104,6 @@ public class Setting {
                 newlabel.setPrefSize(200, 50);
                 newlabel.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));
                 targetVBox.getChildren().add(newlabel);
-                //TODO 搞明白点
                 Class clazz=Main.chessClassLoader.getClassByName(newlabel.getClazz());
                 if(targetVBox==notloadlist){
                     setupDragAndDrop(newlabel, loadedlist);

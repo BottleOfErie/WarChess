@@ -1,4 +1,5 @@
 package ck.ckrc.erie.warchess.Controller;
+import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.ui.GameScene;
 import ck.ckrc.erie.warchess.ui.Setting;
 import javafx.fxml.FXML;
@@ -16,9 +17,9 @@ public class SettingController {
     private Button loadclass;
 
     @FXML
-    void Back(MouseEvent event) {
-        GameScene.gameScene.setRoot(GameScene.anchorPane);
+    void GameStart(MouseEvent event) {
         Setting.checkloadedclass();
+        Director.GetDirector().gameStart();
     }
 
     @FXML

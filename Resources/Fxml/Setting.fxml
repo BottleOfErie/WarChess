@@ -9,7 +9,7 @@
       <VBox id="NotLoadClassList" fx:id="NotLoadClassList" layoutX="100.0" layoutY="50.0" prefHeight="500.0" prefWidth="200.0" style="-fx-border-color: BLACK;" />
       <Button fx:id="loadclass" layoutX="400.0" layoutY="100.0" mnemonicParsing="false" onMouseClicked="#LoadClass" prefHeight="50.0" prefWidth="100.0" text="load class" />
       <Button fx:id="decompile" layoutX="400.0" layoutY="200.0" mnemonicParsing="false" onMouseClicked="#DeCompile" prefHeight="50.0" prefWidth="100.0" text="decompile" />
-      <Button fx:id="back" layoutX="400.0" layoutY="400.0" mnemonicParsing="false" onMouseClicked="#Back" prefHeight="50.0" prefWidth="100.0" text="back" />
+      <Button fx:id="back" layoutX="400.0" layoutY="400.0" mnemonicParsing="false" onMouseClicked="#GameStart" prefHeight="50.0" prefWidth="100.0" text="启动！" />
       <VBox id="LoadedClassList" fx:id="LoadedClassList" layoutX="600.0" layoutY="50.0" prefHeight="500.0" prefWidth="200.0" style="-fx-border-color: BLACK;" />
       <Button layoutX="400.0" layoutY="300.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="file" />
    </children>

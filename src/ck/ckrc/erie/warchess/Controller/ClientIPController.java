@@ -5,6 +5,7 @@ import ck.ckrc.erie.warchess.game.Player;
 import ck.ckrc.erie.warchess.net.Client;
 import ck.ckrc.erie.warchess.net.MapSyncThread;
 import ck.ckrc.erie.warchess.ui.Play;
+import ck.ckrc.erie.warchess.ui.Setting;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -47,7 +48,7 @@ public class ClientIPController {
                 Main.syncThread.start();
                 Main.currentGameEngine.setPlayer(1, Player.getNewPlayer(1));
                 Play.teamflag = 1;
-                Director.GetDirector().gameStart();
+                Setting.makesetting();
             }
         } else {
             Label label = new Label("请重新输入IP (·<w<))~");

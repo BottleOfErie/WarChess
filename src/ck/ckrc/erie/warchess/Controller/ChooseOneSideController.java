@@ -10,6 +10,7 @@ import ck.ckrc.erie.warchess.net.Client;
 import ck.ckrc.erie.warchess.net.MapSyncThread;
 import ck.ckrc.erie.warchess.ui.CLIUserInterface;
 import ck.ckrc.erie.warchess.ui.Play;
+import ck.ckrc.erie.warchess.ui.Setting;
 import ck.ckrc.erie.warchess.ui.StartFrame;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -110,7 +111,7 @@ public class ChooseOneSideController {
                     Main.syncThread.start();
                     Main.currentGameEngine.setPlayer(0, Player.getNewPlayer(0));
                     Play.teamflag = 0;
-                    Platform.runLater(() -> Director.GetDirector().gameStart());
+                    Platform.runLater(() -> Setting.makesetting());
                 }
             } catch (InterruptedException e) {
                 Main.log.addLog("Client interrupted!", this.getClass());

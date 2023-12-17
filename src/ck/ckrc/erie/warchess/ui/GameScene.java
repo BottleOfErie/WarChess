@@ -54,8 +54,6 @@ public class GameScene {
         Scene scene=new Scene(anchorPane,Director.width,Director.height);
         anchorPane.setLayoutX(0);anchorPane.setLayoutY(0);
         canvas.setOnMouseClicked(new Play(graphicsContext).setChessAction);
-        Setting.makesettingbutton();
-        Setting.initclassmap();
         setnextround();
         stage.setScene(scene);
         this.gameScene=stage.getScene();

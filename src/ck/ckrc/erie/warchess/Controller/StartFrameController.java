@@ -5,6 +5,7 @@ import ck.ckrc.erie.warchess.example.Miner;
 import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.game.Player;
 import ck.ckrc.erie.warchess.ui.Play;
+import ck.ckrc.erie.warchess.ui.Setting;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,7 +36,7 @@ public class StartFrameController {
         for(int i=0;i< Engine.playerNum;i++){
             Main.currentGameEngine.setPlayer(i, Player.getNewPlayer(i));
         }
-        Director.GetDirector().gameStart();
+        Setting.makesetting();
     }
 
 }
