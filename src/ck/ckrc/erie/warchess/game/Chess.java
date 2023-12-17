@@ -1,11 +1,15 @@
 package ck.ckrc.erie.warchess.game;
 
+import ck.ckrc.erie.warchess.utils.DataPackage;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 
 import java.io.Serializable;
 
-public abstract class Chess implements Serializable {
+/**
+ * Attention:You should not use inner class in a chess class,use lambda instead!
+ */
+public abstract class Chess {
 
     public Integer hp=0;
     public Integer x=0,y=0;
@@ -58,5 +62,11 @@ public abstract class Chess implements Serializable {
 
 
     public static void playerInit(Player player){}
+
+    public void syncDataPackage(DataPackage pack){
+        hp= (Integer) pack.get("hp");
+        teamFlag= (Integer) pack.get("teamFlag");
+    }
+    public abstract DataPackage getDataPackage();
 
 }

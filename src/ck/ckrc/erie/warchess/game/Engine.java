@@ -83,6 +83,7 @@ public class Engine {
                 }
 
         currentTeam=nextTeam;
+        Main.log.addLog("current teamFlag:"+currentTeam,this.getClass());
 
         Main.log.addLog("Executing roundBegin function",this.getClass());
         //execute Chess roundBegin method
@@ -101,7 +102,7 @@ public class Engine {
     }
 
     public Chess getChess(int x,int y){
-        if(x<0||x>Map.MapSize||y<0||y> Map.MapSize)return null;
+        if(x<0||x>=Map.MapSize||y<0||y>= Map.MapSize)return null;
         return currentMap.getChessMap()[x][y];
     }
 

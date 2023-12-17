@@ -1,6 +1,7 @@
 package ck.ckrc.erie.warchess;
 
 
+import ck.ckrc.erie.warchess.game.Player;
 import ck.ckrc.erie.warchess.ui.GameOver;
 import ck.ckrc.erie.warchess.ui.GameScene;
 import ck.ckrc.erie.warchess.ui.StartFrame;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 public class Director {
     public static final int width=900,height=700;
+    private boolean isGameStarted=false;
     public Stage stage;
     private GameScene gameScene=new GameScene();
     private GameOver overScene=new GameOver();
@@ -35,10 +37,14 @@ public class Director {
         initclose(stage);
         this.stage=stage;
         stage.show();
+        isGameStarted=false;
     }
 
     public void gameStart(){
         gameScene.Init(stage);
+        isGameStarted=true;
+        Main.currentGameEngine.setPlayer(0, Player.getNewPlayer(0));
+        Main.currentGameEngine.setPlayer(1, Player.getNewPlayer(1));
     }
     public void gameOver(){
         overScene.Init(stage);
@@ -63,5 +69,9 @@ public class Director {
                 Platform.exit();
             }
         });
+    }
+
+    public boolean isGameStarted() {
+        return isGameStarted;
     }
 }

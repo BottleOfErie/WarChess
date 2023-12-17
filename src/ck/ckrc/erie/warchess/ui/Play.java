@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,6 +35,7 @@ public class Play {
     public static Collection<Class<?>> classlist=new ArrayList<>();
 
     public static int gamemodel;
+    private static int lastX=-1,lastY=-1;
     public static long lastRepaintTime= System.currentTimeMillis();
     public static int teamflag;
 
@@ -45,10 +47,13 @@ public class Play {
         @Override
         public void handle(MouseEvent event){
             if(gamemodel==0 || (gamemodel==1&&teamflag==Main.currentGameEngine.getCurrentTeam())) {
+                syncLastEvent();
                 int x = (int) (event.getX() / edgelength);
                 int y = (int) (event.getY() / edgelength);
+                lastX=x;lastY=y;
                 if (event.getButton().name().equals(MouseButton.PRIMARY.name())) {
                     if (Main.currentGameEngine.getChess(x, y) == null) {
+                        //TODO remove all showed detail chess!
                         for (int i = 1; i <= showeddetailchesscount; i++) {
                             anchorPane.getChildren().remove(anchorPane.lookup("#root" + String.valueOf(i)+','+String.valueOf(x)+','+String.valueOf(y)));
                             anchorPane.getChildren().remove(anchorPane.lookup("#button" + String.valueOf(i)));
@@ -96,6 +101,7 @@ public class Play {
                 Play.drawAllChess();
                 isshowedchoosechess=false;
             });
+            button.setDisable(!ChessClassInvoker.invokeCheckPlaceRequirements(clazz,Main.currentGameEngine.getPlayer(Main.currentGameEngine.getCurrentTeam()),x,y));
             pane.addRow(0,ChessClassInvoker.invokeShowData(clazz));
             pane.addRow(1,button);
             root.getChildren().add(pane);
@@ -182,4 +188,20 @@ public class Play {
             }
         }
     }
+
+    public static void syncLastEvent(){
+        if(Main.syncThread!=null&&lastX>=0&&lastY>=0){
+            try {
+                Main.syncThread.sendSync(lastX,lastY,Main.currentGameEngine.getChess(lastX,lastY));
+                Main.syncThread.sendSyncP(0,Main.currentGameEngine.getPlayer(0));
+                Main.syncThread.sendSyncP(1,Main.currentGameEngine.getPlayer(1));
+                Main.syncThread.sendRepaint();
+            } catch (IOException e) {
+                Main.log.addLog("Failed to sync chess at:"+lastX+","+lastY,Play.class);
+                Main.log.addLog(e,Play.class);
+            }
+        }
+        lastX=lastY=-1;
+    }
+
 }

@@ -2,6 +2,8 @@ package ck.ckrc.erie.warchess.example1;
 
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.game.*;
+import ck.ckrc.erie.warchess.ui.Setting;
+import ck.ckrc.erie.warchess.utils.DataPackage;
 import ck.ckrc.erie.warchess.utils.ResourceSerialization;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -43,11 +45,11 @@ public class Test extends Chess {
                 }
             }
         });
-        Button diedButton=new Button("输出资源列表");
+        Button diedButton=new Button("输出类列表");
         diedButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                System.out.println(ResourceSerialization.resourceMap.keySet());
+                System.out.println(Setting.loadornot);
             }
         });
         pane.addRow(0, title);
@@ -59,6 +61,22 @@ public class Test extends Chess {
         Label title=new Label("调试器");
         title.setPrefWidth(100);
         return title;
+    }
+
+    @Override
+    public void syncDataPackage(DataPackage pack) {
+        super.syncDataPackage(pack);
+        System.out.println(pack.get("message"));
+    }
+
+    @Override
+    public DataPackage getDataPackage() {
+        DataPackage pack=new DataPackage();
+        pack.put("hp",hp);
+        pack.put("teamFlag",teamFlag);
+        pack.put("className",className);
+        pack.put("message","hello");
+        return pack;
     }
 
     @Override

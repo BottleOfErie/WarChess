@@ -59,6 +59,8 @@ public class Setting {
 
         VBox notloadlist=(VBox) stage.getScene().lookup("#NotLoadClassList");
         VBox loadedlist=(VBox) stage.getScene().lookup("#LoadedClassList");
+        notloadlist.getChildren().clear();
+        loadedlist.getChildren().clear();
         for(var clazz:loadornot.keySet()){
             LabelWithChessClass label=new LabelWithChessClass(clazz.getName(),clazz.getSimpleName());
             label.setPrefSize(200, 50);
@@ -104,14 +106,28 @@ public class Setting {
                 newlabel.setPrefSize(200, 50);
                 newlabel.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));
                 targetVBox.getChildren().add(newlabel);
-                Class clazz=Main.chessClassLoader.getClassByName(newlabel.getClazz());
+                Class<?> clazz=Main.chessClassLoader.getClassByName(newlabel.getClazz());
                 if(targetVBox==notloadlist){
                     setupDragAndDrop(newlabel, loadedlist);
                     loadornot.put(clazz,false);
+                    if(Main.syncThread!=null) {
+                        try {
+                            Main.syncThread.sendActive(false,newlabel.getClazz());
+                        } catch (IOException e) {
+                            Main.log.addLog("failed to send active!",Setting.class);
+                        }
+                    }
                 }
                 else{
                     setupDragAndDrop(newlabel, notloadlist);
                     loadornot.put(clazz,true);
+                    if(Main.syncThread!=null) {
+                        try {
+                            Main.syncThread.sendActive(true,newlabel.getClazz());
+                        } catch (IOException e) {
+                            Main.log.addLog("failed to send active!",Setting.class);
+                        }
+                    }
                 }
                 setdecompile(newlabel);
                 success = true;

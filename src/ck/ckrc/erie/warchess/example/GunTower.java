@@ -2,6 +2,7 @@ package ck.ckrc.erie.warchess.example;
 
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.game.*;
+import ck.ckrc.erie.warchess.utils.DataPackage;
 import ck.ckrc.erie.warchess.utils.Math;
 import ck.ckrc.erie.warchess.utils.ResourceSerialization;
 import javafx.beans.value.ChangeListener;
@@ -30,18 +31,14 @@ public class GunTower extends Chess {
         this.y=y;
         this.teamFlag=player.getTeamFlag();
         this.hp=max_hp;
-        myDmgListener=new DamageListener() {
-
-            @Override
-            public double takeDamage(double damage) {
-                if(hp>damage){
-                    hp-=(int)damage;
-                    return 0;
-                }else{
-                    double tmp=damage-hp;
-                    hp=0;
-                    return tmp;
-                }
+        myDmgListener= damage -> {
+            if(hp>damage){
+                hp-=(int)damage;
+                return 0;
+            }else{
+                double tmp=damage-hp;
+                hp=0;
+                return tmp;
             }
         };
 
@@ -66,36 +63,30 @@ public class GunTower extends Chess {
         Label x_label=new Label("目标x:");
         TextField x_input=new TextField(String.valueOf(target_x+1));
         x_input.setPrefWidth(100);
-        x_input.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                try{
-                    int i=Integer.parseInt(s);
-                    if(i<=0||i>=Map.MapSize)
-                        x_input.setText(t1);
-                    else
-                        target_x=i-1;
-                }catch(NumberFormatException e){
+        x_input.textProperty().addListener((observableValue, s, t1) -> {
+            try{
+                int i=Integer.parseInt(s);
+                if(i<=0||i>=Map.MapSize)
                     x_input.setText(t1);
-                }
+                else
+                    target_x=i-1;
+            }catch(NumberFormatException e){
+                x_input.setText(t1);
             }
         });
         pane.addRow(3,x_label,x_input);
         Label y_label=new Label("目标y:");
         TextField y_input=new TextField(String.valueOf(target_y+1));
         y_input.setPrefWidth(100);
-        y_input.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                try{
-                    int i=Integer.parseInt(s);
-                    if(i<=0||i>=Map.MapSize)
-                        y_input.setText(t1);
-                    else
-                        target_y=i-1;
-                }catch(NumberFormatException e){
+        y_input.textProperty().addListener((observableValue, s, t1) -> {
+            try{
+                int i=Integer.parseInt(s);
+                if(i<=0||i>=Map.MapSize)
                     y_input.setText(t1);
-                }
+                else
+                    target_y=i-1;
+            }catch(NumberFormatException e){
+                y_input.setText(t1);
             }
         });
         pane.addRow(4,y_label,y_input);
@@ -166,6 +157,17 @@ public class GunTower extends Chess {
 
     public static boolean checkPlaceRequirements(Player player,int x,int y) {
         return (int)player.getStatus(Miner.energyKey)>= build_cost;
+    }
+
+    @Override
+    public void syncDataPackage(DataPackage pack) {
+        super.syncDataPackage(pack);
+        DataPackage.processDataPackage(this,this.getClass(),pack);
+    }
+
+    @Override
+    public DataPackage getDataPackage() {
+        return DataPackage.generateDataPackage(this,this.getClass());
     }
 
     @Override

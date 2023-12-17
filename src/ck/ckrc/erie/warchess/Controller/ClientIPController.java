@@ -46,7 +46,6 @@ public class ClientIPController {
             else {
                 Main.syncThread = new MapSyncThread(client.getSocket());
                 Main.syncThread.start();
-                Main.currentGameEngine.setPlayer(1, Player.getNewPlayer(1));
                 Play.teamflag = 1;
                 Setting.makesetting();
             }

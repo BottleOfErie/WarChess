@@ -5,6 +5,7 @@ import ck.ckrc.erie.warchess.game.Chess;
 import ck.ckrc.erie.warchess.game.DamageEvent;
 import ck.ckrc.erie.warchess.game.DamageListener;
 import ck.ckrc.erie.warchess.game.Player;
+import ck.ckrc.erie.warchess.utils.DataPackage;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -101,6 +102,21 @@ public class Shield extends Chess {
         for(var item:listeners)
             if(item==listener)return true;
         return listener==selfListener;
+    }
+
+    @Override
+    public void syncDataPackage(DataPackage pack) {
+        super.syncDataPackage(pack);
+        shield= (int) pack.get("s");
+    }
+
+    @Override
+    public DataPackage getDataPackage() {
+        DataPackage pack=new DataPackage();
+        pack.put("hp",hp);
+        pack.put("teamFlag",teamFlag);
+        pack.put("s",shield);
+        return pack;
     }
 
     @Override

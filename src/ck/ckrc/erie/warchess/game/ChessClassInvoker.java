@@ -42,6 +42,7 @@ public class ChessClassInvoker {
             return (Chess) f.newInstance(x,y,player);
         } catch (NoSuchMethodException | InvocationTargetException | InstantiationException e) {
             Main.log.addLog("this class doesn't have right constructor:"+clazz, ChessClassInvoker.class);
+            Main.log.addLog(e,ChessClassInvoker.class);
         } catch (IllegalAccessException ignored) {}
         return null;
     }

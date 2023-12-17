@@ -37,9 +37,9 @@ public class Client extends Thread{
             ChooseOneSideController.isserverchoose=false;
             return;
         }
-        Main.log.addLog("waiting for connection", this.getClass());
         while (!Thread.currentThread().isInterrupted()) {
             try {
+                Main.log.addLog("waiting for connection", this.getClass());
                 var skt = serverSocket.accept();
                 Main.log.addLog("received connection from:" + skt.getInetAddress(), this.getClass());
                 if (socket != null) {
@@ -49,6 +49,7 @@ public class Client extends Thread{
                 }
                 socket = skt;
                 Main.syncThread = new MapSyncThread(socket);
+                this.interrupt();
             } catch (IOException e) {
                 Main.log.addLog("exception in client server-side:", this.getClass());
                 Main.log.addLog(e, this.getClass());

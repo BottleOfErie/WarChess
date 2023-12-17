@@ -2,6 +2,7 @@ package ck.ckrc.erie.warchess.example;
 
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.game.*;
+import ck.ckrc.erie.warchess.utils.DataPackage;
 import ck.ckrc.erie.warchess.utils.ResourceSerialization;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -18,7 +19,6 @@ public class Miner extends Chess {
     public static final Image image=ResourceSerialization.getImageFromByteArray(ResourceSerialization.toByteArray(imageData));
     public static final String energyKey="example.red-stoneFlux";
     private DamageListener myDmgListener;
-    private ImageView imageView;
     public static final String className="ck.ckrc.erie.warchess.example.Miner";
 
     public Miner(int x,int y,Player p){
@@ -26,17 +26,14 @@ public class Miner extends Chess {
         this.y=y;
         this.teamFlag=p.getTeamFlag();
         this.hp=max_hp;
-        myDmgListener=new DamageListener() {
-            @Override
-            public double takeDamage(double damage) {
-                if(hp>damage){
-                    hp-=(int)damage;
-                    return 0;
-                }else{
-                    double tmp=damage-hp;
-                    hp=0;
-                    return tmp;
-                }
+        myDmgListener= damage -> {
+            if(hp>damage){
+                hp-=(int)damage;
+                return 0;
+            }else{
+                double tmp=damage-hp;
+                hp=0;
+                return tmp;
             }
         };
 
@@ -98,6 +95,11 @@ public class Miner extends Chess {
 
     public static void playerInit(Player player){
         player.setStatus(energyKey,10);
+    }
+
+    @Override
+    public DataPackage getDataPackage() {
+        return DataPackage.generateDataPackage(this,this.getClass());
     }
 
     @Override

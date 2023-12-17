@@ -1,10 +1,13 @@
 package ck.ckrc.erie.warchess.Controller;
 import ck.ckrc.erie.warchess.Director;
+import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.ui.GameScene;
 import ck.ckrc.erie.warchess.ui.Setting;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+
+import java.io.IOException;
 
 public class SettingController {
     @FXML
@@ -20,6 +23,14 @@ public class SettingController {
     void GameStart(MouseEvent event) {
         Setting.checkloadedclass();
         Director.GetDirector().gameStart();
+        Main.currentGameEngine.nextRound(0);
+        if(Main.syncThread!=null)
+            try {
+                Main.syncThread.sendRound(0);
+            } catch (IOException e) {
+                Main.log.addLog("Failed to sendRound,cannot start game!",this.getClass());
+                Main.log.addLog(e,this.getClass());
+            }
     }
 
     @FXML

@@ -2,6 +2,7 @@ package ck.ckrc.erie.warchess.example1;
 
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.game.*;
+import ck.ckrc.erie.warchess.utils.DataPackage;
 import ck.ckrc.erie.warchess.utils.ResourceSerialization;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -98,6 +99,24 @@ public class Life extends Chess {
     @Override
     public boolean checkListener(DamageListener listener) {
         return false;
+    }
+
+    @Override
+    public void syncDataPackage(DataPackage pack) {
+        super.syncDataPackage(pack);
+        nextHp= (int) pack.get("nhp");
+        determinedHP= (int) pack.get("dhp");
+    }
+
+    @Override
+    public DataPackage getDataPackage() {
+        DataPackage pack=new DataPackage();
+        pack.put("hp",hp);
+        pack.put("teamFlag",teamFlag);
+        pack.put("className",className);
+        pack.put("nhp",nextHp);
+        pack.put("dhp",determinedHP);
+        return pack;
     }
 
     @Override

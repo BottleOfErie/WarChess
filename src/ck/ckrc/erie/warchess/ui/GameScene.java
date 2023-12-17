@@ -10,6 +10,7 @@ import ck.ckrc.erie.warchess.game.Map;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -42,9 +43,9 @@ public class GameScene {
 
 
     public void Init(Stage stage){
-        this.stage=stage;
+        GameScene.stage =stage;
         AnchorPane anchorPane=new AnchorPane(canvas);
-        this.anchorPane=anchorPane;
+        GameScene.anchorPane =anchorPane;
         Play.anchorPane=anchorPane;
         anchorPane.setPrefWidth(Director.width);
         anchorPane.setPrefHeight(Director.height);
@@ -56,7 +57,7 @@ public class GameScene {
         canvas.setOnMouseClicked(new Play(graphicsContext).setChessAction);
         setnextround();
         stage.setScene(scene);
-        this.gameScene=stage.getScene();
+        gameScene=stage.getScene();
         repainter=new Repainter();
         repainter.start();
     }
@@ -77,6 +78,26 @@ public class GameScene {
             int currentTeam=Main.currentGameEngine.getCurrentTeam(),nextteam;
             if(currentTeam== Engine.playerNum-1){nextteam=0;}
             else{nextteam=currentTeam+1;}
+            Play.syncLastEvent();
+            if(Main.syncThread!=null){
+                for (int i = 0; i < Map.MapSize; i++) {
+                    for (int j = 0; j < Map.MapSize; j++) {
+                        try {
+                            Main.syncThread.sendSync(i,j,Main.currentGameEngine.getChess(i,j));
+                        } catch (IOException e) {
+                            Main.log.addLog("Failed to sync chess at:"+i+","+j,GameScene.class);
+                            Main.log.addLog(e,GameScene.class);
+                        }
+                    }
+                }
+                try {
+                    Main.syncThread.sendRepaint();
+                    Main.syncThread.sendRound(nextteam);
+                } catch (IOException e) {
+                    Main.log.addLog("Failed to send repaint/round",GameScene.class);
+                    Main.log.addLog(e,GameScene.class);
+                }
+            }
             Main.currentGameEngine.nextRound(nextteam);
             Play.updatechessdetails();
         });

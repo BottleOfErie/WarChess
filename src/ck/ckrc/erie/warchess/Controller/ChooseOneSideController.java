@@ -66,7 +66,7 @@ public class ChooseOneSideController {
             this.node = root;
             Scene scene = new Scene((Parent) root);
             stage.setScene(scene);
-            System.out.println("waiting");
+            Main.log.addLog("waiting",this.getClass());
         }catch (IOException e) {
             e.printStackTrace();
         }
@@ -109,9 +109,17 @@ public class ChooseOneSideController {
                 }
                 if(!Thread.currentThread().isInterrupted()) {
                     Main.syncThread.start();
-                    Main.currentGameEngine.setPlayer(0, Player.getNewPlayer(0));
+                    for (var clazz:
+                         Main.chessClassLoader.getChessClassNames()) {
+                        try {
+                            Main.syncThread.sendLoad(clazz);
+                        } catch (IOException e) {
+                            Main.log.addLog("failed to sendLoad:"+clazz,this.getClass());
+                            Main.log.addLog(e,this.getClass());
+                        }
+                    }
                     Play.teamflag = 0;
-                    Platform.runLater(() -> Setting.makesetting());
+                    Platform.runLater(Setting::makesetting);
                 }
             } catch (InterruptedException e) {
                 Main.log.addLog("Client interrupted!", this.getClass());
