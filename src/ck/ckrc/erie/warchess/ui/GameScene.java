@@ -80,8 +80,8 @@ public class GameScene {
         button.setPrefSize(75, 30);
         button.setLayoutX(10);button.setLayoutY(500);
         button.setOnAction(actionEvent -> {
+            Play.clearRightSideBar();
             if(Play.gamemodel==0 || (Play.gamemodel==1&&Play.teamflag==Main.currentGameEngine.getCurrentTeam())) {
-                Play.clearRightSideBar();
                 int currentTeam = Main.currentGameEngine.getCurrentTeam(), nextteam;
                 if (currentTeam == Engine.playerNum - 1) {
                     nextteam = 0;

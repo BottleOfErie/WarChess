@@ -7,11 +7,21 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class DataPackage implements Serializable {
 
     private Map<String,Object> map=null;
+    public static final List<String> ignoredFields=new LinkedList<>();
+    static {
+        ignoredFields.add("hp");
+        ignoredFields.add("teamFlag");
+        ignoredFields.add("className");
+        ignoredFields.add("x");
+        ignoredFields.add("y");
+    }
 
     public DataPackage(){
         map=new HashMap<>();
@@ -33,7 +43,7 @@ public class DataPackage implements Serializable {
     public static void processDataPackage(Chess chess,Class<? extends Chess> clazz,DataPackage pack){
         for(var key:pack.map.keySet()){
             try {
-                if("hp".equals(key)||"teamFlag".equals(key)||"className".equals(key))continue;
+                if(ignoredFields.contains(key))continue;
                 Field field=clazz.getDeclaredField(key);
                 field.setAccessible(true);
                 field.set(chess,pack.get(field.getName()));
@@ -50,9 +60,8 @@ public class DataPackage implements Serializable {
     public static DataPackage generateDataPackage(Chess chess,Class<? extends Chess> clazz){
         try {
             DataPackage ret=new DataPackage();
-            processDataPackForPublicField(ret,"hp",chess,clazz);
-            processDataPackForPublicField(ret,"teamFlag",chess,clazz);
-            processDataPackForPublicField(ret,"className",chess,clazz);
+            for(var item:ignoredFields)
+                processDataPackForPublicField(ret,item,chess,clazz);
             for(Field field:clazz.getDeclaredFields()){
                 field.setAccessible(true);
                 var modifiers=field.getModifiers();
