@@ -8,6 +8,7 @@ import ck.ckrc.erie.warchess.game.Map;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -16,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
+import java.awt.*;
 import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ import java.util.Collection;
 
 public class Play {
     private static GraphicsContext graphicsContext;
+    public static GraphicsContext spgraphicsContext;
 
     private static int edgelength=GameScene.edgelength;
     private static int nodeboxheight= Director.height/ Map.MapSize;
@@ -40,9 +43,11 @@ public class Play {
     public static int teamflag;
 
     private static int showeddetailchesscount=0;
-    public Play(GraphicsContext graphicsContext){ this.graphicsContext=graphicsContext; }
+    public Play(GraphicsContext graphicsContext1,GraphicsContext graphicsContext2){ this.graphicsContext=graphicsContext1;this.spgraphicsContext=graphicsContext2; }
 
     public SetChessAction setChessAction=new SetChessAction();
+
+    private static VBox chessdetails;
     public class SetChessAction implements EventHandler<MouseEvent>{
         @Override
         public void handle(MouseEvent event){
@@ -53,11 +58,7 @@ public class Play {
                 lastX=x;lastY=y;
                 if (event.getButton().name().equals(MouseButton.PRIMARY.name())) {
                     if (Main.currentGameEngine.getChess(x, y) == null) {
-                        //TODO remove all showed detail chess!
-                        for (int i = 1; i <= showeddetailchesscount; i++) {
-                            anchorPane.getChildren().remove(anchorPane.lookup("#root" + String.valueOf(i)+','+String.valueOf(x)+','+String.valueOf(y)));
-                            anchorPane.getChildren().remove(anchorPane.lookup("#button" + String.valueOf(i)));
-                        }
+                        chessdetails.getChildren().clear();
                         initshowchess();
                         showeddetailchesscount = 0;
                         if (!isshowedchoosechess) {
@@ -119,28 +120,24 @@ public class Play {
     public static void drawAllChess(){
         synchronized (graphicsContext){
             //TODO 特效层画布
+            spgraphicsContext.clearRect(0,0,600,600);
             var now=System.currentTimeMillis();
             for(int i=0;i<Map.MapSize;i++)
-                for(int j=0;j<Map.MapSize;j++){
-                    var chess=Main.currentGameEngine.getChess(i,j);
-                    if(chess==null)graphicsContext.clearRect(i*edgelength+10, j*edgelength+10, 40, 40);
-                    else graphicsContext.drawImage(chess.paint(now-lastRepaintTime),i*60+10,j*60+10,40,40);
+                for(int j=0;j<Map.MapSize;j++) {
+                    var chess = Main.currentGameEngine.getChess(i, j);
+                    if (chess == null) graphicsContext.clearRect(i * edgelength + 10, j * edgelength + 10, 40, 40);
+                    else {
+                        chess.drawSpecialEffect(spgraphicsContext,now - lastRepaintTime);
+                        graphicsContext.drawImage(chess.paint(now - lastRepaintTime), i * 60 + 10, j * 60 + 10, 40, 40);
+                    }
                 }
             lastRepaintTime=now;
         }
     }
 
-    private static void removechessdetails(int x,int y, int number){
-        Node pane=anchorPane.lookup("#root"+String.valueOf(number)+','+String.valueOf(x)+','+String.valueOf(y));
-        Node button=anchorPane.lookup("#button"+String.valueOf(number));
-        anchorPane.getChildren().removeAll(pane,button);
-        for (int i = number+1; i <= showeddetailchesscount; i++) {
-            Node element = anchorPane.lookup("#root" + String.valueOf(i));
-            Node bt=anchorPane.lookup("#button"+String.valueOf(i));
-            element.setId("root" + String.valueOf(i - 1)+','+String.valueOf(x)+','+String.valueOf(y));
-            bt.setId("button"+String.valueOf(i-1));
-            element.setLayoutY(70 * (i - 2));bt.setLayoutY(70 * (i - 2)+5);
-        }
+    private static void removechessdetails(int x,int y){
+        Node pane=chessdetails.lookup("#root"+','+String.valueOf(x)+','+String.valueOf(y));
+        chessdetails.getChildren().remove(pane);
         showeddetailchesscount--;
         isshoweddetail[x][y]=false;
     }
@@ -150,39 +147,42 @@ public class Play {
         GridPane root=(GridPane) Main.currentGameEngine.getMap().getChessMap()[x][y].showPanel();
         root.setPrefSize(200, nodeboxheight);
         Button button=new Button("隐藏");
-        root.getChildren().add(button);
+        root.addRow(0, button);
         button.setPrefSize(50, 20);
-        anchorPane.getChildren().addAll(root,button);
-        root.setLayoutX(700);root.setLayoutY(70*showeddetailchesscount);
-        button.setLayoutX(830);button.setLayoutY(70*showeddetailchesscount+5);
+        chessdetails.getChildren().addAll(root);
+        root.setLayoutX(700);
         showeddetailchesscount++;
-        button.setId("button"+String.valueOf(showeddetailchesscount));
-        root.setId("root"+String.valueOf(showeddetailchesscount)+','+String.valueOf(x)+','+String.valueOf(y));
+        root.setId("root"+','+String.valueOf(x)+','+String.valueOf(y));
         isshoweddetail[x][y]=true;
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                String name=button.getId();
-                int number=(int)(name.charAt(name.length()-1))-(int)('0');
-                removechessdetails(x,y,  number);
+                removechessdetails(x,y);
             }
         });
     }
     public static void updatechessdetails(){
         for(int i=0;i< Map.MapSize;i++){
             for(int j=0;j<Map.MapSize;j++){
-                if(isshoweddetail[i][j]){
-                    for(int k=1;k<=showeddetailchesscount;k++){
-                        Node element = anchorPane.lookup("#root" + String.valueOf(k)+','+String.valueOf(i)+','+String.valueOf(j));
-                        anchorPane.getChildren().remove(element);
-                        if(element !=null){
-                            String[] position=element.getId().split("[,]");
-                            int x=(int)position[1].charAt(0)-(int)'0',y=(int)position[2].charAt(0)-(int)'0';
-                            element=Main.currentGameEngine.getChess(x,y).showPanel();
-                            anchorPane.getChildren().add(element);
-                            element.setLayoutX(700);element.setLayoutY(70*(k-1));
-                            element.setId("#root" + String.valueOf(k)+','+String.valueOf(i)+','+String.valueOf(j));
-                        }
+                if(isshoweddetail[i][j]) {
+                    GridPane element = (GridPane) chessdetails.lookup("#root" + ',' + String.valueOf(i) + ',' + String.valueOf(j));
+                    int index=chessdetails.getChildren().indexOf(element);
+                    if (element != null) {
+                        String[] position = element.getId().split("[,]");
+                        int x=i,y=j;
+                        GridPane newnode = (GridPane) Main.currentGameEngine.getChess(i, j).showPanel();
+                        newnode.setPrefSize(200, nodeboxheight);
+                        newnode.setLayoutX(700);
+                        Button button=new Button("隐藏");
+                        newnode.addRow(0, button);
+                        chessdetails.getChildren().set(index, newnode);
+                        button.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent actionEvent) {
+                                removechessdetails(x,y);
+                            }
+                        });
+                        newnode.setId("root" + ',' + String.valueOf(i) + ',' + String.valueOf(j));
                     }
                 }
             }
@@ -203,5 +203,10 @@ public class Play {
         }
         lastX=lastY=-1;
     }
-
+    public static void initchessdetailvbox(){
+        chessdetails=new VBox();
+        anchorPane.getChildren().add(chessdetails);
+        chessdetails.setPrefSize(200, 700);
+        chessdetails.setLayoutX(700);chessdetails.setLayoutY(0);
+    }
 }

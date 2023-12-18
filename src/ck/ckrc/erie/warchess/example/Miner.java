@@ -83,7 +83,6 @@ public class Miner extends Chess {
 
     @Override
     public void roundBegin() {
-        //generate auto target
         if(Objects.equals(teamFlag, Main.currentGameEngine.getCurrentTeam()))return;
         Main.currentGameEngine.getPlayer(teamFlag).setStatus(energyKey,(int)Main.currentGameEngine.getPlayer(teamFlag).getStatus(energyKey)+productions);
     }

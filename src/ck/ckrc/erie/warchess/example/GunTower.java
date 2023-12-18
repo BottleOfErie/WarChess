@@ -2,17 +2,26 @@ package ck.ckrc.erie.warchess.example;
 
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.game.*;
+import ck.ckrc.erie.warchess.ui.Play;
 import ck.ckrc.erie.warchess.utils.DataPackage;
 import ck.ckrc.erie.warchess.utils.Math;
 import ck.ckrc.erie.warchess.utils.ResourceSerialization;
+import javafx.animation.AnimationTimer;
+import javafx.animation.PathTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+import javafx.util.Duration;
 
 import java.util.Objects;
 
@@ -23,8 +32,9 @@ public class GunTower extends Chess {
     private static final Image image= ResourceSerialization.getImageFromByteArray(ResourceSerialization.toByteArray(imageData));
     private DamageEvent myDmgEvt;
     private DamageListener myDmgListener;
-    private int target_x=0,target_y=0;
+    private int target_x=-1,target_y=-1,animationTimer=-1,ltx=-1,lty=-1;
     public static final String className="ck.ckrc.erie.warchess.example.GunTower";
+    private double bulletx=x*60+30,bullety=y*60+30,bulletSpeed = Math.distanceOfEuclid(x,y,target_x,target_y);;
 
     public GunTower(int x,int y,Player player){
         this.x=x;
@@ -61,9 +71,10 @@ public class GunTower extends Chess {
         pane.addRow(1,status1,status2);
         pane.addRow(2, position,team);
         Label x_label=new Label("目标x:");
-        TextField x_input=new TextField(String.valueOf(target_x+1));
+        TextField x_input=new TextField(target_x<0?"":String.valueOf(target_x+1));
         x_input.setPrefWidth(100);
-        x_input.textProperty().addListener((observableValue, s, t1) -> {
+        x_input.textProperty().addListener((observableValue, t1, s) -> {
+
             try{
                 int i=Integer.parseInt(s);
                 if(i<=0||i>=Map.MapSize)
@@ -71,14 +82,15 @@ public class GunTower extends Chess {
                 else
                     target_x=i-1;
             }catch(NumberFormatException e){
+                if("".equals(s))return;
                 x_input.setText(t1);
             }
         });
         pane.addRow(3,x_label,x_input);
         Label y_label=new Label("目标y:");
-        TextField y_input=new TextField(String.valueOf(target_y+1));
+        TextField y_input=new TextField(target_y<0?"":String.valueOf(target_y+1));
         y_input.setPrefWidth(100);
-        y_input.textProperty().addListener((observableValue, s, t1) -> {
+        y_input.textProperty().addListener((observableValue, t1, s) -> {
             try{
                 int i=Integer.parseInt(s);
                 if(i<=0||i>=Map.MapSize)
@@ -86,6 +98,7 @@ public class GunTower extends Chess {
                 else
                     target_y=i-1;
             }catch(NumberFormatException e){
+                if("".equals(s))return;
                 y_input.setText(t1);
             }
         });
@@ -93,7 +106,6 @@ public class GunTower extends Chess {
         pane.setPrefSize(200, 200);
         return pane;
     }
-
 
     public static Node showData(){
         GridPane pane=new GridPane();
@@ -110,6 +122,14 @@ public class GunTower extends Chess {
         pane.addRow(3, attdg,attrd);
         pane.setPrefSize(200, 40);
         return pane;
+    }
+    @Override
+    public void drawSpecialEffect(GraphicsContext context,long delta){
+        if(animationTimer<0)return;
+        double speedx=(ltx-x)*60.0/100,speedy=(lty-y)*60.0/100;
+        context.setStroke(Color.CORNFLOWERBLUE);
+        context.fillOval(x*60+30+speedx*(100-animationTimer),y*60+30+speedy*(100-animationTimer),5,5);
+        animationTimer--;
     }
 
     @Override
@@ -131,7 +151,7 @@ public class GunTower extends Chess {
         if((int)Main.currentGameEngine.getPlayer(teamFlag).getStatus(Miner.energyKey)<shot_cost)return;
         Main.currentGameEngine.getPlayer(teamFlag).setStatus(Miner.energyKey,(int)Main.currentGameEngine.getPlayer(teamFlag).getStatus(Miner.energyKey)-shot_cost);
         var engine= Main.currentGameEngine;
-        int tx=0,ty=0,flg=0;
+        int tx=-1,ty=-1,flg=0;
         for(int i=0;i<Map.MapSize;i++)
             for(int j=0;j<Map.MapSize;j++) {
                 if(engine.getChess(i, j)==null)continue;
@@ -151,8 +171,12 @@ public class GunTower extends Chess {
 
     @Override
     public void roundEnd() {
+        if(target_x<0||target_y<0)return;
         myDmgEvt=new DamageEvent(target_x,target_y,attDamage,this);
         Main.currentGameEngine.commitDamageEvent(myDmgEvt);
+        animationTimer=100;
+        ltx=target_x;
+        lty=target_y;
     }
 
     public static boolean checkPlaceRequirements(Player player,int x,int y) {
@@ -174,4 +198,7 @@ public class GunTower extends Chess {
     public Image paint(long delta) {
         return image;
     }
+
+
+
 }

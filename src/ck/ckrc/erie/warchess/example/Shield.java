@@ -29,32 +29,26 @@ public class Shield extends Chess {
         this.hp=max_hp;
         shield=0;
         for (int i = 0; i < 8; i++) {
-            listeners[i]=new DamageListener() {
-                @Override
-                public double takeDamage(double damage) {
-                    if (shield>=damage){
-                        shield= (int) (shield-damage);
-                        return 0;
-                    }else{
-                        double tmp=damage-shield;
-                        shield=0;
-                        return tmp;
-                    }
+            listeners[i]= damage -> {
+                if (shield>=damage){
+                    shield= (int) (shield-damage);
+                    return 0;
+                }else{
+                    double tmp=damage-shield;
+                    shield=0;
+                    return tmp;
                 }
             };
             Main.currentGameEngine.registerDamageListener(this,listener_priority,listeners[i],x+deltaX[i],y+deltaY[i]);
         }
-        selfListener=new DamageListener() {
-            @Override
-            public double takeDamage(double damage) {
-                if(hp>damage){
-                    hp-=(int)damage;
-                    return 0;
-                }else{
-                    double tmp=damage-hp;
-                    hp=0;
-                    return tmp;
-                }
+        selfListener= damage -> {
+            if(hp>damage){
+                hp-=(int)damage;
+                return 0;
+            }else{
+                double tmp=damage-hp;
+                hp=0;
+                return tmp;
             }
         };
         Main.currentGameEngine.registerDamageListener(this,1,selfListener,x,y);
