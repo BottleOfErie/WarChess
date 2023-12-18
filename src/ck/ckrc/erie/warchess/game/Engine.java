@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Engine {
 
-    public static final int playerNum=2;
+    public static int playerNum=2;
 
     private static class ListenerNode {
         public Chess parent;

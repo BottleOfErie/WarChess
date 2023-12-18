@@ -1,18 +1,17 @@
 package ck.ckrc.erie.warchess.example1;
 
 import ck.ckrc.erie.warchess.Main;
-import ck.ckrc.erie.warchess.game.*;
+import ck.ckrc.erie.warchess.game.Chess;
+import ck.ckrc.erie.warchess.game.DamageEvent;
+import ck.ckrc.erie.warchess.game.DamageListener;
+import ck.ckrc.erie.warchess.game.Player;
 import ck.ckrc.erie.warchess.ui.Setting;
 import ck.ckrc.erie.warchess.utils.DataPackage;
 import ck.ckrc.erie.warchess.utils.ResourceSerialization;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 
@@ -63,11 +62,9 @@ public class Test extends Chess {
 
     @Override
     public DataPackage getDataPackage() {
-        DataPackage pack=new DataPackage();
-        pack.put("hp",hp);
-        pack.put("teamFlag",teamFlag);
-        pack.put("className",className);
-        pack.put("message","hello");
+        DataPackage pack= DataPackage.generateDataPackage(this,this.getClass());
+        if (pack != null)
+            pack.put("message","hello");
         return pack;
     }
 

@@ -27,12 +27,14 @@ public class StartFrameController {
     private AnchorPane StartController;
     @FXML
     public void ChooseOneSide(MouseEvent event) throws Exception{
+        Engine.playerNum=2;
         Director.GetDirector().ChooseOneSide();
     }
 
     @FXML
     void SingalPlayerStart(MouseEvent event) {
         Play.gamemodel=0;
+        Engine.playerNum=1;
         for(int i=0;i< Engine.playerNum;i++){
             Main.currentGameEngine.setPlayer(i, Player.getNewPlayer(i));
         }

@@ -59,16 +59,14 @@ public class Play {
                 syncLastEvent();
                 lastX=x;lastY=y;
                 if (event.getButton().name().equals(MouseButton.PRIMARY.name())) {
+                    removechoosechess();
                     if (Main.currentGameEngine.getChess(x, y) == null) {
                         chessdetails.getChildren().clear();
-                        initshowchess();
-                        removechoosechess();
+                        detailedChess.clear();
                         showchoosechess(x, y);
                     } else {
-                        removechoosechess();
-                        if (detailedChess.size() <= 9 &&!detailedChess.contains(Main.currentGameEngine.getChess(x,y))) {
+                        if (detailedChess.size() <= 9 &&!detailedChess.contains(Main.currentGameEngine.getChess(x,y)))
                             showchessdetails(x, y);
-                        }
                     }
                 }
                 if (event.getButton().name().equals(MouseButton.SECONDARY.name())) {
@@ -77,9 +75,6 @@ public class Play {
                 }
             }
         }
-    }
-    private void initshowchess(){
-        detailedChess.clear();
     }
     private void showchoosechess(int x, int y){
         VBox root=new VBox();
@@ -104,6 +99,7 @@ public class Play {
     }
     private static void removechoosechess(){
         try{
+            detailedChess.clear();
             Node node=anchorPane.lookup("#choosechessroot");
             anchorPane.getChildren().remove(node);
         }catch (IndexOutOfBoundsException e){}
@@ -132,6 +128,12 @@ public class Play {
         detailedChess.remove(Main.currentGameEngine.getChess(x,y));
     }
 
+    protected static void clearRightSideBar(){
+        chessdetails.getChildren().clear();
+        detailedChess.clear();
+        removechoosechess();
+
+    }
 
     private static void showchessdetails(int x, int y){
         GridPane root=(GridPane) Main.currentGameEngine.getMap().getChessMap()[x][y].showPanel();
@@ -143,12 +145,7 @@ public class Play {
         root.setLayoutX(700);
         root.setId("root"+','+String.valueOf(x)+','+String.valueOf(y));
         detailedChess.add(Main.currentGameEngine.getChess(x,y));
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                removechessdetails(x,y);
-            }
-        });
+        button.setOnAction(actionEvent -> removechessdetails(x, y));
     }
     public static void updatechessdetails(){
         for(Chess chess: detailedChess){

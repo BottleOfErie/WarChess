@@ -3,10 +3,12 @@ package ck.ckrc.erie.warchess;
 import ck.ckrc.erie.warchess.example.GunTower;
 import ck.ckrc.erie.warchess.example.Miner;
 import ck.ckrc.erie.warchess.example.Shield;
+import ck.ckrc.erie.warchess.example.Tank;
 import ck.ckrc.erie.warchess.example1.Life;
 import ck.ckrc.erie.warchess.example1.Test;
 import ck.ckrc.erie.warchess.game.ChessClassLoader;
 import ck.ckrc.erie.warchess.game.Engine;
+import ck.ckrc.erie.warchess.game.Player;
 import ck.ckrc.erie.warchess.net.MapSyncThread;
 import ck.ckrc.erie.warchess.utils.Logger;
 import javafx.scene.control.Alert;
@@ -42,6 +44,8 @@ public class Main {
         chessClassLoader.addChessClass(Life.class);
         chessClassLoader.addChessClass(Test.class);
         chessClassLoader.addChessClass(Shield.class);
+        chessClassLoader.addChessClass(Tank.class);
+
         FXMain.FXMain(args);
 
     }

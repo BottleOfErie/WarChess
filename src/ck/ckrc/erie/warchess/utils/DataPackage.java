@@ -43,6 +43,10 @@ public class DataPackage implements Serializable {
         }
     }
 
+
+    /**
+     * won't serialize arrays!
+     */
     public static DataPackage generateDataPackage(Chess chess,Class<? extends Chess> clazz){
         try {
             DataPackage ret=new DataPackage();
@@ -53,8 +57,11 @@ public class DataPackage implements Serializable {
                 field.setAccessible(true);
                 var modifiers=field.getModifiers();
                 if(Modifier.isFinal(modifiers)||Modifier.isStatic(modifiers))continue;
-                if(!field.getDeclaringClass().isAssignableFrom(Serializable.class))continue;
-                ret.map.put(field.getName(), field.get(chess));
+                var typ=field.getType();
+                if(typ.isPrimitive()||typ.isEnum()||typ==String.class||typ.isAssignableFrom(Serializable.class))
+                    ret.map.put(field.getName(), field.get(chess));
+                else
+                    Main.log.addLog("Cannot serialize:"+typ,DataPackage.class);
             }
             return ret;
         } catch (NoSuchFieldException | IllegalAccessException e) {

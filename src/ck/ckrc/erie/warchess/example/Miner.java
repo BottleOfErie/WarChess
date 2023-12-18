@@ -95,7 +95,7 @@ public class Miner extends Chess {
 
     @Override
     public void roundBegin() {
-        if(Objects.equals(teamFlag, Main.currentGameEngine.getCurrentTeam()))return;
+        if(!Objects.equals(teamFlag, Main.currentGameEngine.getCurrentTeam()))return;
         Main.currentGameEngine.getPlayer(teamFlag).setStatus(energyKey,(int)Main.currentGameEngine.getPlayer(teamFlag).getStatus(energyKey)+productions);
     }
 
@@ -115,7 +115,6 @@ public class Miner extends Chess {
 
     @Override
     public Image paint(long delta) {
-        //TODO add Image
         return image;
     }
 
