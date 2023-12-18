@@ -1,15 +1,14 @@
 package ck.ckrc.erie.warchess.example;
 
 import ck.ckrc.erie.warchess.Main;
-import ck.ckrc.erie.warchess.game.Chess;
-import ck.ckrc.erie.warchess.game.DamageEvent;
-import ck.ckrc.erie.warchess.game.DamageListener;
-import ck.ckrc.erie.warchess.game.Player;
+import ck.ckrc.erie.warchess.game.*;
 import ck.ckrc.erie.warchess.utils.DataPackage;
 import javafx.scene.Node;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 
 import java.util.Objects;
 
@@ -23,6 +22,7 @@ public class Shield extends Chess {
     private int shield=0;
     private DamageListener[] listeners=new DamageListener[9];
     private DamageListener selfListener;
+    private int drawcount=0;
 
     public Shield(int x, int y, Player p){
         this.x=x;this.y=y;
@@ -84,6 +84,16 @@ public class Shield extends Chess {
         Label product=new Label("regeneration:"+regeneration);
         pane.setPrefSize(200, 25);
         return pane;
+    }
+    @Override
+    public void drawSpecialEffect(GraphicsContext context, long delta){
+        drawcount=(drawcount+1)%5+1;//只可能是1,2,3,4,5
+        context.setFill(Color.YELLOW);
+        context.getCanvas().setOpacity(((double) (delta*drawcount))/100);
+        System.out.println(((double) (delta*drawcount))/100);
+        int width=180,height=180;
+        if(x==0||x==Map.MapSize)width-=60;if(y==0||y==Map.MapSize)height-=60;
+        context.fillRect(java.lang.Math.max(0, (x-1)*60), Math.max(0,(y-1)*60), width,height);
     }
 
     @Override

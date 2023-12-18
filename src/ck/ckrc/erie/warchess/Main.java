@@ -2,6 +2,7 @@ package ck.ckrc.erie.warchess;
 
 import ck.ckrc.erie.warchess.example.GunTower;
 import ck.ckrc.erie.warchess.example.Miner;
+import ck.ckrc.erie.warchess.example.Shield;
 import ck.ckrc.erie.warchess.example1.Life;
 import ck.ckrc.erie.warchess.example1.Test;
 import ck.ckrc.erie.warchess.game.ChessClassLoader;
@@ -40,6 +41,7 @@ public class Main {
         chessClassLoader.addChessClass(GunTower.class);
         chessClassLoader.addChessClass(Life.class);
         chessClassLoader.addChessClass(Test.class);
+        chessClassLoader.addChessClass(Shield.class);
         FXMain.FXMain(args);
 
     }

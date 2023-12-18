@@ -34,7 +34,6 @@ public class GunTower extends Chess {
     private DamageListener myDmgListener;
     private int target_x=-1,target_y=-1,animationTimer=-1,ltx=-1,lty=-1;
     public static final String className="ck.ckrc.erie.warchess.example.GunTower";
-    private double bulletx=x*60+30,bullety=y*60+30,bulletSpeed = Math.distanceOfEuclid(x,y,target_x,target_y);;
 
     public GunTower(int x,int y,Player player){
         this.x=x;
@@ -62,7 +61,7 @@ public class GunTower extends Chess {
     public Node showPanel() {
         GridPane pane=new GridPane();
         Label title=new Label("火枪塔");
-        Label position=new Label("position:"+'('+x+','+y+')');
+        Label position=new Label("position:"+'('+(x+1)+','+(y+1)+')');
         Label team=new Label("team:"+teamFlag);
         pane.addRow(0,title);
         Label status1=new Label("HP:"+hp+'('+max_hp+')');
@@ -198,7 +197,4 @@ public class GunTower extends Chess {
     public Image paint(long delta) {
         return image;
     }
-
-
-
 }
