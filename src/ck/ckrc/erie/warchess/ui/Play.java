@@ -106,7 +106,6 @@ public class Play {
     }
     public static void drawAllChess(){
         synchronized (graphicsContext){
-            //TODO 特效层画布
             spgraphicsContext.clearRect(0,0,600,600);
             var now=System.currentTimeMillis();
             for(int i=0;i<Map.MapSize;i++)

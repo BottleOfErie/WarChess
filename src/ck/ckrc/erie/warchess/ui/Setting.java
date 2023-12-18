@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.*;
 
 
+//TODO scrollable lists and decompilers!
 public class Setting {
     private static Stage stage= Director.GetDirector().stage;
     private static AnchorPane anchorPane=GameScene.anchorPane;
