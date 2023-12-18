@@ -170,7 +170,9 @@ public class Play {
                     if (element != null) {
                         String[] position = element.getId().split("[,]");
                         int x=i,y=j;
-                        GridPane newnode = (GridPane) Main.currentGameEngine.getChess(i, j).showPanel();
+                        var chess=Main.currentGameEngine.getChess(i, j);
+                        if(chess==null)continue;
+                        GridPane newnode = (GridPane) chess.showPanel();
                         newnode.setPrefSize(200, nodeboxheight);
                         newnode.setLayoutX(700);
                         Button button=new Button("隐藏");

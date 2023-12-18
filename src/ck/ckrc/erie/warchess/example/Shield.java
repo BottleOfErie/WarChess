@@ -19,14 +19,17 @@ public class Shield extends Chess {
     public static final String className="ck.ckrc.erie.warchess.example.Shield";
     public static final int[] deltaX={1,1,1,0,0,-1,-1,-1,0};
     public static final int[] deltaY={1,1,1,0,0,-1,-1,-1,0};
+
+    public static final Color origin=Color.YELLOW;
+    public static final double v1=origin.getRed(),v2=origin.getGreen(),v3=origin.getBlue();
     private int shield=0;
     private DamageListener[] listeners=new DamageListener[9];
     private DamageListener selfListener;
-    private int drawcount=0;
 
     public Shield(int x, int y, Player p){
         this.x=x;this.y=y;
         this.hp=max_hp;
+        teamFlag=p.getTeamFlag();
         shield=0;
         for (int i = 0; i < 8; i++) {
             listeners[i]= damage -> {
@@ -87,11 +90,7 @@ public class Shield extends Chess {
     }
     @Override
     public void drawSpecialEffect(GraphicsContext context, long delta){
-        drawcount+=1;
-        context.setFill(Color.YELLOW);
-        double opacity=0.01*drawcount;
-        if(opacity>1){opacity=1;drawcount=0;}
-        context.getCanvas().setOpacity(opacity);
+        context.setFill(Color.color(v1,v2,v3,0.3*shield/max_shield));
         int width=180,height=180;
         if(x==0||x==Map.MapSize)width-=60;if(y==0||y==Map.MapSize)height-=60;
         context.fillRect(java.lang.Math.max(0, (x-1)*60), Math.max(0,(y-1)*60), width,height);
@@ -129,6 +128,8 @@ public class Shield extends Chess {
         //TODO add Image
         return null;
     }
+
+
 
     public static boolean checkPlaceRequirements(Player player,int x,int y){return (int)player.getStatus(Miner.energyKey)>= build_cost;}
 }
