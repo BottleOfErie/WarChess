@@ -87,10 +87,11 @@ public class Shield extends Chess {
     }
     @Override
     public void drawSpecialEffect(GraphicsContext context, long delta){
-        drawcount=(drawcount+1)%5+1;//只可能是1,2,3,4,5
+        drawcount+=1;
         context.setFill(Color.YELLOW);
-        context.getCanvas().setOpacity(((double) (delta*drawcount))/100);
-        System.out.println(((double) (delta*drawcount))/100);
+        double opacity=0.01*drawcount;
+        if(opacity>1){opacity=1;drawcount=0;}
+        context.getCanvas().setOpacity(opacity);
         int width=180,height=180;
         if(x==0||x==Map.MapSize)width-=60;if(y==0||y==Map.MapSize)height-=60;
         context.fillRect(java.lang.Math.max(0, (x-1)*60), Math.max(0,(y-1)*60), width,height);
