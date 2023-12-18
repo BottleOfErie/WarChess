@@ -39,7 +39,6 @@ public class DataPackage implements Serializable {
                 field.set(chess,pack.get(field.getName()));
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 Main.log.addLog("cannot process this field:"+key+" in "+clazz,DataPackage.class);
-                Main.log.addLog(e,DataPackage.class);
             }
         }
     }

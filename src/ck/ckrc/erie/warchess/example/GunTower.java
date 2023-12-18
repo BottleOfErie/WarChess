@@ -126,7 +126,7 @@ public class GunTower extends Chess {
     public void drawSpecialEffect(GraphicsContext context,long delta){
         if(animationTimer<0)return;
         double speedx=(ltx-x)*60.0/100,speedy=(lty-y)*60.0/100;
-        context.setStroke(Color.CORNFLOWERBLUE);
+        context.setFill(Color.CORNFLOWERBLUE);
         context.fillOval(x*60+30+speedx*(100-animationTimer),y*60+30+speedy*(100-animationTimer),5,5);
         animationTimer--;
     }

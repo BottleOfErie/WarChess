@@ -48,7 +48,7 @@ public class GameScene {
 
     public void Init(Stage stage){
         GameScene.stage =stage;
-        AnchorPane anchorPane=new AnchorPane(spcanvas,canvas);
+        AnchorPane anchorPane=new AnchorPane(canvas,spcanvas);
         GameScene.anchorPane =anchorPane;
         Play.anchorPane=anchorPane;
         anchorPane.setPrefWidth(Director.width);
@@ -58,7 +58,7 @@ public class GameScene {
         drawchessmap();
         Scene scene=new Scene(anchorPane,Director.width,Director.height);
         anchorPane.setLayoutX(0);anchorPane.setLayoutY(0);
-        canvas.setOnMouseClicked(new Play(graphicsContext,spgraphicsContext).setChessAction);
+        spcanvas.setOnMouseClicked(new Play(graphicsContext,spgraphicsContext).setChessAction);
         setnextround();
         stage.setScene(scene);
         gameScene=stage.getScene();
