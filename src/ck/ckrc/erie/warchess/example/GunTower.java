@@ -2,6 +2,7 @@ package ck.ckrc.erie.warchess.example;
 
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.game.*;
+import ck.ckrc.erie.warchess.ui.ChessClickEvent;
 import ck.ckrc.erie.warchess.ui.Play;
 import ck.ckrc.erie.warchess.utils.DataPackage;
 import ck.ckrc.erie.warchess.utils.Math;
@@ -10,6 +11,8 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.PathTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -21,8 +24,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.util.Objects;
 
 public class GunTower extends Chess {
@@ -102,7 +107,15 @@ public class GunTower extends Chess {
             }
         });
         pane.addRow(4,y_label,y_input);
-        pane.setPrefSize(200, 200);
+        Button cursor=new Button("从棋盘选择");
+        cursor.setOnAction(actionEvent -> Play.submitClickEvent((x, y) -> {
+            target_x=x;
+            target_y=y;
+            x_input.setText(String.valueOf(x+1));
+            y_input.setText(String.valueOf(y+1));
+        }));
+        pane.addRow(5,cursor);
+        pane.setPrefSize(200, 230);
         return pane;
     }
 
@@ -171,6 +184,8 @@ public class GunTower extends Chess {
     @Override
     public void roundEnd() {
         if(target_x<0||target_y<0)return;
+        if((Integer) Main.currentGameEngine.getPlayer(teamFlag).getStatus(Miner.energyKey)<shot_cost)return;
+        Main.currentGameEngine.getPlayer(teamFlag).setStatus(Miner.energyKey,(Integer) Main.currentGameEngine.getPlayer(teamFlag).getStatus(Miner.energyKey)-shot_cost);
         myDmgEvt=new DamageEvent(target_x,target_y,attDamage,this);
         Main.currentGameEngine.commitDamageEvent(myDmgEvt);
         animationTimer=max_anim;

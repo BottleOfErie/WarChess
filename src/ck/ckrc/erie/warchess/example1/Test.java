@@ -33,25 +33,17 @@ public class Test extends Chess {
         GridPane pane=new GridPane();
         Label title=new Label("调试器");
         Button liveButton=new Button("序列化文件");
-        liveButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                try {
-                    FileChooser fc=new FileChooser();
-                    var f=fc.showOpenDialog(null);
-                    System.out.println(ResourceSerialization.loadFromFile(f));
-                } catch (IOException e) {
-                    Main.log.addLog(e,this.getClass());
-                }
+        liveButton.setOnAction(actionEvent-> {
+            try {
+                FileChooser fc = new FileChooser();
+                var f = fc.showOpenDialog(null);
+                System.out.println(ResourceSerialization.loadFromFile(f));
+            } catch (IOException e) {
+                Main.log.addLog(e, this.getClass());
             }
         });
         Button diedButton=new Button("输出类列表");
-        diedButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                System.out.println(Setting.loadornot);
-            }
-        });
+        diedButton.setOnAction(actionEvent -> System.out.println(Setting.loadornot));
         pane.addRow(0, title);
         pane.addRow(2, liveButton, diedButton);
         return pane;
