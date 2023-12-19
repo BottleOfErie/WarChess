@@ -26,8 +26,7 @@ public class Play {
 
     private static int edgelength=GameScene.edgelength;
     private static int nodeboxheight= Director.height/ Map.MapSize;
-
-    static List<Chess> detailedChess =new LinkedList<>();
+    static List<Chess> detailedChess =new LinkedList<>();//TODO 同一个chess的detial会反复显示？？
     private static Queue<ChessClickEvent> clickEvents=new LinkedList<>();
 
     public static AnchorPane anchorPane;
