@@ -1,9 +1,6 @@
 package ck.ckrc.erie.warchess;
 
-import ck.ckrc.erie.warchess.example.GunTower;
-import ck.ckrc.erie.warchess.example.Miner;
-import ck.ckrc.erie.warchess.example.Shield;
-import ck.ckrc.erie.warchess.example.Tank;
+import ck.ckrc.erie.warchess.example.*;
 import ck.ckrc.erie.warchess.example1.Life;
 import ck.ckrc.erie.warchess.example1.Test;
 import ck.ckrc.erie.warchess.example2.Gomoku;
@@ -47,6 +44,7 @@ public class Main {
         chessClassLoader.addChessClass(Shield.class);
         chessClassLoader.addChessClass(Tank.class);
         chessClassLoader.addChessClass(Gomoku.class);
+        chessClassLoader.addChessClass(HeliosSystem.class);
 
         FXMain.FXMain(args);
 
