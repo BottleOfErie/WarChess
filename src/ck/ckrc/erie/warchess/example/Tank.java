@@ -187,7 +187,6 @@ public class Tank extends Chess {
             }
         target_x=tx;target_y=ty;
         moveTarget_x=-1;moveTarget_y=-1;
-        System.out.println(this.getDataPackage());
     }
 
     @Override
@@ -224,7 +223,6 @@ public class Tank extends Chess {
             Main.currentGameEngine.registerDamageListener(this,1,myDmgListener,x,y);
             animationTimer = max_anim;
         }
-        System.out.println(this.getDataPackage());
     }
 
     public static boolean checkPlaceRequirements(Player player,int x,int y) {

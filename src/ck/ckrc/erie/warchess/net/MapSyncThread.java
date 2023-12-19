@@ -72,7 +72,6 @@ public class MapSyncThread extends Thread{
                         var length=Integer.parseInt(strings[3]);
                         byte[] arr=input.readNBytes(length);
                         var dataPack=(DataPackage) fromByteArray(arr);
-                        System.out.println(dataPack);
                         var chess=Main.currentGameEngine.getChess(x,y);
                         if(chess!=null)
                             chess.syncDataPackage(dataPack);
@@ -83,6 +82,7 @@ public class MapSyncThread extends Thread{
                         }
                         break;
                     case "chat":
+                        //TODO connect to Chat Node
                         System.out.println(strings[1]);
                         break;
                     case "load":
