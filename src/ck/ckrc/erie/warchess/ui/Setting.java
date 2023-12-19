@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -23,7 +24,7 @@ import java.io.IOException;
 import java.util.*;
 
 
-//TODO scrollable lists and decompilers!
+
 public class Setting {
     private static Stage stage= Director.GetDirector().stage;
     private static AnchorPane anchorPane=GameScene.anchorPane;
@@ -57,9 +58,8 @@ public class Setting {
         }
     }
     public static void initClass(){
-
-        VBox notloadlist=(VBox) stage.getScene().lookup("#NotLoadClassList");
-        VBox loadedlist=(VBox) stage.getScene().lookup("#LoadedClassList");
+        VBox notloadlist=(VBox) ((ScrollPane) stage.getScene().lookup("#notloadpane")).getContent();
+        VBox loadedlist=(VBox) ((ScrollPane) stage.getScene().lookup("#loadedpane")).getContent();
         notloadlist.getChildren().clear();
         loadedlist.getChildren().clear();
         for(var clazz:loadornot.keySet()){
@@ -155,8 +155,7 @@ public class Setting {
                 childStage.initModality(Modality.WINDOW_MODAL);
                 childStage.initOwner(stage);
                 Label decompilelabel = new Label(wrapper.decompile());
-                StackPane layout = new StackPane();
-                layout.getChildren().add(decompilelabel);
+                ScrollPane layout = new ScrollPane(decompilelabel);
                 Scene childScene = new Scene(layout, 400, 200);
                 childStage.setScene(childScene);
                 childStage.setTitle("decompile");

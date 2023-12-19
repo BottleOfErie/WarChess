@@ -9,12 +9,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.*;
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.util.*;
@@ -65,7 +65,7 @@ public class Play {
                         detailedChess.clear();
                         showchoosechess(x, y);
                     } else {
-                        if (detailedChess.size() <= 9 &&!detailedChess.contains(Main.currentGameEngine.getChess(x,y)))
+                        if (!detailedChess.contains(Main.currentGameEngine.getChess(x,y)))
                             showchessdetails(x, y);
                     }
                 }
@@ -78,6 +78,8 @@ public class Play {
     }
     private void showchoosechess(int x, int y){
         VBox root=new VBox();
+        ScrollPane scrollPane=new ScrollPane(root);
+        scrollPane.setPrefSize(200, 600);
         root.setPrefSize(200, 600);
         for(Class<?> clazz : classlist){
             GridPane pane=new GridPane();
@@ -91,11 +93,12 @@ public class Play {
             button.setDisable(!ChessClassInvoker.invokeCheckPlaceRequirements(clazz,Main.currentGameEngine.getPlayer(Main.currentGameEngine.getCurrentTeam()),x,y));
             pane.addRow(0,ChessClassInvoker.invokeShowData(clazz));
             pane.addRow(1,button);
+            pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));
             root.getChildren().add(pane);
         }
-        root.setId("choosechessroot");
-        anchorPane.getChildren().add(root);
-        root.setLayoutX(700);root.setLayoutY(0);
+        scrollPane.setId("choosechessroot");
+        anchorPane.getChildren().add(scrollPane);
+        scrollPane.setLayoutX(700);scrollPane.setLayoutY(0);
     }
     private static void removechoosechess(){
         try{
@@ -131,7 +134,6 @@ public class Play {
         chessdetails.getChildren().clear();
         detailedChess.clear();
         removechoosechess();
-
     }
 
     private static void showchessdetails(int x, int y){
@@ -140,6 +142,7 @@ public class Play {
         Button button=new Button("隐藏");
         root.addRow(0, button);
         button.setPrefSize(50, 20);
+        root.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));
         chessdetails.getChildren().addAll(root);
         root.setLayoutX(700);
         root.setId("root"+','+String.valueOf(x)+','+String.valueOf(y));
@@ -158,6 +161,7 @@ public class Play {
                 newnode.setLayoutX(700);
                 Button button=new Button("隐藏");
                 newnode.addRow(0, button);
+                newnode.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));
                 chessdetails.getChildren().set(index, newnode);
                 button.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
@@ -185,10 +189,12 @@ public class Play {
         lastX=lastY=-1;
     }
     public static void initchessdetailvbox(){
+        ScrollPane scrollPane = new ScrollPane();
         chessdetails=new VBox();
-        anchorPane.getChildren().add(chessdetails);
-        chessdetails.setPrefSize(200, 700);
-        chessdetails.setLayoutX(700);chessdetails.setLayoutY(0);
+        scrollPane.setContent(chessdetails);
+        anchorPane.getChildren().add(scrollPane);
+        scrollPane.setPrefSize(200, 700);chessdetails.setPrefSize(200, 700);
+        scrollPane.setLayoutX(700);scrollPane.setLayoutY(0);
     }
 
     public static void submitClickEvent(ChessClickEvent event){
