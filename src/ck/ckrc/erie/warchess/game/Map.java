@@ -4,8 +4,7 @@ import java.util.Random;
 
 public class Map {
 
-    public static final int MapSize=10;
-
+    public static final int MapSize=10,maxHeight=100;
 
     private Chess[][] chessmap;
     private int[][] heightmap;
@@ -16,7 +15,7 @@ public class Map {
         Random r=new Random();
         for(int i=0;i<MapSize;i++)
             for(int j=0;j<MapSize;j++)
-                heightmap[i][j]=r.nextInt(100);
+                heightmap[i][j]=r.nextInt(maxHeight);
     }
 
     public void overDamaged(int x,int y,double damage){

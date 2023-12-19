@@ -6,6 +6,7 @@ import ck.ckrc.erie.warchess.example.Shield;
 import ck.ckrc.erie.warchess.example.Tank;
 import ck.ckrc.erie.warchess.example1.Life;
 import ck.ckrc.erie.warchess.example1.Test;
+import ck.ckrc.erie.warchess.example2.Gomoku;
 import ck.ckrc.erie.warchess.game.ChessClassLoader;
 import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.game.Player;
@@ -45,6 +46,7 @@ public class Main {
         chessClassLoader.addChessClass(Test.class);
         chessClassLoader.addChessClass(Shield.class);
         chessClassLoader.addChessClass(Tank.class);
+        chessClassLoader.addChessClass(Gomoku.class);
 
         FXMain.FXMain(args);
 

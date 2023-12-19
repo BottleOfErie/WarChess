@@ -34,6 +34,7 @@ public class Setting {
     public static boolean canloadclass =false;
 
     public static void makesetting() {
+        //TODO change to TreeView
         try {
             Parent root = FXMLLoader.load(Setting.class.getResource("/Fxml/Setting.fxml"));
             root.setId("setting");
