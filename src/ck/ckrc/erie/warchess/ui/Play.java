@@ -26,7 +26,7 @@ public class Play {
 
     private static int edgelength=GameScene.edgelength;
     private static int nodeboxheight= Director.height/ Map.MapSize;
-    static List<Chess> detailedChess =new LinkedList<>();//TODO 同一个chess的detial会反复显示？？
+    static List<Chess> detailedChess =new LinkedList<>();
     private static Queue<ChessClickEvent> clickEvents=new LinkedList<>();
 
     public static AnchorPane anchorPane;
@@ -101,7 +101,6 @@ public class Play {
     }
     private static void removechoosechess(){
         try{
-            detailedChess.clear();
             Node node=anchorPane.lookup("#choosechessroot");
             anchorPane.getChildren().remove(node);
         }catch (IndexOutOfBoundsException e){}
