@@ -2,20 +2,13 @@ package ck.ckrc.erie.warchess.Controller;
 
 import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
-import ck.ckrc.erie.warchess.example.GunTower;
-import ck.ckrc.erie.warchess.example.Miner;
-import ck.ckrc.erie.warchess.game.Engine;
-import ck.ckrc.erie.warchess.game.Player;
 import ck.ckrc.erie.warchess.net.Client;
-import ck.ckrc.erie.warchess.net.MapSyncThread;
-import ck.ckrc.erie.warchess.ui.CLIUserInterface;
 import ck.ckrc.erie.warchess.ui.Play;
 import ck.ckrc.erie.warchess.ui.Setting;
 import ck.ckrc.erie.warchess.ui.StartFrame;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -75,9 +68,6 @@ public class ChooseOneSideController {
     @FXML
     void StartGameAsServer(MouseEvent event) {
         Play.gamemodel=1;
-        //TODO debug for inner class in chess class
-        Main.chessClassLoader.loadChessClassFromFile(new File("D:\\javaproj\\warchess\\WarChess\\out\\production\\WarChess\\ck\\ckrc\\erie\\warchess\\example\\Miner.class"));
-        Main.chessClassLoader.loadChessClassFromFile(new File("D:\\javaproj\\warchess\\WarChess\\out\\production\\WarChess\\ck\\ckrc\\erie\\warchess\\example\\HeliosSystem.class"));
         try {
             Client client = new Client();
             client.start();
@@ -114,9 +104,9 @@ public class ChooseOneSideController {
                 if(!Thread.currentThread().isInterrupted()) {
                     Main.syncThread.start();
                     for (var clazz:
-                         Main.chessClassLoader.getChessClassNames()) {
+                         Main.chessClassLoader.getAllClass()) {
                         try {
-                            Main.syncThread.sendLoad(clazz);
+                            Main.syncThread.sendLoad(clazz.getName());
                         } catch (IOException e) {
                             Main.log.addLog("failed to sendLoad:"+clazz,this.getClass());
                             Main.log.addLog(e,this.getClass());

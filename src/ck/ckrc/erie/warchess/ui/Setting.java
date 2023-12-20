@@ -4,12 +4,9 @@ import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.PreMain;
 import ck.ckrc.erie.warchess.game.ClassDecompilerWrapper;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.ClipboardContent;
@@ -57,7 +54,7 @@ public class Setting {
         VBox loadedlist=(VBox) ((ScrollPane) stage.getScene().lookup("#loadedpane")).getContent();
         notloadlist.getChildren().clear();
         loadedlist.getChildren().clear();
-        for(var clazz:Main.chessClassLoader.getChessClass()){
+        for(var clazz:Main.chessClassLoader.getAllChessClass()){
             LabelWithChessClass label=new LabelWithChessClass(clazz.getName(),clazz.getSimpleName());
             label.setPrefSize(200, 50);
             label.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));

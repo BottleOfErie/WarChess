@@ -29,7 +29,7 @@ public class ChessClassLoader extends ClassLoader{
     public Class<?> loadChessClassFromByteArray(byte[] byteArr){
         //TODO add temp class loader to avoid error!
         var clazz=this.defineClass(null,byteArr,0,byteArr.length);
-        var name=getChessClassName(clazz);
+        var name=clazz.getName();
         chessClass.put(name,clazz);
         PreMain.transformer.map.put(name,byteArr);
         Main.log.addLog("Loaded Class:"+name,this.getClass());
@@ -67,12 +67,12 @@ public class ChessClassLoader extends ClassLoader{
         chessClass.put(clazz.getName(),clazz);
     }
 
-    public Collection<Class<?>> getChessClass(){
+    public Collection<Class<?>> getAllClass(){
         return chessClass.values();
     }
 
-    public Set<String> getChessClassNames(){
-        return chessClass.keySet();
+    public Collection<Class<?>> getAllChessClass(){
+        return chessClass.values().stream().filter((Class<?>clazz)->clazz.getSuperclass()==Chess.class).toList();
     }
 
     public Class<?> getClassByName(String name){return chessClass.get(name);}

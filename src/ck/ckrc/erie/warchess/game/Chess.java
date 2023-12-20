@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 import java.io.Serializable;
 
 /**
- * Attention:You should not use inner class in a chess class,use lambda instead!
+ * Attention:Should load inner class before real chess class!
  */
 public abstract class Chess {
 
