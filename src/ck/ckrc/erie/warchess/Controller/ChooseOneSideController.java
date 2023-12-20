@@ -28,6 +28,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.io.IOException;
 
 public class ChooseOneSideController {
@@ -74,6 +75,9 @@ public class ChooseOneSideController {
     @FXML
     void StartGameAsServer(MouseEvent event) {
         Play.gamemodel=1;
+        //TODO debug for inner class in chess class
+        Main.chessClassLoader.loadChessClassFromFile(new File("D:\\javaproj\\warchess\\WarChess\\out\\production\\WarChess\\ck\\ckrc\\erie\\warchess\\example\\Miner.class"));
+        Main.chessClassLoader.loadChessClassFromFile(new File("D:\\javaproj\\warchess\\WarChess\\out\\production\\WarChess\\ck\\ckrc\\erie\\warchess\\example\\HeliosSystem.class"));
         try {
             Client client = new Client();
             client.start();

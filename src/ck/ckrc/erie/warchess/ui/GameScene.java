@@ -29,6 +29,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Set;
 
+//TODO add exit and chat
 public class GameScene {
     public static final int canvasize=600,edgelength=canvasize/ Map.MapSize;
     private Canvas canvas = new Canvas(canvasize,canvasize );

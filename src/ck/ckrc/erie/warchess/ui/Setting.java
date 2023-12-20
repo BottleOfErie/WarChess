@@ -25,6 +25,7 @@ import java.util.*;
 
 
 
+//TODO load from file!
 public class Setting {
     private static Stage stage= Director.GetDirector().stage;
     private static AnchorPane anchorPane=GameScene.anchorPane;
@@ -39,7 +40,6 @@ public class Setting {
             Parent root = FXMLLoader.load(Setting.class.getResource("/Fxml/Setting.fxml"));
             root.setId("setting");
             stage.getScene().setRoot(root);
-            initclassmap();
             initClass();
         } catch (IOException e) {
             e.printStackTrace();
@@ -52,22 +52,17 @@ public class Setting {
             if(loadornot.get(clazz)){Play.classlist.add(clazz);}
         }
     }
-    public static void initclassmap(){
-        Collection<Class<?>> classlist=Main.chessClassLoader.getChessClass();
-        for(var item:classlist){
-            loadornot.put(item, false);
-        }
-    }
     public static void initClass(){
         VBox notloadlist=(VBox) ((ScrollPane) stage.getScene().lookup("#notloadpane")).getContent();
         VBox loadedlist=(VBox) ((ScrollPane) stage.getScene().lookup("#loadedpane")).getContent();
         notloadlist.getChildren().clear();
         loadedlist.getChildren().clear();
-        for(var clazz:loadornot.keySet()){
+        for(var clazz:Main.chessClassLoader.getChessClass()){
             LabelWithChessClass label=new LabelWithChessClass(clazz.getName(),clazz.getSimpleName());
             label.setPrefSize(200, 50);
             label.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));
             setdecompile(label);
+            if(!loadornot.containsKey(clazz))loadornot.put(clazz, false);
             if(loadornot.get(clazz)){
                 loadedlist.getChildren().add(label);
                 setupDragAndDrop(label, notloadlist);

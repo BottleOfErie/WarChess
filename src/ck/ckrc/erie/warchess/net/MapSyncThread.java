@@ -89,6 +89,7 @@ public class MapSyncThread extends Thread{
                         var len=Integer.parseInt(strings[1]);
                         byte[] a=input.readNBytes(len);
                         Main.chessClassLoader.loadChessClassFromByteArray(a);
+                        Platform.runLater(Setting::initClass);
                         break;
                     case "round":
                         if(!Director.GetDirector().isGameStarted()) {

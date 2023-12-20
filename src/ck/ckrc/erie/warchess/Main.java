@@ -37,14 +37,6 @@ public class Main {
 
         currentGameEngine=new Engine();
         chessClassLoader=new ChessClassLoader();
-        chessClassLoader.addChessClass(Miner.class);
-        chessClassLoader.addChessClass(GunTower.class);
-        chessClassLoader.addChessClass(Life.class);
-        chessClassLoader.addChessClass(Test.class);
-        chessClassLoader.addChessClass(Shield.class);
-        chessClassLoader.addChessClass(Tank.class);
-        chessClassLoader.addChessClass(Gomoku.class);
-        chessClassLoader.addChessClass(HeliosSystem.class);
 
         FXMain.FXMain(args);
 

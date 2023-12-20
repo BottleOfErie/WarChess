@@ -27,6 +27,7 @@ public class ChessClassLoader extends ClassLoader{
     }
 
     public Class<?> loadChessClassFromByteArray(byte[] byteArr){
+        //TODO add temp class loader to avoid error!
         var clazz=this.defineClass(null,byteArr,0,byteArr.length);
         var name=getChessClassName(clazz);
         chessClass.put(name,clazz);

@@ -135,15 +135,19 @@ public class Play {
     }
 
     private static void showchessdetails(int x, int y){
-        GridPane root=(GridPane) Main.currentGameEngine.getMap().getChessMap()[x][y].showPanel();
-        root.setPrefSize(200, nodeboxheight);
+        GridPane root= new GridPane();
+        var node=Main.currentGameEngine.getMap().getChessMap()[x][y].showPanel();
+        GridPane gp=new GridPane();
+        gp.add(node,0,0);
+        gp.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));
+        gp.setPrefWidth(200);
+        root.addRow(0,gp);
         Button button=new Button("隐藏");
-        root.addRow(0, button);
+        root.addRow(1, button);
         button.setPrefSize(50, 20);
-        root.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));
         chessdetails.getChildren().addAll(root);
         root.setLayoutX(700);
-        root.setId("root"+','+String.valueOf(x)+','+String.valueOf(y));
+        root.setId("root"+','+ x +','+ y);
         detailedChess.add(Main.currentGameEngine.getChess(x,y));
         button.setOnAction(actionEvent -> removechessdetails(x, y));
     }
