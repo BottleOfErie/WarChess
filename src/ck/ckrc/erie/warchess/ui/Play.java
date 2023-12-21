@@ -112,8 +112,8 @@ public class Play {
             for(int i=0;i<Map.MapSize;i++)
                 for(int j=0;j<Map.MapSize;j++) {
                     var chess = Main.currentGameEngine.getChess(i, j);
-                    if (chess == null) graphicsContext.clearRect(i * edgelength + 10, j * edgelength + 10, 40, 40);
-                    else {
+                    graphicsContext.clearRect(i * edgelength + 10, j * edgelength + 10, 40, 40);
+                    if (chess != null) {
                         chess.drawSpecialEffect(spgraphicsContext,now - lastRepaintTime);
                         graphicsContext.drawImage(chess.paint(now - lastRepaintTime), i * 60 + 10, j * 60 + 10, 40, 40);
                     }

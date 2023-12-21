@@ -105,7 +105,7 @@ public class Miner extends Chess {
 
 
     public static void playerInit(Player player){
-        player.setStatus(energyKey,10);
+        player.setStatus(energyKey,50);
     }
 
     @Override

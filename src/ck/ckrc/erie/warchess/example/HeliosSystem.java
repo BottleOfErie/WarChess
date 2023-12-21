@@ -16,13 +16,11 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
+import javafx.scene.paint.*;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Random;
 
 /**
@@ -40,34 +38,42 @@ public class HeliosSystem extends Chess {
     public static final String[] parts={"Elvis-Graham空间张量调谐器","Darius-Semiz驱动器","Ortiz-Hannigan传送场聚焦器","Wüthrich流变路由器"};
     public static final String[] words={"","知识","知识就是","知识就是力量"};
     public static final int build_cost =50,max_hp=10;
-    public static final int initTime=4,attTime=5,damage=1000,attCost=10,stopCost=5;
+    public static final int initTime=4,attTime=5,attCost=10,stopCost=5;
+    public static final double damage=1000;
     private static int next_target_x=-5, next_target_y,countdown;
     private static Random random=new Random();
+    private static DamageEvent[][] events=new DamageEvent[Map.MapSize][Map.MapSize];
     private AnimationTimer timer=null;
     private static boolean roundEndExecuted=false;
     private DamageListener myDmgListener;
     private int target_x, target_y, sync_count;
+    private static final int animTime=2000;//200 600*3
+    private static int drawer_x=Map.MapSize,drawer_y=Map.MapSize,animTimer=-1,anim_x,anim_y;
 
     public HeliosSystem(int x, int y, Player player){
         this.x=x;this.y=y;
         hp=max_hp;
         this.teamFlag=player.getTeamFlag();
-        if(next_target_x==-5)
-            next_target_x =-initTime;
-        countdown=-1;
+        if(next_target_x==-5) {
+            next_target_x = -initTime;
+            countdown = -1;
+        }
         myDmgListener= damage -> {
+            if(hp==Integer.MAX_VALUE)return damage;
             if(hp>damage){
                 hp-=(int)damage;
                 return 0;
             }else{
                 double tmp=damage-hp;
                 hp=0;
+                if(animTimer>0&&drawer_x==x&&drawer_y==y)hp=Integer.MAX_VALUE;
                 return tmp;
             }
         };
 
         var currentEnergy=(Integer)player.getStatus(Miner.energyKey);
         player.setStatus(Miner.energyKey, currentEnergy - build_cost);
+        Main.currentGameEngine.registerDamageListener(this,1,myDmgListener,x,y);
     }
 
     @Override
@@ -193,8 +199,15 @@ public class HeliosSystem extends Chess {
         roundEndExecuted=true;
         if(countdown==-1)return;
         if(countdown==0){
-            //TODO commit damages
-            System.out.println("Boom!!!:at"+ target_x +","+ target_y);
+            for (int i = 0; i < Map.MapSize; i++) {
+                for (int j = 0; j < Map.MapSize; j++) {
+                    events[i][j]=new DamageEvent(i,j, damage/ Math.exp(Math.sqrt((i-target_x)*(i-target_x)+(j-target_y)*(j-target_y))),this);
+                    Main.currentGameEngine.commitDamageEvent(events[i][j]);
+                }
+            }
+            animTimer=animTime;
+            anim_x=target_x;
+            anim_y=target_y;
         }
         countdown--;
     }
@@ -219,17 +232,74 @@ public class HeliosSystem extends Chess {
     @Override
     public void drawSpecialEffect(GraphicsContext context, long delta) {
         //TODO draw cool SE!
+        if(random.nextInt(10-(next_target_x<0?next_target_x:(countdown==-1?0:7-countdown)))==0){
+            double a= random.nextDouble(), b=random.nextDouble(),c=random.nextDouble(),d=random.nextDouble();
+            c*=(1-a);d*=(1-b);
+            context.setFill(Color.VIOLET);
+            context.fillRect(x*60+60*a,y*60+60*b,60*c,60*d);
+        }
+        if(countdown!=-1){
+            double prop=1.0*(attTime-countdown)/attTime;
+            var grad=new RadialGradient(0,0,0.5,0.5,0.5,true,CycleMethod.NO_CYCLE,new Stop(0,Color.LIGHTSKYBLUE),new Stop(0.5*prop,Color.SKYBLUE),new Stop(prop,Color.TRANSPARENT));
+            context.setFill(grad);
+            context.fillOval(x*60+10,y*60+10,40,40);
+            context.setStroke(Color.RED);
+            context.strokeOval(next_target_x*60,next_target_y*60,60,60);
+        }
+        if(x<=drawer_x&&y<=drawer_y) {
+            drawer_x = x;
+            drawer_y = y;
+        }
+        if(x!=drawer_x||y!=drawer_y)return;
+        if(countdown!=-1){
+            context.setStroke(Color.RED);
+            context.strokeOval(next_target_x*60,next_target_y*60,60,60);
+        }
+        if(animTimer>0){
+            double prop=0;
+            if(animTimer>1900){
+                context.setFill(Color.WHITE);
+                context.fillRect(0,0,Map.MapSize*60,Map.MapSize*60);
+            }
+            if(animTimer>1800){
+                prop=1.0*(2000-animTimer)/200;
+                var grad=new RadialGradient(0,0,0.5,0.5,0.5,true,CycleMethod.NO_CYCLE,new Stop(0,Color.YELLOW),new Stop(1,Color.TRANSPARENT));
+                context.setFill(grad);
+                context.fillOval(anim_x*60+30-prop*60*3,anim_y*60+30-prop*60*3,prop*60*6,prop*60*6);
+            } else if (animTimer>1200) {
+                prop=1.0*(1800-animTimer)/600;
+                var grad=new RadialGradient(0,0,0.5,0.5,0.5,true,CycleMethod.NO_CYCLE,new Stop(0,Color.BLACK),new Stop(prop,Color.YELLOW),new Stop(1,Color.TRANSPARENT));
+                context.setFill(grad);
+                context.fillOval(anim_x*60+30-60*3,anim_y*60+30-60*3,60*6,60*6);
+            } else if (animTimer>600) {
+                prop=1.0*(1200-animTimer)/600;
+                var grad=new RadialGradient(0,0,0.5,0.5,0.5,true,CycleMethod.NO_CYCLE,new Stop(0,Color.TRANSPARENT),new Stop(prop,Color.BLACK),new Stop(1,Color.YELLOW));
+                context.setFill(grad);
+                context.fillOval(anim_x*60+30-60*3,anim_y*60+30-60*3,60*6,60*6);
+            } else {
+                prop=1.0*(600-animTimer)/600;
+                var grad=new RadialGradient(0,0,0.5,0.5,0.5,true,CycleMethod.NO_CYCLE,new Stop(0,Color.TRANSPARENT),new Stop(prop,Color.TRANSPARENT),new Stop(1,Color.BLACK));
+                context.setFill(grad);
+                context.fillOval(anim_x*60+30-60*3,anim_y*60+30-60*3,60*6,60*6);
+            }
+            animTimer-= (int) delta;
+            if(animTimer<0&&hp==Integer.MAX_VALUE) {
+                Main.currentGameEngine.setChess(x, y, null);
+                drawer_x=Map.MapSize;
+                drawer_y=Map.MapSize;
+            }
+        }
     }
 
     @Override
     public Image paint(long delta) {
         //TODO addImage
-        return image0;
+        return hp==Integer.MAX_VALUE?null:image0;
     }
 
     @Override
     public boolean checkEvent(DamageEvent evt) {
-        return false;
+        return true;
     }
 
     @Override

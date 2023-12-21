@@ -14,6 +14,7 @@ public class ChessClassExtractor implements ClassFileTransformer{
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) {
         map.put(className.replace("/","."),classfileBuffer);
+        //System.out.println(className+":"+loader.getName());
         return classfileBuffer;
     }
 }

@@ -12,6 +12,10 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class SettingController {
     @FXML
@@ -57,8 +61,10 @@ public class SettingController {
         fileChooser.setTitle("请从example文件夹中选择类");
         File initialDirectory = new File("./out/production/WarChess/ck/ckrc/erie/warchess");
         fileChooser.setInitialDirectory(initialDirectory);
-        File file = fileChooser.showOpenDialog(GameScene.stage);
-        if (file != null && file.getParent().contains("example") && !file.getName().contains("$")) {
+        var lst = fileChooser.showOpenMultipleDialog(GameScene.stage);
+        var files=new ArrayList<>(lst);
+        files.sort(Comparator.comparingInt(o -> (o.getName().contains("$") ? 0 : 1)));
+        for (var file:files) {
             var clazz=Main.chessClassLoader.loadChessClassFromFile(file);
             if(Main.syncThread!=null) {
                 try {

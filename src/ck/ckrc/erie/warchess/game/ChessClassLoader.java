@@ -30,7 +30,7 @@ public class ChessClassLoader extends ClassLoader{
     };
 
     public ChessClassLoader(){
-        super();
+        super(getSystemClassLoader());
         chessClass =new HashMap<>();
         Main.log.addLog("Initialized",this.getClass());
     }
@@ -45,6 +45,7 @@ public class ChessClassLoader extends ClassLoader{
     }
 
     public Class<?> loadChessClassFromByteArray(byte[] byteArr){
+        //TODO depress appClassloader
         var clazz=new TempClassLoader().loadClass(byteArr);
         var name=clazz.getName();
         if(chessClass.containsKey(name)) {

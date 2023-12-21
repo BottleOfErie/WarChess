@@ -21,8 +21,6 @@ import java.io.IOException;
 import java.util.*;
 
 
-
-//TODO load from file!
 public class Setting {
     private static Stage stage= Director.GetDirector().stage;
     private static AnchorPane anchorPane=GameScene.anchorPane;

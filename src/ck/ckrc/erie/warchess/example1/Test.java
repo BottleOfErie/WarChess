@@ -42,7 +42,7 @@ public class Test extends Chess {
             }
         });
         Button diedButton=new Button("输出类列表");
-        diedButton.setOnAction(actionEvent -> System.out.println(Setting.loadornot));
+        diedButton.setOnAction(actionEvent -> System.out.println(Main.chessClassLoader.getAllClass()));
         pane.addRow(0, title);
         pane.addRow(2, liveButton, diedButton);
         return pane;
