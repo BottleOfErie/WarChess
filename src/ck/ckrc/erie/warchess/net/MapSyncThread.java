@@ -7,6 +7,7 @@ import ck.ckrc.erie.warchess.PreMain;
 import ck.ckrc.erie.warchess.game.Chess;
 import ck.ckrc.erie.warchess.game.ChessClassInvoker;
 import ck.ckrc.erie.warchess.game.Player;
+import ck.ckrc.erie.warchess.ui.GameScene;
 import ck.ckrc.erie.warchess.ui.Play;
 import ck.ckrc.erie.warchess.ui.Setting;
 import ck.ckrc.erie.warchess.utils.DataPackage;
@@ -83,7 +84,8 @@ public class MapSyncThread extends Thread{
                         break;
                     case "chat":
                         //TODO connect to Chat Node
-                        System.out.println(strings[1]);
+                        var message=command.substring(5);
+                        GameScene.showchat(GameScene.textField, GameScene.textArea);
                         break;
                     case "load":
                         var len=Integer.parseInt(strings[1]);

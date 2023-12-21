@@ -18,7 +18,7 @@ import java.net.URL;
 import java.util.Optional;
 
 public class Director {
-    public static final int width=900,height=700;
+    public static final int width=1000,height=700;
     private boolean isGameStarted=false;
     public Stage stage;
     private GameScene gameScene=new GameScene();

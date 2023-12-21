@@ -3,10 +3,13 @@ import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.ui.GameScene;
 import ck.ckrc.erie.warchess.ui.Setting;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.io.IOException;
 
 public class SettingController {
@@ -45,5 +48,17 @@ public class SettingController {
         double opacity=loadclass.getOpacity();
         if(opacity==1){loadclass.setOpacity(0.5);Setting.canloadclass =true;}
         else{loadclass.setOpacity(1);Setting.canloadclass =false;}
+    }
+    @FXML
+    void loadclassfromfile(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("请从example文件夹中选择类");
+        File initialDirectory = new File("./out/production/WarChess/ck/ckrc/erie/warchess");
+        fileChooser.setInitialDirectory(initialDirectory);
+        File file = fileChooser.showOpenDialog(GameScene.stage);
+        if (file != null && file.getParent().contains("example") && !file.getName().contains("$")) {
+            Main.chessClassLoader.loadChessClassFromFile(file);
+            Setting.initClass();
+        }
     }
 }

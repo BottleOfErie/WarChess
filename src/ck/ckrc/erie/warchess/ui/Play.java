@@ -97,7 +97,7 @@ public class Play {
         }
         scrollPane.setId("choosechessroot");
         anchorPane.getChildren().add(scrollPane);
-        scrollPane.setLayoutX(700);scrollPane.setLayoutY(0);
+        scrollPane.setLayoutX(800);scrollPane.setLayoutY(0);
     }
     private static void removechoosechess(){
         try{
@@ -146,7 +146,7 @@ public class Play {
         root.addRow(1, button);
         button.setPrefSize(50, 20);
         chessdetails.getChildren().addAll(root);
-        root.setLayoutX(700);
+        root.setLayoutX(800);
         root.setId("root"+','+ x +','+ y);
         detailedChess.add(Main.currentGameEngine.getChess(x,y));
         button.setOnAction(actionEvent -> removechessdetails(x, y));
@@ -160,7 +160,7 @@ public class Play {
                 String[] position = element.getId().split("[,]");
                 GridPane newnode = (GridPane) chess.showPanel();
                 newnode.setPrefSize(200, nodeboxheight);
-                newnode.setLayoutX(700);
+                newnode.setLayoutX(800);
                 Button button=new Button("隐藏");
                 newnode.addRow(0, button);
                 newnode.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));
@@ -196,7 +196,7 @@ public class Play {
         scrollPane.setContent(chessdetails);
         anchorPane.getChildren().add(scrollPane);
         scrollPane.setPrefSize(200, 700);chessdetails.setPrefSize(200, 700);
-        scrollPane.setLayoutX(700);scrollPane.setLayoutY(0);
+        scrollPane.setLayoutX(800);scrollPane.setLayoutY(0);
     }
 
     public static void submitClickEvent(ChessClickEvent event){

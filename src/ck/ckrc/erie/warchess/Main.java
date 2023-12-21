@@ -37,6 +37,9 @@ public class Main {
 
         currentGameEngine=new Engine();
         chessClassLoader=new ChessClassLoader();
+        chessClassLoader.addChessClass(Test.class);
+        chessClassLoader.addChessClass(Miner.class);
+        chessClassLoader.addChessClass(HeliosSystem.class);
 
         FXMain.FXMain(args);
 
