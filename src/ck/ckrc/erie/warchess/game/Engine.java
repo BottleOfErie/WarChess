@@ -1,6 +1,7 @@
 package ck.ckrc.erie.warchess.game;
 
 import ck.ckrc.erie.warchess.Main;
+import ck.ckrc.erie.warchess.ui.GameScene;
 
 import java.util.*;
 
@@ -25,6 +26,7 @@ public class Engine {
 
     private Map currentMap=null;
     private Integer currentTeam=0;
+    private List<GameOverListener> gameOverListeners;
     private ArrayList<ListenerNode>[][] damageListeners;
     private Queue<DamageEvent> damageQueue;
     private HashMap<Integer,Player> players;
@@ -33,6 +35,7 @@ public class Engine {
         Main.log.addLog("Creating Engine",this.getClass());
         currentMap=new Map();
         damageListeners= new ArrayList[Map.MapSize][Map.MapSize];
+        gameOverListeners=new ArrayList<>();
         for(int i=0;i<Map.MapSize;i++)
             for(int j=0;j<Map.MapSize;j++)
                 damageListeners[i][j]=new ArrayList<>();
@@ -81,10 +84,15 @@ public class Engine {
                 if(currentMap.getChessMap()[i][j]!=null&&currentMap.getChessMap()[i][j].hp<=0) {
                     currentMap.setChess(i, j, null);
                 }
+        for (var item:
+                gameOverListeners)
+            if(item.check()) {
+                GameScene.gameEnd(currentTeam);
+                return;
+            }
 
         currentTeam=nextTeam;
         Main.log.addLog("current teamFlag:"+currentTeam,this.getClass());
-
         Main.log.addLog("Executing roundBegin function",this.getClass());
         //execute Chess roundBegin method
         for(int i=0;i<Map.MapSize;i++)
@@ -124,6 +132,10 @@ public class Engine {
 
     public Integer getCurrentTeam() {
         return currentTeam;
+    }
+
+    public void commitGameOverListener(GameOverListener listener){
+        gameOverListeners.add(listener);
     }
 
 }

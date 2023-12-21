@@ -1,6 +1,7 @@
 package ck.ckrc.erie.warchess.Controller;
 import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
+import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.ui.GameScene;
 import ck.ckrc.erie.warchess.ui.Setting;
 import javafx.event.ActionEvent;
@@ -25,6 +26,7 @@ public class SettingController {
     @FXML
     void GameStart(MouseEvent event) {
         Setting.checkloadedclass();
+        Main.currentGameEngine=new Engine();
         Director.GetDirector().gameStart();
         Main.currentGameEngine.nextRound(0);
         if(Main.syncThread!=null)

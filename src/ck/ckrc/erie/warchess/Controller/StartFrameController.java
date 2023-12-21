@@ -35,9 +35,6 @@ public class StartFrameController {
     void SingalPlayerStart(MouseEvent event) {
         Play.gamemodel=0;
         Engine.playerNum=1;
-        for(int i=0;i< Engine.playerNum;i++){
-            Main.currentGameEngine.setPlayer(i, Player.getNewPlayer(i));
-        }
         Setting.makesetting();
     }
 

@@ -1,13 +1,8 @@
 package ck.ckrc.erie.warchess.example2;
 
 import ck.ckrc.erie.warchess.Main;
-import ck.ckrc.erie.warchess.game.Chess;
-import ck.ckrc.erie.warchess.game.DamageEvent;
-import ck.ckrc.erie.warchess.game.DamageListener;
-import ck.ckrc.erie.warchess.game.Player;
-import ck.ckrc.erie.warchess.ui.Setting;
+import ck.ckrc.erie.warchess.game.*;
 import ck.ckrc.erie.warchess.utils.DataPackage;
-import ck.ckrc.erie.warchess.utils.ResourceSerialization;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -15,20 +10,25 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.stage.FileChooser;
 
-import java.io.IOException;
 import java.util.Objects;
 
 public class Gomoku extends Chess {
 
     public static final String className="ck.ckrc.erie.warchess.example2.Gomoku";
     public static final int black=0,white=1;
+    public static GameOverListener listener =null;
+    public static boolean pushed=false;
+    public static boolean gameEnd=false;
 
     public Gomoku(int x, int y, Player player){
+        pushed=true;
         this.x=x;this.y=y;
         this.teamFlag=player.getTeamFlag();
         if(teamFlag<2) this.hp=1;
+        if(listener !=null)return;
+        listener =()->gameEnd;
+        Main.currentGameEngine.commitGameOverListener(listener);
     }
 
     @Override
@@ -39,26 +39,8 @@ public class Gomoku extends Chess {
         whiteButton.setOnAction(actionEvent -> teamFlag=white);
         Button blackButton=new Button("设为黑色");
         blackButton.setOnAction(actionEvent -> teamFlag=black);
-        Button checkButton=new Button("检查");
-        Label result=new Label("");
-        checkButton.setOnAction(actionEvent -> {
-            int a=0,b=0,c=0,d=0;
-            for (int i = 1; i < 5; i++) {
-                var chess=Main.currentGameEngine.getChess(x,y+i);
-                if(chess!=null&&chess.getClass()==this.getClass()&& Objects.equals(chess.teamFlag, this.teamFlag))a++;
-                chess=Main.currentGameEngine.getChess(x+i,y);
-                if(chess!=null&&chess.getClass()==this.getClass()&& Objects.equals(chess.teamFlag, this.teamFlag))b++;
-                chess=Main.currentGameEngine.getChess(x+i,y+i);
-                if(chess!=null&&chess.getClass()==this.getClass()&& Objects.equals(chess.teamFlag, this.teamFlag))c++;
-                chess=Main.currentGameEngine.getChess(x-i,y+i);
-                if(chess!=null&&chess.getClass()==this.getClass()&& Objects.equals(chess.teamFlag, this.teamFlag))d++;
-            }
-            //TODO add game end
-            result.setText((a==4||b==4||c==4||d==4)?"Win!":"NotYet.");
-        });
         pane.addRow(0, title);
         pane.addRow(1, whiteButton, blackButton);
-        pane.addRow(2, checkButton, result);
         return pane;
     }
 
@@ -71,6 +53,28 @@ public class Gomoku extends Chess {
             context.setFill(Color.BLACK);
             context.fillOval(x*60+10,y*60+10,40,40);
         }
+    }
+
+    @Override
+    public void roundBegin() {
+        pushed=false;
+    }
+
+    @Override
+    public void roundEnd() {
+        int a=0,b=0,c=0,d=0;
+        for (int i = 1; i < 5; i++) {
+            var chess=Main.currentGameEngine.getChess(x,y+i);
+            if(chess!=null&&chess.getClass()==this.getClass()&& Objects.equals(chess.teamFlag, this.teamFlag))a++;
+            chess=Main.currentGameEngine.getChess(x+i,y);
+            if(chess!=null&&chess.getClass()==this.getClass()&& Objects.equals(chess.teamFlag, this.teamFlag))b++;
+            chess=Main.currentGameEngine.getChess(x+i,y+i);
+            if(chess!=null&&chess.getClass()==this.getClass()&& Objects.equals(chess.teamFlag, this.teamFlag))c++;
+            chess=Main.currentGameEngine.getChess(x-i,y+i);
+            if(chess!=null&&chess.getClass()==this.getClass()&& Objects.equals(chess.teamFlag, this.teamFlag))d++;
+        }
+        if (a==4||b==4||c==4||d==4)
+            gameEnd=true;
     }
 
     public static Node showData(){
@@ -104,5 +108,5 @@ public class Gomoku extends Chess {
         return false;
     }
 
-    public static boolean checkPlaceRequirements(Player player,int x,int y){return true;}
+    public static boolean checkPlaceRequirements(Player player,int x,int y){return !pushed;}
 }
