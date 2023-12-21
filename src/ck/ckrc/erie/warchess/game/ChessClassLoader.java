@@ -2,6 +2,9 @@ package ck.ckrc.erie.warchess.game;
 
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.PreMain;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 
 import java.io.*;
 import java.util.*;
@@ -10,6 +13,21 @@ import java.util.Map;
 public class ChessClassLoader extends ClassLoader{
 
     private Map<String,Class<?>> chessClass =null;
+    private class TempClassLoader extends ClassLoader {
+
+        private Class<?> clazz=null;
+
+        @Override
+        protected Class<?> findClass(String name) {
+            if (clazz != null && name.equals(clazz.getName())) return clazz;
+            return null;
+        }
+
+        public Class<?> loadClass(byte[] data){
+            clazz=this.defineClass(null,data,0,data.length);
+            return clazz;
+        }
+    };
 
     public ChessClassLoader(){
         super();
@@ -27,13 +45,22 @@ public class ChessClassLoader extends ClassLoader{
     }
 
     public Class<?> loadChessClassFromByteArray(byte[] byteArr){
-        //TODO add temp class loader to avoid error!
-        var clazz=this.defineClass(null,byteArr,0,byteArr.length);
+        var clazz=new TempClassLoader().loadClass(byteArr);
         var name=clazz.getName();
+        if(chessClass.containsKey(name)) {
+            var choice = getAlert(name).showAndWait();
+            if (choice.isEmpty() || choice.get() != ButtonType.OK) return null;
+        }
         chessClass.put(name,clazz);
         PreMain.transformer.map.put(name,byteArr);
         Main.log.addLog("Loaded Class:"+name,this.getClass());
         return clazz;
+    }
+
+    private Alert getAlert(String name){
+        var dialog=new Alert(Alert.AlertType.CONFIRMATION);
+        dialog.setContentText("这个类("+name+")似乎已经加载过了，是否覆盖？");
+        return dialog;
     }
 
     public Class<?> loadChessClassFromFile(File f) {
