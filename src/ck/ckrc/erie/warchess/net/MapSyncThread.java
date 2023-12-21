@@ -6,6 +6,7 @@ import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.PreMain;
 import ck.ckrc.erie.warchess.game.Chess;
 import ck.ckrc.erie.warchess.game.ChessClassInvoker;
+import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.game.Player;
 import ck.ckrc.erie.warchess.ui.GameScene;
 import ck.ckrc.erie.warchess.ui.Play;
@@ -24,7 +25,7 @@ public class MapSyncThread extends Thread{
      * disconnected
      * load length|<byte[] of Class>
      * sync x y length|<byte[] of DataPackage Object>
-     * chat str
+     * chat from str
      * round number
      * res {require|send} name length|<byte[] of Resource>
      * active {true|false} name...
@@ -83,9 +84,9 @@ public class MapSyncThread extends Thread{
                         }
                         break;
                     case "chat":
-                        //TODO connect to Chat Node
-                        var message=command.substring(5);
-                        GameScene.showchat(GameScene.textField, GameScene.textArea);
+                        var fromFlag=Integer.parseInt(strings[1]);
+                        var message=command.substring(command.indexOf(strings[1])+strings[1].length()+1);
+                        GameScene.showchat(message, GameScene.textArea,fromFlag);
                         break;
                     case "load":
                         var len=Integer.parseInt(strings[1]);
@@ -95,6 +96,7 @@ public class MapSyncThread extends Thread{
                         break;
                     case "round":
                         if(!Director.GetDirector().isGameStarted()) {
+                            Main.currentGameEngine=new Engine();
                             Setting.checkloadedclass();
                             Platform.runLater(()->Director.GetDirector().gameStart());
                         }
@@ -155,8 +157,8 @@ public class MapSyncThread extends Thread{
         }
     }
 
-    public void sendChat(String str) throws IOException {
-        output.writeUTF("chat "+str);
+    public void sendChat(String str,int teamFlag) throws IOException {
+        output.writeUTF("chat "+teamFlag+" "+str);
     }
 
     public void sendSync(int x,int y,Chess chess) throws IOException {

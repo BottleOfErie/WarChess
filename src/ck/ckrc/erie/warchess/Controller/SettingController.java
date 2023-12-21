@@ -59,7 +59,15 @@ public class SettingController {
         fileChooser.setInitialDirectory(initialDirectory);
         File file = fileChooser.showOpenDialog(GameScene.stage);
         if (file != null && file.getParent().contains("example") && !file.getName().contains("$")) {
-            Main.chessClassLoader.loadChessClassFromFile(file);
+            var clazz=Main.chessClassLoader.loadChessClassFromFile(file);
+            if(Main.syncThread!=null) {
+                try {
+                    Main.syncThread.sendLoad(clazz.getName());
+                } catch (IOException e) {
+                    Main.log.addLog("Cannot sync this class:"+clazz,this.getClass());
+                    Main.log.addLog(e,this.getClass());
+                }
+            }
             Setting.initClass();
         }
     }

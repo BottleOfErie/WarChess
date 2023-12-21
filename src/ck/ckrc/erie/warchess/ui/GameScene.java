@@ -8,6 +8,7 @@ import ck.ckrc.erie.warchess.example.GunTower;
 import ck.ckrc.erie.warchess.game.ClassDecompilerWrapper;
 import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.game.Map;
+import ck.ckrc.erie.warchess.game.Player;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -138,21 +139,25 @@ public class GameScene {
         anchorPane.getChildren().add(vBox);
         vBox.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));
         vBox.setLayoutX(10);vBox.setLayoutY(0);
-        this.textField=field;this.textArea=area;
-        send.setOnAction(actionEvent -> showchat(field, area));
-        field.setOnAction(event -> showchat(field, area));
-    }
-    public static void showchat(TextField textField, TextArea textArea){
-        String text=textField.getText();
-        if(!text.equals("")){
-            if(!textArea.getText().equals("")){textArea.appendText("\n");}
-            textArea.appendText(text + "(来自team"+Main.currentGameEngine.getCurrentTeam()+")");
-            textField.setText("");
-            try {
-                if (Play.gamemodel == 1) {
-                    Main.syncThread.sendChat(text);
+        textField=field;
+        textArea=area;
+        send.setOnAction(actionEvent -> {
+            showchat(field.getText(), area, Play.teamflag);
+            if(Main.syncThread!=null)
+                try {
+                    Main.syncThread.sendChat(field.getText(), Play.teamflag);
+                } catch (IOException e) {
+                    Main.log.addLog("failed to send chat",GameScene.class);
+                    Main.log.addLog(e,GameScene.class);
                 }
-            }catch (IOException e){e.printStackTrace();}
+            field.setText("");
+        });
+        field.setOnAction(send.getOnAction());
+    }
+    public static void showchat(String text, TextArea textArea,int from){
+        if(!text.isEmpty()){
+            if(!textArea.getText().isEmpty()){textArea.appendText("\n");}
+            textArea.appendText("team"+from+" : "+text);
         }
     }
 
@@ -173,6 +178,9 @@ public class GameScene {
                 }
             }
             stage.setScene(scene);
-        } catch (IOException e){e.printStackTrace();}
+        } catch (IOException e){
+            Main.log.addLog("failed to load Fxml file:GameOver.fxml", GameScene.class);
+            Main.log.addLog(e, GameScene.class);
+        }
     }
 }
