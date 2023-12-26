@@ -50,6 +50,7 @@ public class Setting {
         }
     }
     public static void initClass(){
+        //TODO change drag&drop to better convenience
         VBox notloadlist=(VBox) ((ScrollPane) stage.getScene().lookup("#notloadpane")).getContent();
         VBox loadedlist=(VBox) ((ScrollPane) stage.getScene().lookup("#loadedpane")).getContent();
         notloadlist.getChildren().clear();
