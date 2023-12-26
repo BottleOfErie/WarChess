@@ -231,7 +231,6 @@ public class HeliosSystem extends Chess {
 
     @Override
     public void drawSpecialEffect(GraphicsContext context, long delta) {
-        //TODO draw cool SE!
         if(random.nextInt(10-(next_target_x<0?next_target_x:(countdown==-1?0:7-countdown)))==0){
             double a= random.nextDouble(), b=random.nextDouble(),c=random.nextDouble(),d=random.nextDouble();
             c*=(1-a);d*=(1-b);

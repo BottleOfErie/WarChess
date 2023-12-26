@@ -29,9 +29,10 @@ public class ChessClassInvoker {
             Method f=clazz.getDeclaredMethod("checkPlaceRequirements",Player.class,int.class,int.class);
             f.setAccessible(true);
             return (boolean) f.invoke(null,player,x,y);
-        } catch (NoSuchMethodException | InvocationTargetException e) {
+        } catch (InvocationTargetException e) {
             Main.log.addLog("this class doesn't have right checkPlaceRequirements method:"+clazz, ChessClassInvoker.class);
-        } catch (IllegalAccessException ignored) {}
+            Main.log.addLog(e, ChessClassInvoker.class);
+        } catch (NoSuchMethodException | IllegalAccessException ignored) {}
         return false;
     }
 

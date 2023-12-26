@@ -7,8 +7,6 @@ import org.jd.core.v1.api.loader.Loader;
 import org.jd.core.v1.api.loader.LoaderException;
 import org.jd.gui.util.decompiler.StringBuilderPrinter;
 
-import java.util.Objects;
-
 public class ClassDecompilerWrapper implements Loader {
 
     private byte[] data=null;

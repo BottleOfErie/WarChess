@@ -1,36 +1,20 @@
 package ck.ckrc.erie.warchess.ui;
 
-import ck.ckrc.erie.warchess.Controller.ChooseOneSideController;
 import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
-import ck.ckrc.erie.warchess.PreMain;
-import ck.ckrc.erie.warchess.example.GunTower;
-import ck.ckrc.erie.warchess.game.ClassDecompilerWrapper;
 import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.game.Map;
-import ck.ckrc.erie.warchess.game.Player;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Set;
 
 //TODO add exits
 public class GameScene {

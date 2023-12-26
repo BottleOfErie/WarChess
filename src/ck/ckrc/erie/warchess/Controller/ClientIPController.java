@@ -1,7 +1,7 @@
 package ck.ckrc.erie.warchess.Controller;
+
 import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
-import ck.ckrc.erie.warchess.game.Player;
 import ck.ckrc.erie.warchess.net.Client;
 import ck.ckrc.erie.warchess.net.MapSyncThread;
 import ck.ckrc.erie.warchess.ui.Play;

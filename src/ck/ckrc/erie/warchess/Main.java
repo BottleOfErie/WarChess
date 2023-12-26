@@ -1,12 +1,7 @@
 package ck.ckrc.erie.warchess;
 
-import ck.ckrc.erie.warchess.example.*;
-import ck.ckrc.erie.warchess.example1.Life;
-import ck.ckrc.erie.warchess.example1.Test;
-import ck.ckrc.erie.warchess.example2.Gomoku;
 import ck.ckrc.erie.warchess.game.ChessClassLoader;
 import ck.ckrc.erie.warchess.game.Engine;
-import ck.ckrc.erie.warchess.game.Player;
 import ck.ckrc.erie.warchess.net.MapSyncThread;
 import ck.ckrc.erie.warchess.utils.Logger;
 import javafx.scene.control.Alert;
@@ -36,8 +31,12 @@ public class Main {
         }
 
         chessClassLoader=new ChessClassLoader();
-        chessClassLoader.addChessClass(HeliosSystem.class);
-        chessClassLoader.addChessClass(Miner.class);
+        chessClassLoader.syncLoadedClassFromAgent(PreMain.transformer.map.get("ck.ckrc.erie.warchess.Main"));
+        for (var data:
+             PreMain.transformer.map.keySet()) {
+            if(data.contains("ck.ckrc.erie.warchess"))
+                chessClassLoader.syncLoadedClassFromAgent(PreMain.transformer.map.get(data));
+        }
 
         FXMain.FXMain(args);
 

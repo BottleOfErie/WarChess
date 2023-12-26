@@ -66,19 +66,9 @@ public class Life extends Chess {
         Label position=new Label("position:"+'('+x+','+y+')');
         Label team=new Label("team:"+teamFlag);
         Button liveButton=new Button("设为存活");
-        liveButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                determinedHP=liveHP;
-            }
-        });
+        liveButton.setOnAction(actionEvent -> determinedHP=liveHP);
         Button diedButton=new Button("设为死亡");
-        diedButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                determinedHP=diedHP;
-            }
-        });
+        diedButton.setOnAction(actionEvent -> determinedHP=diedHP);
         pane.addRow(0, title);
         pane.addRow(1, position,team);
         pane.addRow(2, liveButton);pane.addRow(2, diedButton);

@@ -9,16 +9,15 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.List;
 
 public class Play {
     private static GraphicsContext graphicsContext;

@@ -1,9 +1,9 @@
 package ck.ckrc.erie.warchess.Controller;
+
 import ck.ckrc.erie.warchess.Director;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 

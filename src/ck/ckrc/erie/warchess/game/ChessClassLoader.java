@@ -4,16 +4,16 @@ import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.PreMain;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceDialog;
 
 import java.io.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ChessClassLoader extends ClassLoader{
 
     private Map<String,Class<?>> chessClass =null;
-    private class TempClassLoader extends ClassLoader {
+    private static class TempClassLoader extends ClassLoader {
 
         private Class<?> clazz=null;
 
@@ -24,19 +24,22 @@ public class ChessClassLoader extends ClassLoader{
         }
 
         public Class<?> loadClass(byte[] data){
-            clazz=this.defineClass(null,data,0,data.length);
+            try {
+                clazz = this.defineClass(null, data, 0, data.length);
+            }catch (SecurityException | NullPointerException ignored){}
             return clazz;
         }
     };
 
     public ChessClassLoader(){
-        super(getSystemClassLoader());
+        super();
         chessClass =new HashMap<>();
         Main.log.addLog("Initialized",this.getClass());
     }
 
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
+        System.out.println(name);
         if(chessClass.containsKey(name))return chessClass.get(name);
         else {
             Main.log.addLog("NoSuchClass:"+name,this.getClass());
@@ -45,8 +48,9 @@ public class ChessClassLoader extends ClassLoader{
     }
 
     public Class<?> loadChessClassFromByteArray(byte[] byteArr){
-        //TODO depress appClassloader
-        var clazz=new TempClassLoader().loadClass(byteArr);
+        if(byteArr==null) return null;
+        var clazz= new TempClassLoader().loadClass(byteArr);
+        if(clazz==null) return null;
         var name=clazz.getName();
         if(chessClass.containsKey(name)) {
             var choice = getAlert(name).showAndWait();
@@ -56,6 +60,13 @@ public class ChessClassLoader extends ClassLoader{
         PreMain.transformer.map.put(name,byteArr);
         Main.log.addLog("Loaded Class:"+name,this.getClass());
         return clazz;
+    }
+
+    public void syncLoadedClassFromAgent(byte[] byteArr){
+        var clazz= new TempClassLoader().loadClass(byteArr);
+        if(clazz==null) return;
+        var name=clazz.getName();
+        chessClass.put(name,clazz);
     }
 
     private Alert getAlert(String name){

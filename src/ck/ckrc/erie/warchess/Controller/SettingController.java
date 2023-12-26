@@ -1,4 +1,5 @@
 package ck.ckrc.erie.warchess.Controller;
+
 import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.game.Engine;
@@ -12,10 +13,8 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 
 public class SettingController {
     @FXML
@@ -59,9 +58,10 @@ public class SettingController {
     void loadclassfromfile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("请从example文件夹中选择类");
-        File initialDirectory = new File("./out/production/WarChess/ck/ckrc/erie/warchess");
+        File initialDirectory = new File(".");
         fileChooser.setInitialDirectory(initialDirectory);
         var lst = fileChooser.showOpenMultipleDialog(GameScene.stage);
+        if(lst==null)return;
         var files=new ArrayList<>(lst);
         files.sort(Comparator.comparingInt(o -> (o.getName().contains("$") ? 0 : 1)));
         for (var file:files) {

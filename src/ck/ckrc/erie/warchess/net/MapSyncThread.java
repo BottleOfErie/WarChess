@@ -1,6 +1,5 @@
 package ck.ckrc.erie.warchess.net;
 
-import ck.ckrc.erie.warchess.Controller.SettingController;
 import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.PreMain;
@@ -17,7 +16,6 @@ import javafx.application.Platform;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Set;
 
 public class MapSyncThread extends Thread{
 

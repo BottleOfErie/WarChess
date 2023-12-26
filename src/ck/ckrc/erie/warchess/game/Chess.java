@@ -2,11 +2,8 @@ package ck.ckrc.erie.warchess.game;
 
 import ck.ckrc.erie.warchess.utils.DataPackage;
 import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-
-import java.io.Serializable;
 
 /**
  * Attention:Should load inner class before real chess class!

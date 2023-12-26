@@ -5,7 +5,6 @@ import ck.ckrc.erie.warchess.Main;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
