@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class Main {
 
-    public static final File rootFile=new File("D:\\erie\\");
+    public static final File rootFile=new File("./erie");
     public static Engine currentGameEngine;
     public static ChessClassLoader chessClassLoader;
 

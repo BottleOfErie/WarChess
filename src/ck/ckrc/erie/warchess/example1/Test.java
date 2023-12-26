@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.media.AudioClip;
 import javafx.stage.FileChooser;
 
 import java.io.IOException;
@@ -41,8 +42,15 @@ public class Test extends Chess {
                 Main.log.addLog(e, this.getClass());
             }
         });
-        Button diedButton=new Button("输出类列表");
-        diedButton.setOnAction(actionEvent -> System.out.println(Main.chessClassLoader.getAllClass()));
+        Button diedButton=new Button("播放音乐");
+        diedButton.setOnAction(actionEvent -> {
+            AudioClip ac=new AudioClip(ResourceSerialization.putResourceToDisk("music.mp3", Test.class).toExternalForm());
+            ac.play();
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException ignored) {}
+            ac.stop();
+        });
         pane.addRow(0, title);
         pane.addRow(2, liveButton, diedButton);
         return pane;
