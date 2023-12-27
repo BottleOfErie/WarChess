@@ -16,6 +16,7 @@ import javafx.scene.paint.Color;
 import java.util.Objects;
 
 public class Miner extends Chess {
+
     public static final int productions=10, build_cost =10,max_hp=20;
     public static final double opticalA=0.1,opticalB=0.5,opticalMax=0.5,deltaO=0.0002,delta1=0.001;
     public static final Color origin=Color.AQUA;

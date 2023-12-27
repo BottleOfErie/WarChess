@@ -31,12 +31,6 @@ public class Main {
         }
 
         chessClassLoader=new ChessClassLoader();
-        chessClassLoader.syncLoadedClassFromAgent(PreMain.transformer.map.get("ck.ckrc.erie.warchess.Main"));
-        for (var data:
-             PreMain.transformer.map.keySet()) {
-            if(data.contains("ck.ckrc.erie.warchess"))
-                chessClassLoader.syncLoadedClassFromAgent(PreMain.transformer.map.get(data));
-        }
 
         FXMain.FXMain(args);
 

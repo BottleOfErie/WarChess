@@ -9,6 +9,7 @@ public class PreMain {
     public static ChessClassExtractor transformer=new ChessClassExtractor();
 
     public static void premain(String agentArgs, Instrumentation inst) {
+        System.out.println("<PreMain activated>");
         inst.addTransformer(transformer, true);
     }
 

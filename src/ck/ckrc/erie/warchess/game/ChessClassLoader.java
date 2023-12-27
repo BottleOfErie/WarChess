@@ -32,7 +32,7 @@ public class ChessClassLoader extends ClassLoader{
     };
 
     public ChessClassLoader(){
-        super();
+        super("Chess",getSystemClassLoader());
         chessClass =new HashMap<>();
         Main.log.addLog("Initialized",this.getClass());
     }
@@ -47,15 +47,25 @@ public class ChessClassLoader extends ClassLoader{
         }
     }
 
-    public Class<?> loadChessClassFromByteArray(byte[] byteArr){
+    private String preloadClassCheck(byte[] byteArr){
         if(byteArr==null) return null;
-        var clazz= new TempClassLoader().loadClass(byteArr);
-        if(clazz==null) return null;
-        var name=clazz.getName();
+        var temp=new TempClassLoader();
+        var tclazz= temp.loadClass(byteArr);
+        if(tclazz==null) return null;
+        var name= tclazz.getName();
+        tclazz=null;
+        temp=null;
+        return name;
+    }
+
+    public Class<?> loadChessClassFromByteArray(byte[] byteArr){
+        var name=preloadClassCheck(byteArr);
+        if(name==null)return null;
         if(chessClass.containsKey(name)) {
             var choice = getAlert(name).showAndWait();
             if (choice.isEmpty() || choice.get() != ButtonType.OK) return null;
         }
+        var clazz=this.defineClass(name,byteArr,0,byteArr.length);
         chessClass.put(name,clazz);
         PreMain.transformer.map.put(name,byteArr);
         Main.log.addLog("Loaded Class:"+name,this.getClass());
