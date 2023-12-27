@@ -32,10 +32,9 @@ public class ClientIPController {
         Client client= ChooseOneSideController.client;
         Scene scene=root.getScene();
         String ip = ((TextField) root.lookup("#IPtext")).getText();
-        if (ip.equals("127.0.0.1")) {
             client.connectTo(ip);
             if(client.getSocket()==null){
-                Label label = new Label("服务端尚未连接");
+                Label label = new Label("连接失败\n"+client.getError());
                 ((AnchorPane)root).getChildren().add(label);
                 label.setLayoutX(300);
                 label.setLayoutY(0);
@@ -49,15 +48,7 @@ public class ClientIPController {
                 Play.teamflag = 1;
                 Setting.makesetting();
             }
-        } else {
-            Label label = new Label("请重新输入IP (·<w<))~");
-            ((AnchorPane)root).getChildren().add(label);
-            label.setLayoutX(300);
-            label.setLayoutY(100);
-            label.setPrefSize(200, 50);
-            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> label.setText("")));
-            timeline.play();
-        }}catch (IOException e){e.printStackTrace();}
+        }catch (IOException e){e.printStackTrace();}
     }
 
 

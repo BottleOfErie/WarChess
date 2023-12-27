@@ -44,7 +44,9 @@ public class Test extends Chess {
         });
         Button diedButton=new Button("播放音乐");
         diedButton.setOnAction(actionEvent -> {
-            AudioClip ac=new AudioClip(ResourceSerialization.putResourceToDisk("music.mp3", Test.class).toExternalForm());
+            var url=ResourceSerialization.putResourceToDisk("music.mp3", Test.class);
+            if(url==null)return;
+            AudioClip ac=new AudioClip(url.toExternalForm());
             ac.play();
             try {
                 Thread.sleep(10000);

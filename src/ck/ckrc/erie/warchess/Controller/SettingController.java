@@ -3,10 +3,12 @@ package ck.ckrc.erie.warchess.Controller;
 import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.game.Engine;
+import ck.ckrc.erie.warchess.game.Player;
 import ck.ckrc.erie.warchess.ui.GameScene;
 import ck.ckrc.erie.warchess.ui.Setting;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
@@ -66,6 +68,12 @@ public class SettingController {
         files.sort(Comparator.comparingInt(o -> (o.getName().contains("$") ? 0 : 1)));
         for (var file:files) {
             var clazz=Main.chessClassLoader.loadChessClassFromFile(file);
+            if(clazz==null){
+                var dialog=new Alert(Alert.AlertType.WARNING);
+                dialog.setContentText("非法的类文件:"+file);
+                dialog.show();
+                continue;
+            }
             if(Main.syncThread!=null) {
                 try {
                     Main.syncThread.sendLoad(clazz.getName());

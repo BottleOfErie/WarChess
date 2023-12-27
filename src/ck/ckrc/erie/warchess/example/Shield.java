@@ -114,16 +114,12 @@ public class Shield extends Chess {
     @Override
     public void syncDataPackage(DataPackage pack) {
         super.syncDataPackage(pack);
-        shield= (int) pack.get("s");
+        DataPackage.processDataPackage(this,this.getClass(),pack);
     }
 
     @Override
     public DataPackage getDataPackage() {
-        DataPackage pack=new DataPackage();
-        pack.put("hp",hp);
-        pack.put("teamFlag",teamFlag);
-        pack.put("s",shield);
-        return pack;
+        return DataPackage.generateDataPackage(this,this.getClass());
     }
 
     @Override

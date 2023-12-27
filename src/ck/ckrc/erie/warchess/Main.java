@@ -8,6 +8,8 @@ import javafx.scene.control.Alert;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.function.Predicate;
 
 public class Main {
 
@@ -23,7 +25,7 @@ public class Main {
             rootFile.mkdirs();
         try {
             log=new Logger();
-            log.debug=true;
+            log.debug= Arrays.stream(args).anyMatch(Predicate.isEqual("-debug"));
         } catch (IOException e) {
             Alert alert=new Alert(Alert.AlertType.WARNING);
             alert.setContentText("Failed to initialize the logger");

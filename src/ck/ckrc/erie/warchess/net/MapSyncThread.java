@@ -13,6 +13,7 @@ import ck.ckrc.erie.warchess.ui.Setting;
 import ck.ckrc.erie.warchess.utils.DataPackage;
 import ck.ckrc.erie.warchess.utils.ResourceSerialization;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 
 import java.io.*;
 import java.net.Socket;
@@ -77,8 +78,12 @@ public class MapSyncThread extends Thread{
                             chess.syncDataPackage(dataPack);
                         else{
                             var clazz=Main.chessClassLoader.getClassByName((String)dataPack.get("className"));
-                            Main.currentGameEngine.setChess(x,y, ChessClassInvoker.getNewInstance(clazz,Player.getNewPlayer(-1),x,y));
-                            Main.currentGameEngine.getChess(x,y).syncDataPackage(dataPack);
+                            if(clazz==null){
+                                Main.log.addLog("No such class:"+dataPack.get("className"),this.getClass());
+                            }else {
+                                Main.currentGameEngine.setChess(x, y, ChessClassInvoker.getNewInstance(clazz, Player.getNewPlayer(-1), x, y));
+                                Main.currentGameEngine.getChess(x, y).syncDataPackage(dataPack);
+                            }
                         }
                         break;
                     case "chat":
@@ -89,8 +94,13 @@ public class MapSyncThread extends Thread{
                     case "load":
                         var len=Integer.parseInt(strings[1]);
                         byte[] a=input.readNBytes(len);
-                        Main.chessClassLoader.loadChessClassFromByteArray(a);
-                        Platform.runLater(Setting::initClass);
+                        var clazz0=Main.chessClassLoader.loadChessClassFromByteArray(a);
+                        if(clazz0==null){
+                            var dialog=new Alert(Alert.AlertType.WARNING);
+                            dialog.setContentText("从网络流解析类失败");
+                            dialog.show();
+                        }else
+                            Platform.runLater(Setting::initClass);
                         break;
                     case "round":
                         if(!Director.GetDirector().isGameStarted()) {
@@ -150,6 +160,9 @@ public class MapSyncThread extends Thread{
                 return;
             } catch (ClassNotFoundException e) {
                 Main.log.addLog("no such class!",this.getClass());
+                Main.log.addLog(e,this.getClass());
+            } catch (Exception e){
+                Main.log.addLog("Unexpected Exception!",this.getClass());
                 Main.log.addLog(e,this.getClass());
             }
         }

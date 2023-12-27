@@ -16,6 +16,7 @@ public class Client extends Thread{
     private Socket socket=null;
     private int teamFlag=-1;
     private boolean isCurrentTeam=false;
+    private Exception error;
 
 
     public Client() throws IOException {
@@ -65,7 +66,10 @@ public class Client extends Thread{
         }
         try {
             socket = new Socket(ip, port);
-        }catch (IOException e){return;}
+        }catch (IOException e){
+            this.error=e;
+            return;
+        }
         Main.log.addLog("connected to:"+ip,this.getClass());
     }
 
@@ -76,4 +80,7 @@ public class Client extends Thread{
         return serverSocket;
     }
 
+    public Exception getError() {
+        return error;
+    }
 }

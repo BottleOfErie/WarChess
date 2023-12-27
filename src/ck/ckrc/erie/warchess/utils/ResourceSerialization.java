@@ -100,6 +100,7 @@ public class ResourceSerialization {
      * @return an url cannot use as string!!!
      */
     public static URL getURLFromResourceID(String id,Class<?> clazz){
+        //TODO deal resource miss
         String name=clazz.getName()+'-'+id;
         try {
             return new URL(null,"bytes:///"+name,new BytesURLHandler());

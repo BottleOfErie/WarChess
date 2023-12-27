@@ -115,6 +115,12 @@ public class Miner extends Chess {
     }
 
     @Override
+    public void syncDataPackage(DataPackage pack) {
+        super.syncDataPackage(pack);
+        DataPackage.processDataPackage(this,this.getClass(),pack);
+    }
+
+    @Override
     public Image paint(long delta) {
         //TODO add Image
         return image;

@@ -26,7 +26,7 @@ public class ChessClassLoader extends ClassLoader{
         public Class<?> loadClass(byte[] data){
             try {
                 clazz = this.defineClass(null, data, 0, data.length);
-            }catch (SecurityException | NullPointerException ignored){}
+            }catch (Exception | Error ignored){}
             return clazz;
         }
     };
