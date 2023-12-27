@@ -1,9 +1,11 @@
 package ck.ckrc.erie.warchess.ui;
 
 import ck.ckrc.erie.warchess.Director;
+import ck.ckrc.erie.warchess.FXMain;
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.game.Map;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,9 +14,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Optional;
 
 //TODO add exits
 public class GameScene {
@@ -46,6 +50,8 @@ public class GameScene {
         spcanvas.setOnMouseClicked(new Play(graphicsContext,spgraphicsContext).setChessAction);
         setnextround();
         setchat();
+        setshowPlayerData();
+        setQuit();
         stage.setScene(scene);
         gameScene=stage.getScene();
         Play.initchessdetailvbox();
@@ -100,6 +106,39 @@ public class GameScene {
             else{
 
             }
+        });
+    }
+    private void setQuit(){
+        Button button=new Button("退出游戏");
+        anchorPane.getChildren().add(button);
+        button.setPrefSize(100, 30);
+        button.setLayoutX(10);button.setLayoutY(600);
+        button.setOnAction(actionEvent -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("退出游戏");
+            alert.setHeaderText(null);
+            alert.setContentText("是否退出游戏?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.get() == ButtonType.OK){
+                Platform.exit();
+            }
+        });
+    }
+    private void setshowPlayerData(){
+        Button button=new Button("显示当前玩家信息");
+        anchorPane.getChildren().add(button);
+        button.setPrefSize(100, 30);
+        button.setLayoutX(10);button.setLayoutY(550);
+        button.setOnAction(actionEvent -> {
+            Stage subStage = new Stage();
+            Label label=new Label(Main.currentGameEngine.getPlayer(Main.currentGameEngine.getCurrentTeam()).toString());
+            ScrollPane Pane = new ScrollPane(label);
+            Scene subScene = new Scene(Pane, 200, 200);
+            subStage.setScene(subScene);
+            subStage.initModality(Modality.WINDOW_MODAL);
+            subStage.initOwner(stage);
+            subStage.setTitle("玩家信息");
+            subStage.show();
         });
     }
     private void setchat(){

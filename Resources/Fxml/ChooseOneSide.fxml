@@ -2,10 +2,11 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane id="chooseonesidepane" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ck.ckrc.erie.warchess.Controller.ChooseOneSideController">
+
+<AnchorPane id="chooseonesidepane" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ck.ckrc.erie.warchess.Controller.ChooseOneSideController">
    <children>
-      <Button fx:id="ClientButton" layoutX="381.0" layoutY="191.0" mnemonicParsing="false" onMouseClicked="#StartGameAsClient" prefHeight="45.0" prefWidth="138.0" text="客户端" />
-      <Button fx:id="ServerButton" layoutX="381.0" layoutY="337.0" mnemonicParsing="false" onMouseClicked="#StartGameAsServer" prefHeight="46.0" prefWidth="138.0" text="服务端" />
-      <Button fx:id="BackToStartButton" layoutX="380.0" layoutY="484.0" mnemonicParsing="false" onMouseClicked="#BackToStartFrame" prefHeight="46.0" prefWidth="138.0" text="返回" />
+      <Button fx:id="ClientButton" layoutX="449.0" layoutY="188.0" mnemonicParsing="false" onMouseClicked="#StartGameAsClient" prefHeight="45.0" prefWidth="138.0" text="客户端" />
+      <Button fx:id="ServerButton" layoutX="449.0" layoutY="327.0" mnemonicParsing="false" onMouseClicked="#StartGameAsServer" prefHeight="46.0" prefWidth="138.0" text="服务端" />
+      <Button fx:id="BackToStartButton" layoutX="449.0" layoutY="474.0" mnemonicParsing="false" onMouseClicked="#BackToStartFrame" prefHeight="46.0" prefWidth="138.0" text="返回" />
    </children>
 </AnchorPane>
