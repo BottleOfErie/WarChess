@@ -38,8 +38,9 @@ public class Setting {
             root.setId("setting");
             stage.getScene().setRoot(root);
             initClass();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException|NullPointerException e) {
+            Main.log.addLog("Cannot get this FX resource:"+"/Fxml/Setting.fxml",Setting.class);
+            Main.log.addLog(e,Setting.class);
         }
     }
 

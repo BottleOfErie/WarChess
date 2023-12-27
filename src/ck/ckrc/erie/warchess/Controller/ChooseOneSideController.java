@@ -60,8 +60,9 @@ public class ChooseOneSideController {
             Scene scene = new Scene((Parent) root);
             stage.setScene(scene);
             Main.log.addLog("waiting",this.getClass());
-        }catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException|NullPointerException e) {
+            Main.log.addLog("Cannot get this FX resource:"+"/Fxml/ClientIP.fxml",this.getClass());
+            Main.log.addLog(e,this.getClass());
         }
     }
     @FXML

@@ -28,10 +28,9 @@ public class ClientIPController {
     void makelaunch(ActionEvent event) {
         try {
             Node root = ChooseOneSideController.node;
-
-        Client client= ChooseOneSideController.client;
-        Scene scene=root.getScene();
-        String ip = ((TextField) root.lookup("#IPtext")).getText();
+            Client client= ChooseOneSideController.client;
+            Scene scene=root.getScene();//TODO what is this
+            String ip = ((TextField) root.lookup("#IPtext")).getText();
             client.connectTo(ip);
             if(client.getSocket()==null){
                 Label label = new Label("连接失败\n"+client.getError());
@@ -48,7 +47,10 @@ public class ClientIPController {
                 Play.teamflag = 1;
                 Setting.makesetting();
             }
-        }catch (IOException e){e.printStackTrace();}
+        }catch (IOException e){
+            Main.log.addLog("Cannot create MapSyncThread",this.getClass());
+            Main.log.addLog(e,this.getClass());
+        }
     }
 
 
