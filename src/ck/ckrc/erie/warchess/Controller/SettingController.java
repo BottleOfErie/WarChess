@@ -2,6 +2,8 @@ package ck.ckrc.erie.warchess.Controller;
 
 import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
+import ck.ckrc.erie.warchess.PreMain;
+import ck.ckrc.erie.warchess.game.ClassDecompilerWrapper;
 import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.ui.GameScene;
 import ck.ckrc.erie.warchess.ui.LabelWithChessClass;
@@ -9,12 +11,16 @@ import ck.ckrc.erie.warchess.ui.Setting;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,9 +64,19 @@ public class SettingController {
 
     @FXML
     void DeCompile(MouseEvent event) {
-        double opacity=decompile.getOpacity();
-        if(opacity==1){decompile.setOpacity(0.5);Setting.candecompile =true;}
-        else{decompile.setOpacity(1);Setting.candecompile =false;}
+        LabelWithChessClass label=Setting.highlightedLabel;
+        String name = label.getClazz();
+        byte[] arr = PreMain.transformer.map.get(name);
+        ClassDecompilerWrapper wrapper = new ClassDecompilerWrapper(arr, name);
+        Stage childStage = new Stage();
+        childStage.initModality(Modality.WINDOW_MODAL);
+        childStage.initOwner(Director.GetDirector().stage);
+        Label decompilelabel = new Label(wrapper.decompile());
+        ScrollPane layout = new ScrollPane(decompilelabel);
+        Scene childScene = new Scene(layout, 400, 200);
+        childStage.setScene(childScene);
+        childStage.setTitle("decompile");
+        childStage.show();
     }
 
     @FXML

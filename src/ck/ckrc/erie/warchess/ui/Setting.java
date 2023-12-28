@@ -71,7 +71,6 @@ public class Setting {
             LabelWithChessClass label=new LabelWithChessClass(clazz.getName(),clazz.getSimpleName());
             label.setPrefSize(200, 50);
             label.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));
-            setdecompile(label);
             if(!loadornot.containsKey(clazz))loadornot.put(clazz, false);
             if(loadornot.get(clazz)){
                 loadedlist.getChildren().add(label);
@@ -184,25 +183,6 @@ public class Setting {
                 }
             }
         }
-        setdecompile(newlabel);
         initlabel();
-    }
-    public static void setdecompile(LabelWithChessClass label){
-        label.setOnMouseClicked(event -> {
-            if(candecompile) {
-                String name = label.getClazz();
-                byte[] arr = PreMain.transformer.map.get(name);
-                ClassDecompilerWrapper wrapper = new ClassDecompilerWrapper(arr, name);
-                Stage childStage = new Stage();
-                childStage.initModality(Modality.WINDOW_MODAL);
-                childStage.initOwner(stage);
-                Label decompilelabel = new Label(wrapper.decompile());
-                ScrollPane layout = new ScrollPane(decompilelabel);
-                Scene childScene = new Scene(layout, 400, 200);
-                childStage.setScene(childScene);
-                childStage.setTitle("decompile");
-                childStage.show();
-            }
-        });
     }
 }
