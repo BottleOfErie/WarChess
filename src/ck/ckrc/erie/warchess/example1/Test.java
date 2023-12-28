@@ -7,7 +7,6 @@ import ck.ckrc.erie.warchess.game.DamageListener;
 import ck.ckrc.erie.warchess.game.Player;
 import ck.ckrc.erie.warchess.utils.DataPackage;
 import ck.ckrc.erie.warchess.utils.ResourceSerialization;
-import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

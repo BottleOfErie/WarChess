@@ -1,5 +1,8 @@
 package ck.ckrc.erie.warchess.utils;
 
+/**
+ * 可能用到的数学函数
+ */
 public class Math {
 
     public static double distanceOfEuclid(double x1, double y1, double x2, double y2){

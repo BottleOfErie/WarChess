@@ -7,11 +7,25 @@ import org.jd.core.v1.api.loader.Loader;
 import org.jd.core.v1.api.loader.LoaderException;
 import org.jd.gui.util.decompiler.StringBuilderPrinter;
 
+/**
+ * 包裹一个类，用于反编译
+ */
 public class ClassDecompilerWrapper implements Loader {
 
+    /**
+     * 字节码
+     */
     private byte[] data=null;
+    /**
+     * 类名
+     */
     private String className=null;
 
+    /**
+     *
+     * @param data 字节码
+     * @param className 类名
+     */
     public ClassDecompilerWrapper(byte[] data,String className){
         this.data=data;
         this.className=className;
@@ -31,6 +45,10 @@ public class ClassDecompilerWrapper implements Loader {
         return PreMain.transformer.map.get(s);
     }
 
+    /**
+     * 获取反编译结果
+     * @return 反编译结果
+     */
     public String decompile(){
         ClassFileToJavaSourceDecompiler decompiler=new ClassFileToJavaSourceDecompiler();
         StringBuilderPrinter printer=new StringBuilderPrinter();

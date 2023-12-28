@@ -4,7 +4,6 @@ import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.ui.Play;
 import ck.ckrc.erie.warchess.ui.Setting;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;

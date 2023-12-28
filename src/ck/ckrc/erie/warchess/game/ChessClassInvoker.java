@@ -9,9 +9,18 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-//use to wrap static methods
+/**
+ * 用于执行棋子类的静态方法<br/>
+ * 具体使用用途，请参见{@link Chess}类<br/>
+ * 也可用于封装一个棋子类便于统一调用
+ */
 public class ChessClassInvoker {
 
+    /**
+     * 获取{@link Chess}内的className字段
+     * @param clazz 被操纵的类
+     * @return className字段的值
+     */
     public static String getClassName(Class<?> clazz) {
         String ret=null;
         try{

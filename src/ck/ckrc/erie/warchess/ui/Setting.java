@@ -2,23 +2,18 @@ package ck.ckrc.erie.warchess.ui;
 
 import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
-import ck.ckrc.erie.warchess.PreMain;
-import ck.ckrc.erie.warchess.game.ClassDecompilerWrapper;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;

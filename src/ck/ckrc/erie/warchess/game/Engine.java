@@ -5,10 +5,19 @@ import ck.ckrc.erie.warchess.ui.GameScene;
 
 import java.util.*;
 
+/**
+ * 游戏主引擎
+ */
 public class Engine {
 
+    /**
+     * 玩家数量
+     */
     public static int playerNum=2;
 
+    /**
+     * 用于排序伤害监听器
+     */
     private static class ListenerNode {
         public Chess parent;
         public int priority;
@@ -22,15 +31,39 @@ public class Engine {
 
     }
 
+    /**
+     * 监听器排序算子
+     */
     private static final Comparator<ListenerNode> listenerComparator= (o1, o2) -> o2.priority-o1.priority;
 
+    /**
+     * 当前地图
+     */
     private Map currentMap=null;
+    /**
+     * 当前正在操作的队伍标签
+     */
     private Integer currentTeam=0;
+    /**
+     * 游戏结束监听器表
+     */
     private List<GameOverListener> gameOverListeners;
+    /**
+     * 伤害监听器表
+     */
     private ArrayList<ListenerNode>[][] damageListeners;
+    /**
+     * 伤害事件队列
+     */
     private Queue<DamageEvent> damageQueue;
+    /**
+     * 玩家表
+     */
     private HashMap<Integer,Player> players;
 
+    /**
+     * 初始化地图、各个表
+     */
     public Engine(){
         Main.log.addLog("Creating Engine",this.getClass());
         currentMap=new Map();
@@ -44,6 +77,17 @@ public class Engine {
         Main.log.addLog("Engine initialized",this.getClass());
     }
 
+    /**
+     * 结算回合，进入下一个回合<br/>
+     * 执行各个棋子{@link Chess}的roundEnd方法<br/>
+     * 排序并检测伤害监听器{@link DamageListener}有效性<br/>
+     * 处理伤害事件队列{@link DamageEvent}<br/>
+     * 移除hp==0的棋子{@link Chess}<br/>
+     * 检查游戏结束监听器{@link GameOverListener}<br/>
+     * 修改当前队伍标签，进入下一个回合<br/>
+     * 执行各个棋子{@link Chess}的roundBegin方法
+     * @param nextTeam 下一个队伍的队伍标签
+     */
     public void nextRound(Integer nextTeam){//开始回合结算
 
         Main.log.addLog("Concluding Round",this.getClass());
@@ -110,14 +154,31 @@ public class Engine {
         return currentMap.getChessMap()[x][y];
     }
 
+    /**
+     * 提交伤害事件
+     * @param evt 伤害事件
+     */
     public void commitDamageEvent(DamageEvent evt){
         damageQueue.add(evt);
     }
 
+    /**
+     * 注册伤害监听器
+     * @param parent 伤害监听器来源
+     * @param priority 监听器优先级
+     * @param listener 监听器
+     * @param x 监听器x坐标
+     * @param y 监听器y坐标
+     */
     public void registerDamageListener(Chess parent,int priority,DamageListener listener,int x,int y){
         damageListeners[x][y].add(new ListenerNode(parent,priority,listener));
     }
 
+    /**
+     * 获取指定队伍标签的玩家
+     * @param teamFlag 队伍标签
+     * @return 指定队伍标签的玩家
+     */
     public Player getPlayer(int teamFlag){
         return players.get(teamFlag);
     }
@@ -130,6 +191,10 @@ public class Engine {
         return currentTeam;
     }
 
+    /**
+     * 提交游戏结束监听器
+     * @param listener 游戏结束监听器
+     */
     public void commitGameOverListener(GameOverListener listener){
         gameOverListeners.add(listener);
     }

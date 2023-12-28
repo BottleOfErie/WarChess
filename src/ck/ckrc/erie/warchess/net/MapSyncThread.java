@@ -19,9 +19,12 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 
+/**
+ * 这个类用于进行多人游戏时双方信息同步
+ */
 public class MapSyncThread extends Thread{
 
-    /**
+    /*
      * disconnect
      * load length|<byte[] of Class>
      * sync x y length|<byte[] of DataPackage Object>
@@ -38,6 +41,11 @@ public class MapSyncThread extends Thread{
     private DataOutputStream output=null;
     private boolean working;
 
+    /**
+     * 开始同步数据
+     * @param socket 已经连接好的对方Socket
+     * @throws IOException 如果无法建立连接
+     */
     public MapSyncThread(Socket socket) throws IOException {
         this.socket=socket;
         input=new DataInputStream(socket.getInputStream());
@@ -45,12 +53,25 @@ public class MapSyncThread extends Thread{
         Main.log.addLog("SyncThread ready",this.getClass());
     }
 
+    /**
+     * 将字节数组转为Java对象
+     * @param arr 将被转化的字节数组
+     * @return 解码得到的对象
+     * @throws IOException 如果无法读取字节数组
+     * @throws ClassNotFoundException 如果对象对应的类没有被加载
+     */
     public Object fromByteArray(byte[] arr) throws IOException, ClassNotFoundException {
         ByteArrayInputStream bis=new ByteArrayInputStream(arr);
         ObjectInputStream ois=new ObjectInputStream(bis);
         return ois.readObject();
     }
 
+    /**
+     * 将对象转为字节数组
+     * @param obj 被编码的对象
+     * @return 编码结果
+     * @throws IOException 如果编码失败
+     */
     public byte[] toByteArray(Object obj) throws IOException {
         ByteArrayOutputStream bis=new ByteArrayOutputStream();
         ObjectOutputStream oos=new ObjectOutputStream(bis);
@@ -58,6 +79,9 @@ public class MapSyncThread extends Thread{
         return bis.toByteArray();
     }
 
+    /**
+     * 处理对方发送的消息
+     */
     @Override
     public void run() {
         working=true;
@@ -166,6 +190,7 @@ public class MapSyncThread extends Thread{
             } catch (IOException e) {
                 Main.log.addLog("connection failed",this.getClass());
                 Main.log.addLog(e,this.getClass());
+                Platform.runLater(GameScene::showDisconnect);
                 return;
             } catch (ClassNotFoundException e) {
                 Main.log.addLog("no such class!",this.getClass());
@@ -177,10 +202,23 @@ public class MapSyncThread extends Thread{
         }
     }
 
+    /**
+     * 发送聊天消息
+     * @param str 消息
+     * @param teamFlag 发送者队伍标签
+     * @throws IOException 如果发送失败
+     */
     public void sendChat(String str,int teamFlag) throws IOException {
         output.writeUTF("chat "+teamFlag+" "+str);
     }
 
+    /**
+     * 同步棋子信息
+     * @param x 被同步棋子x坐标
+     * @param y 被同步棋子y坐标
+     * @param chess 被同步棋子对象
+     * @throws IOException 如果发送失败
+     */
     public void sendSync(int x,int y,Chess chess) throws IOException {
         if(chess==null)return;
         var pack=chess.getDataPackage();
@@ -190,6 +228,10 @@ public class MapSyncThread extends Thread{
         output.write(arr);
     }
 
+    /**
+     * 发送断开连接信息，关闭输出流
+     * @throws IOException 如果发送失败
+     */
     public void sendDisconnect() throws IOException {
         output.writeUTF("disconnect");
         output.flush();
@@ -197,26 +239,53 @@ public class MapSyncThread extends Thread{
         working=false;
     }
 
+    /**
+     * 发送切换回合信息
+     * @param roundFlag 下一个队伍的队伍标签
+     * @throws IOException 如果发送失败
+     */
     public void sendRound(int roundFlag) throws IOException {
         output.writeUTF("round "+roundFlag);
     }
 
+    /**
+     * 发送类数据用于加载
+     * @param name 被发送的类名
+     * @throws IOException 如果发送失败
+     */
     public void sendLoad(String name) throws IOException {
         var arr= PreMain.transformer.map.get(name);
         output.writeUTF("load "+arr.length);
         output.write(arr);
     }
 
+    /**
+     * 请求指定资源文件
+     * @param name 被请求文件名
+     * @throws IOException 如果发送失败
+     */
     public void sendResRequire(String name) throws IOException {
         output.writeUTF("res require "+name);
     }
 
+    /**
+     * 发送资源文件
+     * @param name 被发送文件名
+     * @param res 被发送数据的字节数组
+     * @throws IOException 如果发送失败
+     */
     public void sendResSend(String name,byte[] res) throws IOException {
         if(res==null)return;
         output.writeUTF("res send "+name+" "+res.length);
         output.write(res);
     }
 
+    /**
+     * 发送同步类启用/禁用
+     * @param mode 如果为true，启用这些类。如果为false，禁用这些类
+     * @param names 被改变状态的类名
+     * @throws IOException 如果发送失败
+     */
     public void sendActive(boolean mode,String... names) throws IOException {
         StringBuilder sb=new StringBuilder("active "+mode);
         for (var x: names)
@@ -224,12 +293,22 @@ public class MapSyncThread extends Thread{
         output.writeUTF(sb.toString());
     }
 
+    /**
+     * 发送同步玩家数据
+     * @param teamFlag 被同步玩家队伍标签
+     * @param p 被同步玩家对象
+     * @throws IOException 如果发送失败
+     */
     public void sendSyncP(int teamFlag,Player p) throws IOException {
         var arr=toByteArray(p);
         output.writeUTF("syncP "+teamFlag+" "+arr.length);
         output.write(arr);
     }
 
+    /**
+     * 请求重新绘制棋盘
+     * @throws IOException 如果发送失败
+     */
     public void sendRepaint() throws IOException {
         output.writeUTF("repaint");
     }
