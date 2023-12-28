@@ -78,6 +78,7 @@ public class ResourceSerialization {
         var x=getResourceByNameWithoutNetwork(name);
         if(x!=null) return x;
         else if(Main.syncThread!=null){
+            Main.log.addLog("Requesting resource from remote connections:"+name, ResourceSerialization.class);
             try{
                 Main.syncThread.sendResRequire(name);
             } catch (IOException e) {
@@ -100,7 +101,6 @@ public class ResourceSerialization {
      * @return an url cannot use as string!!!
      */
     public static URL getURLFromResourceID(String id,Class<?> clazz){
-        //TODO deal resource miss
         String name=clazz.getName()+'-'+id;
         try {
             return new URL(null,"bytes:///"+name,new BytesURLHandler());

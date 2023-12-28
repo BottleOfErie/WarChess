@@ -126,7 +126,6 @@ public class GameScene {
         });
     }
     public static void showDisconnect(){
-        //TODO add disconnect
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "失去连接!", ButtonType.OK);
         alert.setTitle("disconnect");
         alert.showAndWait();

@@ -68,7 +68,6 @@ public class MapSyncThread extends Thread{
                 var strings=command.split(" ");
                 switch(strings[0]){
                     case "disconnect":
-                        //TODO disconnect
                         socket.close();
                         Platform.runLater(GameScene::showDisconnect);
                         return;
