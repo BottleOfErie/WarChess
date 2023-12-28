@@ -32,11 +32,12 @@ public class ClientIPController {
             String ip = ((TextField) root.lookup("#IPtext")).getText();
             client.connectTo(ip);
             if(client.getSocket()==null){
+                //TODO bugfix
                 Label label = new Label("连接失败\n"+client.getError());
                 ((AnchorPane)root).getChildren().add(label);
                 label.setLayoutX(300);
                 label.setLayoutY(0);
-                label.setPrefSize(200, 50);
+                label.setPrefSize(400, 300);
                 Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> label.setText("")));
                 timeline.play();
             }
