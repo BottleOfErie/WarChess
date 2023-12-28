@@ -10,4 +10,6 @@ public class FXMain extends Application {
     public void start(Stage stage) throws Exception {
         Director.GetDirector().Init(stage);
     }
+
+    //TODO stop painter
 }

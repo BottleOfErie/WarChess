@@ -20,7 +20,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Optional;
 
-//TODO add exits
 public class GameScene {
     public static final int canvasize=600,edgelength=canvasize/ Map.MapSize;
     private Canvas canvas = new Canvas(canvasize,canvasize );
@@ -127,6 +126,7 @@ public class GameScene {
         });
     }
     public static void showDisconnect(){
+        //TODO add disconnect
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "失去连接!", ButtonType.OK);
         alert.setTitle("disconnect");
         alert.showAndWait();
