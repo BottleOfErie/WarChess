@@ -7,6 +7,7 @@ import ck.ckrc.erie.warchess.game.DamageListener;
 import ck.ckrc.erie.warchess.game.Player;
 import ck.ckrc.erie.warchess.utils.DataPackage;
 import ck.ckrc.erie.warchess.utils.ResourceSerialization;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -46,11 +47,13 @@ public class Test extends Chess {
             var url=ResourceSerialization.putResourceToDisk("music.mp3", Test.class);
             if(url==null)return;
             AudioClip ac=new AudioClip(url.toExternalForm());
-            ac.play();
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException ignored) {}
-            ac.stop();
+            new Thread(() -> {
+                ac.play();
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException ignored) {}
+                ac.stop();
+            }).start();
         });
         pane.addRow(0, title);
         pane.addRow(2, liveButton, diedButton);

@@ -160,7 +160,6 @@ public class Play {
             GridPane element = (GridPane) chessdetails.lookup("#root" + ',' + x + ',' + y);
             int index=chessdetails.getChildren().indexOf(element);
             if (element != null) {
-                String[] position = element.getId().split("[,]");
                 GridPane newnode = (GridPane) chess.showPanel();
                 newnode.setPrefSize(200, nodeboxheight);
                 newnode.setLayoutX(800);

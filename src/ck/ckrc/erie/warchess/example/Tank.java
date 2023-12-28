@@ -53,6 +53,7 @@ public class Tank extends Chess {
     @Override
     public Node showPanel() {
         GridPane pane=new GridPane();
+        pane.setPrefSize(200, 270);
         Label illegal=new Label("");
         Label title=new Label("坦克");
         Label position=new Label("position:"+'('+(x+1)+','+(y+1)+')');
@@ -63,6 +64,9 @@ public class Tank extends Chess {
         Label status2=new Label("储能:"+storagedEnergy+'('+init_energy+')');
         pane.addRow(1,status1,status2);
         pane.addRow(2, position,team);
+        if(!Objects.equals(Main.currentGameEngine.getCurrentTeam(), teamFlag)){
+            return pane;
+        }
         Label target_label=new Label("攻击目标:"+(target_x<0?"None":(target_x+1)+","+(target_y+1)));
         pane.addRow(3,target_label);
         Button cursor1=new Button("从棋盘选择");
@@ -92,7 +96,6 @@ public class Tank extends Chess {
         }));
         pane.addRow(6,cursor2);
         pane.addRow(7,illegal);
-        pane.setPrefSize(200, 270);
         return pane;
     }
 
@@ -125,14 +128,13 @@ public class Tank extends Chess {
                 xx=ltmx;
                 yy=ltmy;
             }
-            double speedx = (ltx - xx) * 60.0 / max_anim, speedy = (lty - yy) * 60.0 / max_anim;
+            double speedX = (ltx - xx) * 60.0 / max_anim, speedY = (lty - yy) * 60.0 / max_anim;
             context.setFill(Color.CORNFLOWERBLUE);
-            context.fillOval(xx * 60 + 30 + speedx * (max_anim - animationTimer), yy * 60 + 30 + speedy * (max_anim - animationTimer), 5, 5);
+            context.fillOval(xx * 60 + 30 + speedX * (max_anim - animationTimer), yy * 60 + 30 + speedY * (max_anim - animationTimer), 5, 5);
         }
-        //System.out.println(ltmx+","+ltmy);
         if(ltmx>=0){
-            double speedx = (x-ltmx) * 60.0 / max_anim, speedy = (y-ltmy) * 60.0 / max_anim;
-            context.drawImage(image, ltmx * 60 + 10 + speedx * (max_anim - animationTimer), ltmy * 60 + 10 + speedy * (max_anim - animationTimer), 40, 40);
+            double speedX = (x-ltmx) * 60.0 / max_anim, speedY = (y-ltmy) * 60.0 / max_anim;
+            context.drawImage(image, ltmx * 60 + 10 + speedX * (max_anim - animationTimer), ltmy * 60 + 10 + speedY * (max_anim - animationTimer), 40, 40);
         }else{
             context.drawImage(image, x * 60 + 10, y * 60 + 10, 40, 40);
         }

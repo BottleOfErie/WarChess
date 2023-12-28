@@ -20,6 +20,7 @@ import javafx.scene.paint.*;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -136,6 +137,10 @@ public class HeliosSystem extends Chess {
         Button button=new Button(text);
         button.setFont(new Font(16));
         button.setOnAction(event->{
+            if(!Objects.equals(Main.currentGameEngine.getCurrentTeam(), teamFlag)){
+                status.setText("非法访问");
+                return;
+            }
             button.setBackground(new Background(new BackgroundFill(Color.color(0,0,0,0),null,null)));
             Timeline tl=new Timeline(new KeyFrame(Duration.millis(200),ae->button.setBackground(new Background(new BackgroundImage(iconImage,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.CENTER,new BackgroundSize(0.9,0.9,true,true,false,false))))));
             tl.setCycleCount(1);

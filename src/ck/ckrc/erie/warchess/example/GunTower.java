@@ -63,6 +63,7 @@ public class GunTower extends Chess {
         pane.addRow(2, position,team);
         Label x_label=new Label("目标x:");
         TextField x_input=new TextField(target_x<0?"":String.valueOf(target_x+1));
+        x_input.setEditable(Objects.equals(Main.currentGameEngine.getCurrentTeam(), teamFlag));
         x_input.setPrefWidth(100);
         x_input.textProperty().addListener((observableValue, t1, s) -> {
 
@@ -80,6 +81,7 @@ public class GunTower extends Chess {
         pane.addRow(3,x_label,x_input);
         Label y_label=new Label("目标y:");
         TextField y_input=new TextField(target_y<0?"":String.valueOf(target_y+1));
+        y_input.setEditable(Objects.equals(Main.currentGameEngine.getCurrentTeam(), teamFlag));
         y_input.setPrefWidth(100);
         y_input.textProperty().addListener((observableValue, t1, s) -> {
             try{
@@ -101,6 +103,7 @@ public class GunTower extends Chess {
             x_input.setText(String.valueOf(x+1));
             y_input.setText(String.valueOf(y+1));
         }));
+        cursor.setDisable(!Objects.equals(Main.currentGameEngine.getCurrentTeam(), teamFlag));
         pane.addRow(5,cursor);
         pane.setPrefSize(200, 230);
         return pane;
