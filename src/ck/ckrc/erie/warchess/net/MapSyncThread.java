@@ -67,6 +67,7 @@ public class MapSyncThread extends Thread{
                     case "disconnect":
                         //TODO disconnect
                         socket.close();
+                        GameScene.showDisconnect();
                         return;
                     case "sync":
                         var x=Integer.parseInt(strings[1]);

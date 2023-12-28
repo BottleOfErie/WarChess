@@ -6,6 +6,7 @@ import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.game.Map;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -125,21 +126,36 @@ public class GameScene {
             }
         });
     }
+    public static void showDisconnect(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "失去连接!", ButtonType.OK);
+        alert.setTitle("disconnect");
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.OK) {
+            StartFrame.loadtoStartFrame(stage);
+        }
+    }
     private void setshowPlayerData(){
-        Button button=new Button("显示当前玩家信息");
+        Button button=new Button("显示玩家信息");
         anchorPane.getChildren().add(button);
         button.setPrefSize(100, 30);
         button.setLayoutX(10);button.setLayoutY(550);
         button.setOnAction(actionEvent -> {
-            Stage subStage = new Stage();
-            Label label=new Label(Main.currentGameEngine.getPlayer(Main.currentGameEngine.getCurrentTeam()).toString());
-            ScrollPane Pane = new ScrollPane(label);
-            Scene subScene = new Scene(Pane, 200, 200);
-            subStage.setScene(subScene);
-            subStage.initModality(Modality.WINDOW_MODAL);
-            subStage.initOwner(stage);
-            subStage.setTitle("玩家信息");
-            subStage.show();
+            if(button.getText().equals("显示玩家信息")) {
+                Label label = new Label("玩家信息\n" + Main.currentGameEngine.getPlayer(Main.currentGameEngine.getCurrentTeam()).toString());
+                ScrollPane Pane = new ScrollPane(label);
+                Pane.setPrefSize(200, 100);
+                Pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));
+                Pane.setId("playerdata");
+                anchorPane.getChildren().add(Pane);
+                Pane.setLayoutX(800);
+                Pane.setLayoutY(600);
+                button.setText("隐藏玩家信息");
+            }
+            else{
+                Node Pane=anchorPane.lookup("#playerdata");
+                anchorPane.getChildren().remove(Pane);
+                button.setText("显示玩家信息");
+            }
         });
     }
     private void setchat(){

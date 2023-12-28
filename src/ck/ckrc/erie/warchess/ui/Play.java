@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -192,7 +193,7 @@ public class Play {
         chessdetails=new VBox();
         scrollPane.setContent(chessdetails);
         anchorPane.getChildren().add(scrollPane);
-        scrollPane.setPrefSize(200, 700);chessdetails.setPrefSize(200, 700);
+        scrollPane.setPrefSize(200, 600);chessdetails.setPrefSize(200, 600);
         scrollPane.setLayoutX(800);scrollPane.setLayoutY(0);
     }
 
