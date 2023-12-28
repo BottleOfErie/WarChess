@@ -7,6 +7,7 @@ public class Repainter extends Thread{
     @Override
     public void run() {
         try{
+            //TODO bugfix
             while (repainting) {
                 Play.drawAllChess();
                 Thread.sleep(20);//50fps

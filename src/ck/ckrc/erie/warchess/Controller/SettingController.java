@@ -4,12 +4,16 @@ import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.ui.GameScene;
+import ck.ckrc.erie.warchess.ui.LabelWithChessClass;
 import ck.ckrc.erie.warchess.ui.Setting;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Label;
+import javafx.scene.input.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -19,13 +23,23 @@ import java.util.Comparator;
 
 public class SettingController {
     @FXML
-    private Button back;
+    private VBox LoadedClassList;
+
+    @FXML
+    private VBox NotLoadClassList;
 
     @FXML
     private Button decompile;
 
     @FXML
+    private Button launch;
+
+    @FXML
     private Button loadclass;
+    @FXML
+    void back(ActionEvent event) throws Exception{
+        Director.GetDirector().Init(Director.GetDirector().stage);
+    }
 
     @FXML
     void GameStart(MouseEvent event) {
@@ -51,14 +65,25 @@ public class SettingController {
 
     @FXML
     void LoadClass(MouseEvent event) {
-        double opacity=loadclass.getOpacity();
-        if(opacity==1){loadclass.setOpacity(0.5);Setting.canloadclass =true;}
-        else{loadclass.setOpacity(1);Setting.canloadclass =false;}
+        LabelWithChessClass label=Setting.highlightedLabel;
+        if(label==null){return;}
+        Main.log.addLog("Selected Label:"+label.getText(),Setting.class);
+        LabelWithChessClass newlabel=new LabelWithChessClass(label.getClazz(),label.getClazzSimple());
+        VBox list=(VBox) label.getParent();
+        if(list==Setting.notloadlist) {
+            Setting.shownewlabel(newlabel, Setting.loadedlist);
+            Setting.setupDragAndDrop(newlabel, Setting.notloadlist);
+        }
+        else{
+            Setting.shownewlabel(newlabel, Setting.notloadlist);
+            Setting.setupDragAndDrop(newlabel, Setting.loadedlist);
+        }
+        list.getChildren().remove(label);
     }
     @FXML
     void loadclassfromfile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("请从example文件夹中选择类");
+        fileChooser.setTitle("请选择类");
         File initialDirectory = new File(".");
         fileChooser.setInitialDirectory(initialDirectory);
         var lst = fileChooser.showOpenMultipleDialog(GameScene.stage);

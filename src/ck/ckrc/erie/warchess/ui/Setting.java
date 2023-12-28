@@ -4,13 +4,17 @@ import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.PreMain;
 import ck.ckrc.erie.warchess.game.ClassDecompilerWrapper;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -29,18 +33,25 @@ public class Setting {
     public static boolean candecompile=false;
 
     public static Map<Class<?>, Boolean> loadornot=new HashMap<>();
-    public static boolean canloadclass =false;
+    public static VBox notloadlist,loadedlist;
+    public static LabelWithChessClass highlightedLabel=null;
+    public static Label classnamelabel=null;
+    private static Scene settingscene=null;
 
     public static void makesetting() {
         //TODO change to TreeView
-        try {
-            Parent root = FXMLLoader.load(Setting.class.getResource("/Fxml/Setting.fxml"));
-            root.setId("setting");
-            stage.getScene().setRoot(root);
-            initClass();
-        } catch (IOException|NullPointerException e) {
-            Main.log.addLog("Cannot get this FX resource:"+"/Fxml/Setting.fxml",Setting.class);
-            Main.log.addLog(e,Setting.class);
+        if(settingscene==null) {
+            try {
+                Parent root = FXMLLoader.load(Setting.class.getResource("/Fxml/Setting.fxml"));
+                root.setId("setting");
+                settingscene=new Scene(root);
+                stage.setScene(settingscene);
+            } catch (IOException | NullPointerException e) {
+                Main.log.addLog("Cannot get this FX resource:" + "/Fxml/Setting.fxml", Setting.class);
+                Main.log.addLog(e, Setting.class);
+            }
+        }else{
+            stage.setScene(settingscene);
         }
     }
 
@@ -51,9 +62,9 @@ public class Setting {
         }
     }
     public static void initClass(){
-        //TODO change drag&drop to better convenience
-        VBox notloadlist=(VBox) ((ScrollPane) stage.getScene().lookup("#notloadpane")).getContent();
-        VBox loadedlist=(VBox) ((ScrollPane) stage.getScene().lookup("#loadedpane")).getContent();
+        notloadlist = (VBox) stage.getScene().lookup("#NotLoadClassList");
+        loadedlist = (VBox) stage.getScene().lookup("#LoadedClassList");
+        classnamelabel = (Label) stage.getScene().lookup("#classdatalabel");
         notloadlist.getChildren().clear();
         loadedlist.getChildren().clear();
         for(var clazz:Main.chessClassLoader.getAllChessClass()){
@@ -71,15 +82,37 @@ public class Setting {
                 setupDragAndDrop(label, loadedlist);
             }
         }
+        initlabel();
     }
-    private static void setupDragAndDrop(LabelWithChessClass label, VBox targetVBox) {
+    public static void setupDragAndDrop(LabelWithChessClass label, VBox targetVBox) {
         label.setOnDragDetected(event -> {
-            if(canloadclass){
-                Dragboard db = label.startDragAndDrop(TransferMode.ANY);
-                ClipboardContent content = new ClipboardContent();
-                content.putString(label.getClazzSimple()+"<split>"+label.getClazz());
-                db.setContent(content);
-                event.consume();
+            Dragboard db = label.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(label.getClazzSimple() + "<split>" + label.getClazz());
+            db.setContent(content);
+            event.consume();
+        });
+        label.setOnMouseClicked(event -> {
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
+                if (event.getClickCount() == 2) {
+                    LabelWithChessClass newlabel=new LabelWithChessClass(label.getClazz(),label.getClazzSimple());
+                    if (label.getParent() == notloadlist) {
+                        shownewlabel(newlabel, loadedlist);
+                        setupDragAndDrop(newlabel, notloadlist);
+                    } else {
+                        shownewlabel(newlabel, notloadlist);
+                        setupDragAndDrop(newlabel, loadedlist);
+                    }
+                    ((VBox) label.getParent()).getChildren().remove(label);
+                } else if (event.getClickCount() == 1) {
+                    if (highlightedLabel != null) {
+                        highlightedLabel.setStyle("");
+                        classnamelabel.setText("");
+                    }
+                    highlightedLabel = label;
+                    classnamelabel.setText(Main.chessClassLoader.getClassByName(highlightedLabel.getClazz()).getName());
+                    label.setStyle("-fx-background-color: yellow;");
+                }
             }
         });
 
@@ -94,38 +127,12 @@ public class Setting {
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasString()) {
-                VBox notloadlist=(VBox) stage.getScene().lookup("#NotLoadClassList");
-                VBox loadedlist=(VBox) stage.getScene().lookup("#LoadedClassList");
                 var splitStrs=db.getString().split("<split>");
                 Main.log.addLog("Selected Label:"+db.getString(),Setting.class);
                 LabelWithChessClass newlabel=new LabelWithChessClass(splitStrs[1],splitStrs[0]);
-                newlabel.setPrefSize(200, 50);
-                newlabel.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));
-                targetVBox.getChildren().add(newlabel);
-                Class<?> clazz=Main.chessClassLoader.getClassByName(newlabel.getClazz());
-                if(targetVBox==notloadlist){
-                    setupDragAndDrop(newlabel, loadedlist);
-                    loadornot.put(clazz,false);
-                    if(Main.syncThread!=null) {
-                        try {
-                            Main.syncThread.sendActive(false,newlabel.getClazz());
-                        } catch (IOException e) {
-                            Main.log.addLog("failed to send active!",Setting.class);
-                        }
-                    }
-                }
-                else{
-                    setupDragAndDrop(newlabel, notloadlist);
-                    loadornot.put(clazz,true);
-                    if(Main.syncThread!=null) {
-                        try {
-                            Main.syncThread.sendActive(true,newlabel.getClazz());
-                        } catch (IOException e) {
-                            Main.log.addLog("failed to send active!",Setting.class);
-                        }
-                    }
-                }
-                setdecompile(newlabel);
+                shownewlabel(newlabel, targetVBox);
+                if(targetVBox==notloadlist){setupDragAndDrop(newlabel, loadedlist);}
+                else{setupDragAndDrop(newlabel, notloadlist);}
                 success = true;
             }
             event.setDropCompleted(success);
@@ -140,7 +147,47 @@ public class Setting {
             event.consume();
         });
     }
-    private static void setdecompile(LabelWithChessClass label){
+    public static void initlabel(){
+        ObservableList<Node> notloadclass = notloadlist.getChildren();
+        ObservableList<Node> loadedclass = loadedlist.getChildren();
+        for(var item:notloadclass){
+            item.setStyle("");
+        }
+        for(var item:loadedclass){
+            item.setStyle("");
+        }
+        highlightedLabel=null;
+        classnamelabel.setText("");
+    }
+    public static void shownewlabel(LabelWithChessClass newlabel, VBox targetVBox){
+        newlabel.setPrefSize(200, 50);
+        newlabel.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));
+        targetVBox.getChildren().add(newlabel);
+        Class<?> clazz=Main.chessClassLoader.getClassByName(newlabel.getClazz());
+        if(targetVBox==notloadlist){
+            loadornot.put(clazz,false);
+            if(Main.syncThread!=null) {
+                try {
+                    Main.syncThread.sendActive(false,newlabel.getClazz());
+                } catch (IOException e) {
+                    Main.log.addLog("failed to send active!",Setting.class);
+                }
+            }
+        }
+        else{
+            loadornot.put(clazz,true);
+            if(Main.syncThread!=null) {
+                try {
+                    Main.syncThread.sendActive(true,newlabel.getClazz());
+                } catch (IOException e) {
+                    Main.log.addLog("failed to send active!",Setting.class);
+                }
+            }
+        }
+        setdecompile(newlabel);
+        initlabel();
+    }
+    public static void setdecompile(LabelWithChessClass label){
         label.setOnMouseClicked(event -> {
             if(candecompile) {
                 String name = label.getClazz();

@@ -21,7 +21,7 @@ import java.net.Socket;
 public class MapSyncThread extends Thread{
 
     /**
-     * disconnected
+     * disconnect
      * load length|<byte[] of Class>
      * sync x y length|<byte[] of DataPackage Object>
      * chat from str
@@ -64,7 +64,8 @@ public class MapSyncThread extends Thread{
                 //System.out.println(command);
                 var strings=command.split(" ");
                 switch(strings[0]){
-                    case "disconnected":
+                    case "disconnect":
+                        //TODO disconnect
                         socket.close();
                         return;
                     case "sync":
@@ -181,8 +182,8 @@ public class MapSyncThread extends Thread{
         output.write(arr);
     }
 
-    public void sendDisconnected() throws IOException {
-        output.writeUTF("disconnected");
+    public void sendDisconnect() throws IOException {
+        output.writeUTF("disconnect");
     }
 
     public void sendRound(int roundFlag) throws IOException {

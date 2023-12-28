@@ -105,18 +105,23 @@ public class GameScene {
         });
     }
     private void setQuit(){
-        Button button=new Button("退出游戏");
+        Button button=new Button("返回主界面");
         anchorPane.getChildren().add(button);
         button.setPrefSize(100, 30);
         button.setLayoutX(10);button.setLayoutY(600);
         button.setOnAction(actionEvent -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("退出游戏");
+            alert.setTitle("返回主界面");
             alert.setHeaderText(null);
-            alert.setContentText("是否退出游戏?");
+            alert.setContentText("是否返回主界面?");
             Optional<ButtonType> result = alert.showAndWait();
             if(result.isPresent()&&result.get() == ButtonType.OK){
-                Platform.exit();
+                StartFrame.loadtoStartFrame(Director.GetDirector().stage);
+                if(Play.gamemodel==1){
+                    try {
+                        Main.syncThread.sendDisconnect();
+                    }catch (IOException e){Main.log.addLog("fail to disconnect", this.getClass());}
+                }
             }
         });
     }

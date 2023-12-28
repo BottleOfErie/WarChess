@@ -29,7 +29,6 @@ public class ClientIPController {
         try {
             Node root = ChooseOneSideController.node;
             Client client= ChooseOneSideController.client;
-            Scene scene=root.getScene();//TODO what is this
             String ip = ((TextField) root.lookup("#IPtext")).getText();
             client.connectTo(ip);
             if(client.getSocket()==null){
