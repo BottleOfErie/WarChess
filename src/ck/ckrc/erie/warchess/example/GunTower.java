@@ -2,17 +2,10 @@ package ck.ckrc.erie.warchess.example;
 
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.game.*;
-import ck.ckrc.erie.warchess.ui.ChessClickEvent;
 import ck.ckrc.erie.warchess.ui.Play;
 import ck.ckrc.erie.warchess.utils.DataPackage;
 import ck.ckrc.erie.warchess.utils.Math;
 import ck.ckrc.erie.warchess.utils.ResourceSerialization;
-import javafx.animation.AnimationTimer;
-import javafx.animation.PathTransition;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -21,13 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
-import javafx.stage.FileChooser;
-import javafx.util.Duration;
 
-import java.io.IOException;
 import java.util.Objects;
 
 public class GunTower extends Chess {

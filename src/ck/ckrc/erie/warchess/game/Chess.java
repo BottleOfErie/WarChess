@@ -21,7 +21,7 @@ public abstract class Chess {
      * @return Panel
      */
     public abstract Node showPanel();
-    public static Node showData(){return null;};
+    public static Node showData(){return null;}
 
     public abstract Image paint(long delta);
 

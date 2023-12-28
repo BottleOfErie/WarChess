@@ -58,11 +58,7 @@ public class Engine {
         for(int i=0;i<Map.MapSize;i++)
             for(int j=0;j<Map.MapSize;j++){
                 damageListeners[i][j].sort(listenerComparator);
-                var iter=damageListeners[i][j].iterator();
-                while(iter.hasNext()){
-                    var current=iter.next();
-                    if(!current.parent.checkListener(current.listener))iter.remove();
-                }
+                damageListeners[i][j].removeIf(current -> !current.parent.checkListener(current.listener));
             }
         //damage count
         Main.log.addLog("Solving damage events",this.getClass());

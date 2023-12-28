@@ -13,7 +13,6 @@ public class Logger {
 
     public boolean debug=false;
 
-    private File target=null;
     private FileWriter writer=null;
 
     private static final SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
@@ -24,7 +23,7 @@ public class Logger {
         if(!source.exists())source.mkdirs();
 
         var time=new Date();
-        target=new File(source,format.format(time)+".log");
+        File target = new File(source, format.format(time) + ".log");
         writer=new FileWriter(target);
     }
 

@@ -1,7 +1,6 @@
 package ck.ckrc.erie.warchess.ui;
 
 import ck.ckrc.erie.warchess.Director;
-import ck.ckrc.erie.warchess.FXMain;
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.game.Map;
@@ -103,9 +102,6 @@ public class GameScene {
                 Main.currentGameEngine.nextRound(nextteam);
                 Play.updatechessdetails();
             }
-            else{
-
-            }
         });
     }
     private void setQuit(){
@@ -119,7 +115,7 @@ public class GameScene {
             alert.setHeaderText(null);
             alert.setContentText("是否退出游戏?");
             Optional<ButtonType> result = alert.showAndWait();
-            if(result.get() == ButtonType.OK){
+            if(result.isPresent()&&result.get() == ButtonType.OK){
                 Platform.exit();
             }
         });

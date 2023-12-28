@@ -34,7 +34,7 @@ public class Main {
 
         chessClassLoader=new ChessClassLoader();
 
-        FXMain.FXMain(args);
+        FXMain.FxMain(args);
 
     }
 }

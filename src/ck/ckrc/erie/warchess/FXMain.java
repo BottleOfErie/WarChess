@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class FXMain extends Application {
-    public static void FXMain(String[] arg){launch(arg);}
+    public static void FxMain(String[] arg){launch(arg);}
 
     @Override
     public void start(Stage stage) throws Exception {

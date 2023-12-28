@@ -118,7 +118,7 @@ public class ChessClassInvoker {
 
     public Node invokeShowData(){
         try{
-            Method f=clazz.getDeclaredMethod("showData",Player.class);
+            Method f=clazz.getDeclaredMethod("showData");
             f.setAccessible(true);
             return (Node) f.invoke(null);
         } catch (NoSuchMethodException | InvocationTargetException e) {

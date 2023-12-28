@@ -5,7 +5,6 @@ import ck.ckrc.erie.warchess.game.Chess;
 import ck.ckrc.erie.warchess.game.DamageEvent;
 import ck.ckrc.erie.warchess.game.DamageListener;
 import ck.ckrc.erie.warchess.game.Player;
-import ck.ckrc.erie.warchess.ui.Setting;
 import ck.ckrc.erie.warchess.utils.DataPackage;
 import ck.ckrc.erie.warchess.utils.ResourceSerialization;
 import javafx.scene.Node;

@@ -14,18 +14,10 @@ public class Client extends Thread{
 
     private ServerSocket serverSocket=null;
     private Socket socket=null;
-    private int teamFlag=-1;
-    private boolean isCurrentTeam=false;
     private Exception error;
 
 
-    public Client() throws IOException {
-
-    }
-
-    public void setCurrentTeam(int teamFlag){
-        isCurrentTeam = teamFlag == this.teamFlag;
-    }
+    public Client() {}
 
     @Override
     public void run() {

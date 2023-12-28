@@ -53,10 +53,9 @@ public class ChooseOneSideController {
     void StartGameAsClient(MouseEvent event) {
         Play.gamemodel=1;
         try {
-            Client client = new Client();
-            this.client = client;
+            client = new Client();
             Node root = FXMLLoader.load(StartFrame.class.getResource("/Fxml/ClientIP.fxml"));
-            this.node = root;
+            node = root;
             Scene scene = new Scene((Parent) root);
             stage.setScene(scene);
             Main.log.addLog("waiting",this.getClass());
@@ -71,7 +70,7 @@ public class ChooseOneSideController {
         try {
             Client client = new Client();
             client.start();
-            this.client=client;
+            ChooseOneSideController.client =client;
             Node root = FXMLLoader.load(StartFrame.class.getResource("/Fxml/Waiting.fxml"));
             if(isserverchoose) {
                 Scene scene = new Scene((Parent) root);
@@ -94,7 +93,7 @@ public class ChooseOneSideController {
         }
     }
 
-    public class CheckConnect extends Thread{
+    public static class CheckConnect extends Thread{
         @Override
         public void run() {
             try {

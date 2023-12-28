@@ -8,7 +8,7 @@ import java.net.URLStreamHandler;
 public class BytesURLHandler extends URLStreamHandler {
 
     @Override
-    protected URLConnection openConnection(URL u) throws IOException {
+    protected URLConnection openConnection(URL u) {
         return new BytesURLConnection(u,ResourceSerialization.resourceMap.get(u.getPath().substring(1)));
     }
 }

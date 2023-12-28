@@ -3,7 +3,6 @@ package ck.ckrc.erie.warchess.Controller;
 import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.game.Engine;
-import ck.ckrc.erie.warchess.game.Player;
 import ck.ckrc.erie.warchess.ui.GameScene;
 import ck.ckrc.erie.warchess.ui.Setting;
 import javafx.event.ActionEvent;

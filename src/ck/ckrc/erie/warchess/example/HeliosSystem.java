@@ -20,7 +20,6 @@ import javafx.scene.paint.*;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
-import java.lang.invoke.MethodHandles;
 import java.util.Random;
 
 /**
@@ -305,6 +304,6 @@ public class HeliosSystem extends Chess {
         return listener==myDmgListener;
     }
 
-    public static boolean checkPlaceRequirements(Player player,int x,int y){return true;}
+    public static boolean checkPlaceRequirements(Player player,int x,int y){return (int)player.getStatus(Miner.energyKey)>= build_cost;}
 
 }

@@ -22,6 +22,7 @@ import java.util.*;
 public class Play {
     private static GraphicsContext graphicsContext;
     public static GraphicsContext spgraphicsContext;
+    private static final Object threadLock=new Object();
 
     private static int edgelength=GameScene.edgelength;
     private static int nodeboxheight= Director.height/ Map.MapSize;
@@ -36,7 +37,10 @@ public class Play {
     public static long lastRepaintTime= System.currentTimeMillis();
     public static int teamflag;
 
-    public Play(GraphicsContext graphicsContext1,GraphicsContext graphicsContext2){ this.graphicsContext=graphicsContext1;this.spgraphicsContext=graphicsContext2; }
+    public Play(GraphicsContext graphicsContext1,GraphicsContext graphicsContext2){
+        graphicsContext=graphicsContext1;
+        spgraphicsContext=graphicsContext2;
+    }
 
     public SetChessAction setChessAction=new SetChessAction();
 
@@ -105,7 +109,7 @@ public class Play {
         }catch (IndexOutOfBoundsException e){}
     }
     public static void drawAllChess(){
-        synchronized (graphicsContext){
+        synchronized (threadLock){
             spgraphicsContext.clearRect(0,0,600,600);
             var now=System.currentTimeMillis();
             for(int i=0;i<Map.MapSize;i++)
@@ -122,7 +126,7 @@ public class Play {
     }
 
     private static void removechessdetails(int x,int y){
-        Node pane=chessdetails.lookup("#root"+','+String.valueOf(x)+','+String.valueOf(y));
+        Node pane=chessdetails.lookup("#root"+','+ x +','+ y);
         chessdetails.getChildren().remove(pane);
         detailedChess.remove(Main.currentGameEngine.getChess(x,y));
     }
@@ -153,7 +157,7 @@ public class Play {
     public static void updatechessdetails(){
         for(Chess chess: detailedChess){
             int x=chess.x,y=chess.y;
-            GridPane element = (GridPane) chessdetails.lookup("#root" + ',' + String.valueOf(x) + ',' + String.valueOf(y));
+            GridPane element = (GridPane) chessdetails.lookup("#root" + ',' + x + ',' + y);
             int index=chessdetails.getChildren().indexOf(element);
             if (element != null) {
                 String[] position = element.getId().split("[,]");
@@ -164,12 +168,7 @@ public class Play {
                 newnode.addRow(0, button);
                 newnode.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));
                 chessdetails.getChildren().set(index, newnode);
-                button.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                                removechessdetails(x,y);
-                            }
-                });
+                button.setOnAction(actionEvent -> removechessdetails(x,y));
                 newnode.setId("root" + ',' + x + ',' + y);
             }
         }

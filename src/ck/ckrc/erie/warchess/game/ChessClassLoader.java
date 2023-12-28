@@ -29,7 +29,7 @@ public class ChessClassLoader extends ClassLoader{
             }catch (Exception | Error ignored){}
             return clazz;
         }
-    };
+    }
 
     public ChessClassLoader(){
         super("Chess",getSystemClassLoader());
