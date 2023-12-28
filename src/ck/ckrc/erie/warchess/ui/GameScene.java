@@ -117,12 +117,12 @@ public class GameScene {
             alert.setContentText("是否返回主界面?");
             Optional<ButtonType> result = alert.showAndWait();
             if(result.isPresent()&&result.get() == ButtonType.OK){
-                StartFrame.loadtoStartFrame(Director.GetDirector().stage);
                 if(Play.gamemodel==1){
                     try {
                         Main.syncThread.sendDisconnect();
                     }catch (IOException e){Main.log.addLog("fail to disconnect", this.getClass());}
                 }
+                StartFrame.loadtoStartFrame(Director.GetDirector().stage);
             }
         });
     }

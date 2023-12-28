@@ -17,6 +17,7 @@ import javafx.scene.control.Alert;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class MapSyncThread extends Thread{
 
@@ -35,6 +36,7 @@ public class MapSyncThread extends Thread{
     private Socket socket=null;
     private DataInputStream input=null;
     private DataOutputStream output=null;
+    private boolean working;
 
     public MapSyncThread(Socket socket) throws IOException {
         this.socket=socket;
@@ -58,7 +60,8 @@ public class MapSyncThread extends Thread{
 
     @Override
     public void run() {
-        while(true){
+        working=true;
+        while(working){
             try {
                 String command=input.readUTF();
                 //System.out.println(command);
@@ -67,7 +70,7 @@ public class MapSyncThread extends Thread{
                     case "disconnect":
                         //TODO disconnect
                         socket.close();
-                        GameScene.showDisconnect();
+                        Platform.runLater(GameScene::showDisconnect);
                         return;
                     case "sync":
                         var x=Integer.parseInt(strings[1]);
@@ -156,6 +159,11 @@ public class MapSyncThread extends Thread{
                     default:
                         Main.log.addLog("Unknown command:"+command,this.getClass());
                 }
+            } catch (SocketException e){
+                Main.log.addLog("connection closed",this.getClass());
+                if(working)
+                    Platform.runLater(GameScene::showDisconnect);
+                return;
             } catch (IOException e) {
                 Main.log.addLog("connection failed",this.getClass());
                 Main.log.addLog(e,this.getClass());
@@ -185,6 +193,9 @@ public class MapSyncThread extends Thread{
 
     public void sendDisconnect() throws IOException {
         output.writeUTF("disconnect");
+        output.flush();
+        output.close();
+        working=false;
     }
 
     public void sendRound(int roundFlag) throws IOException {
