@@ -34,7 +34,6 @@ public class Client extends Thread{
         } catch (IOException e) {
             Main.log.addLog("failed to start client server-side:", this.getClass());
             Main.log.addLog(e, this.getClass());
-            ChooseOneSideController.isserverchoose=false;
             return;
         }
         while (!Thread.currentThread().isInterrupted()) {

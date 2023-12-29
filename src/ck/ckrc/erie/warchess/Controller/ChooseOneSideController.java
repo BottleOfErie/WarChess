@@ -11,6 +11,7 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -40,7 +41,7 @@ public class ChooseOneSideController {
     private Stage stage=Director.GetDirector().stage;
 
 
-    public static boolean isserverchoose=true;
+    public static boolean isserverchoose=false;
 
     public static CheckConnect checkConnect;
 
@@ -72,19 +73,21 @@ public class ChooseOneSideController {
             client.start();
             ChooseOneSideController.client =client;
             Node root = FXMLLoader.load(StartFrame.class.getResource("/Fxml/Waiting.fxml"));
-            if(isserverchoose) {
+            if(!isserverchoose) {
                 Scene scene = new Scene((Parent) root);
                 stage.setScene(scene);
                 checkConnect = new CheckConnect();
                 checkConnect.start();
+                isserverchoose=true;
             }
             else{
                 Label label=new Label("服务端已有waiting");
                 AnchorPane pane=(AnchorPane) stage.getScene().lookup("#chooseonesidepane");
                 pane.getChildren().add(label);
-                label.setLayoutX(300);
-                label.setLayoutY(100);
+                label.setLayoutX(400);
+                label.setLayoutY(300);
                 label.setPrefSize(200, 50);
+                label.setAlignment(Pos.CENTER);
                 Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> label.setText("")));
                 timeline.play();
             }

@@ -12,6 +12,7 @@ public class WaitingController {
         if(ChooseOneSideController.client.getServerSocket()!=null){ChooseOneSideController.client.getServerSocket().close();}
         ChooseOneSideController.checkConnect.interrupt();
         Director.GetDirector().ChooseOneSide();
+        ChooseOneSideController.isserverchoose=false;
     }
 
 }
