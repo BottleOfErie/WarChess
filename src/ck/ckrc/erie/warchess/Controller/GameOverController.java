@@ -7,6 +7,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
+/**
+ * 这个类用于控制游戏结束的页面
+ */
 public class GameOverController {
 
     @FXML

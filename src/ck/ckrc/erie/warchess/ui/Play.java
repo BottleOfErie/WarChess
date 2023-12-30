@@ -6,9 +6,13 @@ import ck.ckrc.erie.warchess.game.Chess;
 import ck.ckrc.erie.warchess.game.ChessClassInvoker;
 import ck.ckrc.erie.warchess.game.Map;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -44,6 +48,10 @@ public class Play {
     public SetChessAction setChessAction=new SetChessAction();
 
     private static VBox chessdetails;
+
+    /**
+     * 这个类用来设置棋子点击事件
+     */
     public class SetChessAction implements EventHandler<MouseEvent>{
         @Override
         public void handle(MouseEvent event){
@@ -77,6 +85,10 @@ public class Play {
             }
         }
     }
+
+    /**
+     * 显示选择棋子的界面
+     */
     private void showchoosechess(int x, int y){
         VBox root=new VBox();
         ScrollPane scrollPane=new ScrollPane(root);
@@ -101,12 +113,20 @@ public class Play {
         anchorPane.getChildren().add(scrollPane);
         scrollPane.setLayoutX(800);scrollPane.setLayoutY(0);
     }
+
+    /**
+     * 隐藏选择棋子的界面
+     */
     private static void removechoosechess(){
         try{
             Node node=anchorPane.lookup("#choosechessroot");
             anchorPane.getChildren().remove(node);
         }catch (IndexOutOfBoundsException e){}
     }
+
+    /**
+     * 在棋子画布上绘制棋子
+     */
     public static void drawAllChess(){
         synchronized (threadLock){
             spgraphicsContext.clearRect(0,0,600,600);
@@ -124,6 +144,9 @@ public class Play {
         }
     }
 
+    /**
+     * 隐藏所有棋子的详细信息
+     */
     private static void removechessdetails(int x,int y){
         Node pane=chessdetails.lookup("#root"+','+ x +','+ y);
         chessdetails.getChildren().remove(pane);
@@ -136,6 +159,9 @@ public class Play {
         removechoosechess();
     }
 
+    /**
+     * 点击已经放置的棋子，显示棋子的详细信息
+     */
     private static void showchessdetails(int x, int y){
         GridPane root= new GridPane();
         var node=Main.currentGameEngine.getMap().getChessMap()[x][y].showPanel();
@@ -153,6 +179,10 @@ public class Play {
         detailedChess.add(Main.currentGameEngine.getChess(x,y));
         button.setOnAction(actionEvent -> removechessdetails(x, y));
     }
+
+    /**
+     * 轮次结束后，更新当前在界面中显示的棋子详细信息
+     */
     public static void updatechessdetails(){
         for(Chess chess: detailedChess){
             int x=chess.x,y=chess.y;
@@ -169,6 +199,31 @@ public class Play {
                 button.setOnAction(actionEvent -> removechessdetails(x,y));
                 newnode.setId("root" + ',' + x + ',' + y);
             }
+        }
+    }
+
+    /**
+     * 游戏结束后，跳转到游戏结束界面
+     */
+    public static void gameEnd(int winnerFlag){
+        try {
+            Parent root = FXMLLoader.load(StartFrame.class.getResource("/Fxml/GameOver.fxml"));
+            Scene scene=new Scene(root);
+            Label label=(Label) root.lookup("#gameoverlabel");
+            if(gamemodel==0){
+                label.setText("游戏结束,team"+winnerFlag+"获胜");
+            } else if (gamemodel==1) {
+                if(winnerFlag==Main.currentGameEngine.getCurrentTeam()){
+                    label.setText("游戏结束,你赢了!");
+                }
+                else{
+                    label.setText("游戏结束,你输了!");
+                }
+            }
+            GameScene.stage.setScene(scene);
+        } catch (IOException e){
+            Main.log.addLog("failed to load Fxml file:GameOver.fxml", GameScene.class);
+            Main.log.addLog(e, GameScene.class);
         }
     }
 

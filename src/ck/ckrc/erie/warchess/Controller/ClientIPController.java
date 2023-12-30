@@ -18,6 +18,9 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 
+/**
+ * 这个类用于控制多人游戏选择客户端后的界面，在这里输入IP以连接服务端
+ */
 public class ClientIPController {
     @FXML
     void Back(ActionEvent event) throws Exception{

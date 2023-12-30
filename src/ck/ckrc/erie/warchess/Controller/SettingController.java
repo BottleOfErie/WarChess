@@ -28,18 +28,35 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+/**
+ * 这个类用于控制设置界面
+ */
 public class SettingController {
+    /**
+     * 单人模式自定义team数量的ui控件
+     */
     @FXML
     public static HBox teamhbox;
     @FXML
     private TextField teamfield;
+
+    /**
+     * 单人模式输入team数量不合法时会弹出的label
+     */
     @FXML
     private Label numberillegallabel;
+
+    /**
+     * 返回主界面按钮事件
+     */
     @FXML
     void back(ActionEvent event) throws Exception{
         Director.GetDirector().Init(Director.GetDirector().stage);
     }
 
+    /**
+     * 启动！！
+     */
     @FXML
     void GameStart(MouseEvent event) {
         if(Play.gamemodel==0){
@@ -65,6 +82,9 @@ public class SettingController {
             }
     }
 
+    /**
+     * 对类进行反编译的按钮事件
+     */
     @FXML
     void DeCompile(MouseEvent event) {
         LabelWithChessClass label=Setting.highlightedLabel;
@@ -82,6 +102,9 @@ public class SettingController {
         childStage.show();
     }
 
+    /**
+     * 加载类的按钮事件
+     */
     @FXML
     void LoadClass(MouseEvent event) {
         LabelWithChessClass label=Setting.highlightedLabel;
@@ -99,6 +122,10 @@ public class SettingController {
         }
         list.getChildren().remove(label);
     }
+
+    /**
+     * 从文件中加载类
+     */
     @FXML
     void loadclassfromfile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
