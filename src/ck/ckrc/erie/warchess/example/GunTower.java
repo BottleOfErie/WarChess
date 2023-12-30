@@ -17,6 +17,9 @@ import javafx.scene.paint.Color;
 
 import java.util.Objects;
 
+/**
+ * 示范普通攻击塔
+ */
 public class GunTower extends Chess {
 
     public static final int attRadius=5,attDamage=10, build_cost =5,shot_cost=1,max_hp=50,max_anim=700;

@@ -13,6 +13,9 @@ import javafx.scene.paint.Color;
 
 import java.util.Objects;
 
+/**
+ * 示范多伤害监听器棋子类
+ */
 public class Shield extends Chess {
 
     private static final String imageData="iVBORw0KGgoAAAANSUhEUgAAACcAAAAnCAYAAACMo1E1AAABkElEQVRYw83YXUrEMBAA4MmwElkQvILoIbyIT55gT+QJfNqL7CEEr7AgiEGwPvTHNjvNTGYSm0Bh2SbNl2kzSQvAl67ice+9x7WOHQfrvo8gKe7q6a9RXpsH7/17COEnPo8lYNoyXP8thHBHRRC3gkmAuCWMA+LWsBQQW4CtAbEVGAXElmAxEKHhsrNeYJ584/+sd2RXElUaibVglvpqHNVRB7cXRwkgloDRWxk70DQh5oD962n6/fn8OJ13cNZPNmmei0c9wuaouIzIGCjtD60Rq1F/ETktLhU1LnrVUsl/laZx/YT4OvAVr1/YWbp2S+PbKu0P445lIzrXrT94+sh9ALgbfkTxILg8R6YRQR+jZ8IB8EAqwqk0QUWMu/7c4qadcGGgFQYAzi3eIQxANjdmwqg3/ipADWztc4QYyCGlDz8FS30ryQJe5EFh/RQstUK4oUE/rRXPmBXGLV9VgFKYZG0tCsyBSRf+IsBcWM6uxATUwHK3TCqgFqbZz2UBLTDtZlMEtMJUDRbrfeV+fgHxkyLSEyogJAAAAABJRU5ErkJggg==";

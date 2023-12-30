@@ -10,6 +10,16 @@ import javafx.scene.image.Image;
  */
 public abstract class Chess {
 
+    public Chess(){}
+
+    /**
+     * 棋子类构造方法
+     * @param x 棋子x坐标
+     * @param y 棋子y坐标
+     * @param player 棋子所属玩家
+     */
+    public Chess(int x, int y, Player player){}
+
     /**
      * 血量，如果为0会被{@link Engine}在下一回合移除
      */

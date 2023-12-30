@@ -13,6 +13,10 @@ import javafx.scene.paint.Color;
 
 import java.util.Objects;
 
+/**
+ * 五子棋<br/>
+ * 结局监听器示范类
+ */
 public class Gomoku extends Chess {
 
     public static final String className="ck.ckrc.erie.warchess.example2.Gomoku";
@@ -78,7 +82,7 @@ public class Gomoku extends Chess {
     }
 
     public static Node showData(){
-        Label title=new Label("棋子");
+        Label title=new Label("棋子:要求玩家数:2");
         title.setPrefWidth(100);
         return title;
     }
@@ -108,5 +112,5 @@ public class Gomoku extends Chess {
         return false;
     }
 
-    public static boolean checkPlaceRequirements(Player player,int x,int y){return !pushed;}
+    public static boolean checkPlaceRequirements(Player player,int x,int y){return (player.getTeamFlag()==0||player.getTeamFlag()==1)&&!pushed;}
 }

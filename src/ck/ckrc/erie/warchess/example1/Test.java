@@ -17,6 +17,10 @@ import javafx.stage.FileChooser;
 
 import java.io.IOException;
 
+/**
+ * 调试类<br/>
+ * 资源传输示范类
+ */
 public class Test extends Chess {
 
     public static final String className="ck.ckrc.erie.warchess.example1.Test";

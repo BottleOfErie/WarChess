@@ -24,7 +24,8 @@ import java.util.Objects;
 import java.util.Random;
 
 /**
- * <a href="https://scp-wiki-cn.wikidot.com/helios-system">Idea from this</a>
+ * 示范复杂棋子类<br/>
+ * <a href="https://scp-wiki-cn.wikidot.com/helios-system">灵感来源</a>
  */
 public class HeliosSystem extends Chess {
 

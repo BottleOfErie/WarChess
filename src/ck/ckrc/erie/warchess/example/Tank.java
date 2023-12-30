@@ -16,6 +16,9 @@ import javafx.scene.paint.Color;
 
 import java.util.Objects;
 
+/**
+ * 示范可移动棋子类
+ */
 public class Tank extends Chess {
 
     public static final int attRadius=5,attDamage=10, build_cost =20,init_energy=15,shot_cost=1,move_cost=2,max_hp=30,max_anim=700,move_radius=3;
