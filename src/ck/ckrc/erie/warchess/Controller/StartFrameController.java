@@ -19,6 +19,7 @@ public class StartFrameController {
 
     @FXML
     private AnchorPane StartController;
+
     @FXML
     public void ChooseOneSide(MouseEvent event) throws Exception{
         Engine.playerNum=2;
@@ -28,8 +29,6 @@ public class StartFrameController {
     @FXML
     void SingalPlayerStart(MouseEvent event) {
         Play.gamemodel=0;
-        //TODO change player Num
-        Engine.playerNum=1;
         Setting.makesetting();
     }
 

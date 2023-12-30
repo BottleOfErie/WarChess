@@ -7,19 +7,21 @@ import ck.ckrc.erie.warchess.game.ClassDecompilerWrapper;
 import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.ui.GameScene;
 import ck.ckrc.erie.warchess.ui.LabelWithChessClass;
+import ck.ckrc.erie.warchess.ui.Play;
 import ck.ckrc.erie.warchess.ui.Setting;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,19 +30,11 @@ import java.util.Comparator;
 
 public class SettingController {
     @FXML
-    private VBox LoadedClassList;
-
+    public static HBox teamhbox;
     @FXML
-    private VBox NotLoadClassList;
-
+    private TextField teamfield;
     @FXML
-    private Button decompile;
-
-    @FXML
-    private Button launch;
-
-    @FXML
-    private Button loadclass;
+    private Label numberillegallabel;
     @FXML
     void back(ActionEvent event) throws Exception{
         Director.GetDirector().Init(Director.GetDirector().stage);
@@ -48,6 +42,16 @@ public class SettingController {
 
     @FXML
     void GameStart(MouseEvent event) {
+        if(Play.gamemodel==0){
+            try {
+                Engine.playerNum=Integer.parseInt(teamfield.getText());
+            }catch (NumberFormatException e){
+                numberillegallabel.setText("输入不合法!");
+                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), actionEvent -> numberillegallabel.setText("")));
+                timeline.play();
+                return;
+            }
+        }
         Setting.checkloadedclass();
         Main.currentGameEngine=new Engine();
         Director.GetDirector().gameStart();

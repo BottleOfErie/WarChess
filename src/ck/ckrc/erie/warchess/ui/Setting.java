@@ -1,5 +1,6 @@
 package ck.ckrc.erie.warchess.ui;
 
+import ck.ckrc.erie.warchess.Controller.SettingController;
 import ck.ckrc.erie.warchess.Director;
 import ck.ckrc.erie.warchess.Main;
 import javafx.collections.ObservableList;
@@ -25,6 +26,7 @@ import java.util.Map;
 public class Setting {
     private static Stage stage= Director.GetDirector().stage;
     private static AnchorPane anchorPane=GameScene.anchorPane;
+
     public static boolean candecompile=false;
 
     public static Map<Class<?>, Boolean> loadornot=new HashMap<>();
@@ -32,13 +34,17 @@ public class Setting {
     public static LabelWithChessClass highlightedLabel=null;
     public static Label classnamelabel=null;
     private static Scene settingscene=null;
+    private static Parent root;
 
     public static void makesetting() {
         //TODO change to TreeView
         if(settingscene==null) {
             try {
-                Parent root = FXMLLoader.load(Setting.class.getResource("/Fxml/Setting.fxml"));
+                root = FXMLLoader.load(Setting.class.getResource("/Fxml/Setting.fxml"));
                 root.setId("setting");
+                if(Play.gamemodel==1) {
+                    root.lookup("#teamhbox").setVisible(false);
+                }else{root.lookup("#teamhbox").setVisible(true);}
                 settingscene=new Scene(root);
                 stage.setScene(settingscene);
             } catch (IOException | NullPointerException e) {
@@ -46,6 +52,9 @@ public class Setting {
                 Main.log.addLog(e, Setting.class);
             }
         }else{
+            if(Play.gamemodel==1) {
+                root.lookup("#teamhbox").setVisible(false);
+            }else{root.lookup("#teamhbox").setVisible(true);}
             stage.setScene(settingscene);
         }
     }

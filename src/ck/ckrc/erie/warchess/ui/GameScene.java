@@ -98,6 +98,9 @@ public class GameScene {
                     }
                 }
                 Main.currentGameEngine.nextRound(nextteam);
+                if(Play.gamemodel==0) {
+                    Play.teamflag = nextteam;
+                }
                 Play.updatechessdetails();
             }
         });
