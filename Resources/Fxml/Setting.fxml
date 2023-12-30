@@ -3,7 +3,9 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ck.ckrc.erie.warchess.Controller.SettingController">
@@ -24,5 +26,12 @@
       </ScrollPane>
       <Button layoutX="450.0" layoutY="500.0" mnemonicParsing="false" onAction="#back" prefHeight="50.0" prefWidth="100.0" text="返回主界面" />
       <Label id="classdatalabel" alignment="CENTER" layoutX="350.0" layoutY="36.0" prefHeight="50.0" prefWidth="300.0" />
+      <HBox id="teamhbox" fx:id="teamhbox" layoutX="400.0" layoutY="583.0" prefHeight="26.0" prefWidth="200.0">
+         <children>
+            <Label prefHeight="44.0" prefWidth="66.0" text="队伍数量:" />
+            <TextField fx:id="teamfield" prefHeight="34.0" prefWidth="141.0" />
+         </children>
+      </HBox>
+      <Label fx:id="numberillegallabel" layoutX="400.0" layoutY="629.0" prefHeight="44.0" prefWidth="200.0" />
    </children>
 </AnchorPane>

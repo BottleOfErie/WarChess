@@ -23,33 +23,39 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
-
+/**
+ * 这个类用于控制多人游戏选择客户端或服务端的按钮事件
+ */
 public class ChooseOneSideController {
 
-    @FXML
-    private Button BackToStartButton;
-
-    @FXML
-    private Button ClientButton;
-
-    @FXML
-    private Button ServerButton;
-
+    /**
+     * 从ClientIP.fxml加载的ui
+     */
     public static Node node;
 
+    /**
+     * 由客户端创建的client
+     */
     public static Client client;
     private Stage stage=Director.GetDirector().stage;
 
-
+    /**
+     * 服务端是否被占用
+     */
     public static boolean isserverchoose=false;
 
     public static CheckConnect checkConnect;
-
+    /**
+     * 返回开始界面
+     */
     @FXML
     void BackToStartFrame(MouseEvent event) throws Exception{
         Director.GetDirector().BackToStartFrame();
     }
 
+    /**
+     * 作为客户端开始
+     */
     @FXML
     void StartGameAsClient(MouseEvent event) {
         Play.gamemodel=1;
@@ -65,6 +71,10 @@ public class ChooseOneSideController {
             Main.log.addLog(e,this.getClass());
         }
     }
+
+    /**
+     * 作为服务端开始
+     */
     @FXML
     void StartGameAsServer(MouseEvent event) {
         Play.gamemodel=1;
@@ -96,6 +106,9 @@ public class ChooseOneSideController {
         }
     }
 
+    /**
+     * 服务端的等待请求由CheckConnect线程来完成
+     */
     public static class CheckConnect extends Thread{
         @Override
         public void run() {

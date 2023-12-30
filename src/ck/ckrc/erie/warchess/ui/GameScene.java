@@ -18,20 +18,48 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * 这个类用于绘制游戏内界面
+ */
 public class GameScene {
+
+    /**
+     * 棋盘画布的边长和每个小格子的边长
+     */
     public static final int canvasize=600,edgelength=canvasize/ Map.MapSize;
+
+    /**
+     * 用于绘制棋子的画布
+     */
     private Canvas canvas = new Canvas(canvasize,canvasize );
     private GraphicsContext graphicsContext=canvas.getGraphicsContext2D();
+
+    /**
+     * 用于绘制棋子特效层的画布
+     */
     private Canvas spcanvas=new Canvas(canvasize,canvasize);
     private GraphicsContext spgraphicsContext=spcanvas.getGraphicsContext2D();
+
+    /**
+     * 所有游戏内ui控件都是这个anchorpane的子节点
+     */
     public static AnchorPane anchorPane;
     public static Scene gameScene;
+
+    /**
+     * 所有游戏内ui控件都是这个anchorpane的子节点
+     */
     public static Repainter repainter;
     public static Stage stage;
-    public static TextField textField;
+
+    /**
+     * 显示聊天内容的聊天框
+     */
     public static TextArea textArea;
 
-
+    /**
+     * 初始化游戏界面
+     */
     public void Init(Stage stage){
         GameScene.stage =stage;
         AnchorPane anchorPane=new AnchorPane(canvas,spcanvas);
@@ -55,6 +83,10 @@ public class GameScene {
         repainter=new Repainter();
         repainter.start();
     }
+
+    /**
+     * 绘制棋盘
+     */
     private void drawchessmap(){
         graphicsContext.setStroke(Color.BLACK);
         graphicsContext.setLineWidth(5);
@@ -63,6 +95,10 @@ public class GameScene {
             graphicsContext.strokeLine(0, i*edgelength, canvasize, i*edgelength);
         }
     }
+
+    /**
+     * 创建一个按钮，能够执行进入下一轮的操作
+     */
     private void setnextround(){
         Button button=new Button("nextround");
         anchorPane.getChildren().add(button);
@@ -98,10 +134,17 @@ public class GameScene {
                     }
                 }
                 Main.currentGameEngine.nextRound(nextteam);
+                if(Play.gamemodel==0) {
+                    Play.teamflag = nextteam;
+                }
                 Play.updatechessdetails();
             }
         });
     }
+
+    /**
+     * 创建返回主界面按钮，可以直接退出当前游戏，回到主界面
+     */
     private void setQuit(){
         Button button=new Button("返回主界面");
         anchorPane.getChildren().add(button);
@@ -123,6 +166,10 @@ public class GameScene {
             }
         });
     }
+
+    /**
+     * 多人游戏失去连接后，会跳出弹窗提示
+     */
     public static void showDisconnect(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "失去连接!", ButtonType.OK);
         alert.setTitle("disconnect");
@@ -131,6 +178,10 @@ public class GameScene {
             StartFrame.loadtoStartFrame(stage);
         }
     }
+
+    /**
+     * 创建一个按钮，点击后可以显示玩家信息
+     */
     private void setshowPlayerData(){
         Button button=new Button("显示玩家信息");
         anchorPane.getChildren().add(button);
@@ -155,6 +206,10 @@ public class GameScene {
             }
         });
     }
+
+    /**
+     * 创建聊天框
+     */
     private void setchat(){
         TextArea area=new TextArea();
         area.setEditable(false);
@@ -176,7 +231,6 @@ public class GameScene {
         anchorPane.getChildren().add(vBox);
         vBox.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,null,null)));
         vBox.setLayoutX(10);vBox.setLayoutY(0);
-        textField=field;
         textArea=area;
         send.setOnAction(actionEvent -> {
             showchat(field.getText(), area, Play.teamflag);
@@ -191,33 +245,14 @@ public class GameScene {
         });
         field.setOnAction(send.getOnAction());
     }
+
+    /**
+     * 将要发送的聊天内容发送到聊天框
+     */
     public static void showchat(String text, TextArea textArea,int from){
         if(!text.isEmpty()){
             if(!textArea.getText().isEmpty()){textArea.appendText("\n");}
             textArea.appendText("team"+from+" : "+text);
-        }
-    }
-
-
-    public static void gameEnd(int winnerFlag){
-        try {
-            Parent root = FXMLLoader.load(StartFrame.class.getResource("/Fxml/GameOver.fxml"));
-            Scene scene=new Scene(root);
-            Label label=(Label) root.lookup("#gameoverlabel");
-            if(Play.gamemodel==0){
-                label.setText("游戏结束,team"+winnerFlag+"获胜");
-            } else if (Play.gamemodel==1) {
-                if(winnerFlag==Main.currentGameEngine.getCurrentTeam()){
-                    label.setText("游戏结束,你赢了!");
-                }
-                else{
-                    label.setText("游戏结束,你输了!");
-                }
-            }
-            stage.setScene(scene);
-        } catch (IOException e){
-            Main.log.addLog("failed to load Fxml file:GameOver.fxml", GameScene.class);
-            Main.log.addLog(e, GameScene.class);
         }
     }
 }

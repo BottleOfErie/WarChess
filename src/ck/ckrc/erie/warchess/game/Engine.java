@@ -2,6 +2,7 @@ package ck.ckrc.erie.warchess.game;
 
 import ck.ckrc.erie.warchess.Main;
 import ck.ckrc.erie.warchess.ui.GameScene;
+import ck.ckrc.erie.warchess.ui.Play;
 
 import java.util.*;
 
@@ -127,7 +128,7 @@ public class Engine {
         for (var item:
                 gameOverListeners)
             if(item.check()) {
-                GameScene.gameEnd(currentTeam);
+                Play.gameEnd(currentTeam);
                 return;
             }
 

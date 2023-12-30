@@ -7,47 +7,68 @@ import ck.ckrc.erie.warchess.game.ClassDecompilerWrapper;
 import ck.ckrc.erie.warchess.game.Engine;
 import ck.ckrc.erie.warchess.ui.GameScene;
 import ck.ckrc.erie.warchess.ui.LabelWithChessClass;
+import ck.ckrc.erie.warchess.ui.Play;
 import ck.ckrc.erie.warchess.ui.Setting;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+/**
+ * 这个类用于控制设置界面
+ */
 public class SettingController {
+    /**
+     * 单人模式自定义team数量的ui控件
+     */
     @FXML
-    private VBox LoadedClassList;
+    public static HBox teamhbox;
+    @FXML
+    private TextField teamfield;
 
+    /**
+     * 单人模式输入team数量不合法时会弹出的label
+     */
     @FXML
-    private VBox NotLoadClassList;
+    private Label numberillegallabel;
 
-    @FXML
-    private Button decompile;
-
-    @FXML
-    private Button launch;
-
-    @FXML
-    private Button loadclass;
+    /**
+     * 返回主界面按钮事件
+     */
     @FXML
     void back(ActionEvent event) throws Exception{
         Director.GetDirector().Init(Director.GetDirector().stage);
     }
 
+    /**
+     * 启动！！
+     */
     @FXML
     void GameStart(MouseEvent event) {
+        if(Play.gamemodel==0){
+            try {
+                Engine.playerNum=Integer.parseInt(teamfield.getText());
+            }catch (NumberFormatException e){
+                numberillegallabel.setText("输入不合法!");
+                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), actionEvent -> numberillegallabel.setText("")));
+                timeline.play();
+                return;
+            }
+        }
         Setting.checkloadedclass();
         Main.currentGameEngine=new Engine();
         Director.GetDirector().gameStart();
@@ -61,6 +82,9 @@ public class SettingController {
             }
     }
 
+    /**
+     * 对类进行反编译的按钮事件
+     */
     @FXML
     void DeCompile(MouseEvent event) {
         LabelWithChessClass label=Setting.highlightedLabel;
@@ -78,6 +102,9 @@ public class SettingController {
         childStage.show();
     }
 
+    /**
+     * 加载类的按钮事件
+     */
     @FXML
     void LoadClass(MouseEvent event) {
         LabelWithChessClass label=Setting.highlightedLabel;
@@ -95,6 +122,10 @@ public class SettingController {
         }
         list.getChildren().remove(label);
     }
+
+    /**
+     * 从文件中加载类
+     */
     @FXML
     void loadclassfromfile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
